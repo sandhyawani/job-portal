@@ -101,4 +101,4 @@ export const getAdminJobs = async (req, res) => {
 }
 
 
-//MONGO_URI="mongodb+srv://sandhyaw4578:U3ApI1jW4CadRRYN@cluster0.zltuzyd.mongodb.net/"
+
