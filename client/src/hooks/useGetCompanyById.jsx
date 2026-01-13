@@ -2,51 +2,44 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setSingleCompany } from "@/redux/companySlice";
-import { setAllJobs } from "@/redux/jobSlice";
-import { COMPANY_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
+import { COMPANY_API_END_POINT } from "@/utils/constant";
 
-const useGetCompanyById = (companyId, onFetchComplete) => {
+const useGetCompanyById = (companyId) => {
   const dispatch = useDispatch();
+
+  // Local loading and error state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!companyId) return;
 
-    const fetchSingleCompany = async () => {
-      setLoading(true);
-      setError(null);
+    const fetchCompany = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch company details by ID
         const res = await axios.get(
-          `${COMPANY_API_END_POINT}/get/${companyId}`,
+          `${COMPANY_API_END_POINT}/${companyId}`,
           { withCredentials: true }
         );
 
         if (res.data.success) {
           dispatch(setSingleCompany(res.data.company));
-          // Optional: Fetch company jobs
-          const jobsRes = await axios.get(
-            `${JOB_API_END_POINT}/get?company=${companyId}`,
-            { withCredentials: true }
-          );
-          if (jobsRes.data.success) {
-            dispatch(setAllJobs(jobsRes.data.jobs));
-          }
-
-          if (onFetchComplete) onFetchComplete(res.data.company);
         } else {
-          setError("Failed to fetch company details");
+          setError("Company not found");
         }
       } catch (err) {
-        setError(err.message || "Something went wrong");
         console.error("Fetch Company Error:", err);
+        setError("Failed to load company");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSingleCompany();
-  }, [companyId, dispatch, onFetchComplete]);
+    fetchCompany();
+  }, [companyId, dispatch]);
 
   return { loading, error };
 };

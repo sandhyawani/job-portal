@@ -4,34 +4,34 @@ import { Label } from './ui/label';
 import { useDispatch } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 
-// Premium project filter data
 const filterData = [
   {
     filterType: "Location",
-    options: ["Delhi NCR", "Bangalore", "Hyderabad", "Pune", "Mumbai"]
+        options: ["Delhi", "Bengaluru", "Hyderabad", "Pune", "Mumbai", "Nashik"],
   },
   {
-    filterType: "Industry",
-    options: ["Frontend Developer", "Backend Developer", "FullStack Developer"]
-  },
-  {
-    filterType: "Salary",
-    options: ["0-40k", "42k-1L", "1L-5L"]
-  },
+    filterType: "Job Role",
+    options: [
+    "Full Stack Developer",
+     "Backend Developer",
+     "Frontend Developer",
+      "Data Analyst",
+      "Data scientist",
+      "Marketing Executive",
+      "HR"
+    ]
+  }
 ];
 
 const FilterCard = () => {
   const [selectedValue, setSelectedValue] = useState('');
   const dispatch = useDispatch();
-
-  // Update Redux store when selection changes
   useEffect(() => {
     dispatch(setSearchedQuery(selectedValue));
   }, [selectedValue, dispatch]);
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-      {/* Heading */}
       <h1 className="font-extrabold text-2xl text-gray-900 mb-6">
         Filter <span className="text-pink-500">Jobs</span>
       </h1>
@@ -60,7 +60,10 @@ const FilterCard = () => {
                     id={itemId}
                     className="w-5 h-5 rounded-full border border-pink-400 bg-gradient-to-r from-pink-400 to-pink-600 text-white focus:ring-2 focus:ring-pink-500"
                   />
-                  <Label htmlFor={itemId} className="text-gray-700 font-medium cursor-pointer">
+                  <Label
+                    htmlFor={itemId}
+                    className="text-gray-700 font-medium cursor-pointer"
+                  >
                     {option}
                   </Label>
                 </div>
@@ -74,3 +77,4 @@ const FilterCard = () => {
 };
 
 export default FilterCard;
+'iuytrewq. c'

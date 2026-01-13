@@ -18,46 +18,46 @@ const HeroSection = () => {
 
   return (
     <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
-      {/* Background animated blobs */}
+      {/* Decorative background effects */}
       <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-pink-500 opacity-30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute top-20 right-0 w-[400px] h-[400px] bg-purple-500 opacity-20 rounded-full blur-3xl animate-pulse delay-200"></div>
-      <div className="absolute inset-0">
-        <div className="w-full h-full pointer-events-none">
-          {/* optional floating particle effect */}
-          <div
-            className="absolute w-1 h-1 bg-white opacity-20 rounded-full animate-bounce"
-            style={{ top: "10%", left: "25%" }}
-          ></div>
-          <div
-            className="absolute w-1.5 h-1.5 bg-pink-400 opacity-30 rounded-full animate-bounce"
-            style={{ top: "60%", left: "80%" }}
-          ></div>
-          <div
-            className="absolute w-1 h-1 bg-purple-400 opacity-25 rounded-full animate-bounce"
-            style={{ top: "40%", left: "50%" }}
-          ></div>
-        </div>
+
+      {/* Subtle particle accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute w-1 h-1 bg-white opacity-20 rounded-full animate-bounce"
+          style={{ top: "10%", left: "25%" }}
+        ></div>
+        <div
+          className="absolute w-1.5 h-1.5 bg-pink-400 opacity-30 rounded-full animate-bounce"
+          style={{ top: "60%", left: "80%" }}
+        ></div>
+        <div
+          className="absolute w-1 h-1 bg-purple-400 opacity-25 rounded-full animate-bounce"
+          style={{ top: "40%", left: "50%" }}
+        ></div>
       </div>
 
+      {/* Hero content */}
       <div className="relative z-10 text-center px-4 py-28 sm:py-36 max-w-6xl mx-auto">
-        {/* Badge */}
+        {/* Highlight badge */}
         <span className="inline-block px-6 py-2 mb-6 rounded-full bg-white/10 border border-white/20 text-pink-400 font-medium backdrop-blur-md shadow-lg hover:scale-105 transition-transform">
           🚀 Turning Ambitions Into Careers
         </span>
 
-        {/* Heading */}
+        {/* Main heading */}
         <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 animate-gradient drop-shadow-[0_2px_25px_rgba(255,192,203,0.5)]">
           Your Career, <span className="text-pink-400">Your Way</span>
           <br /> Start Today
         </h1>
 
-        {/* Subtitle */}
+        {/* Supporting text */}
         <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
           Connect with top recruiters, explore premium opportunities, and shape
           the future you deserve.
         </p>
 
-        {/* Search Bar */}
+        {/* Job search input */}
         <div className="mt-10 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-xl rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
           <input
             type="text"
@@ -80,7 +80,7 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        {/* Call-to-Action Buttons */}
+        {/* Primary actions */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link to="/signup">
             <button className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-500 hover:to-pink-600 rounded-full font-medium text-white shadow-lg hover:shadow-pink-500/50 transition-all transform hover:scale-105">
@@ -96,7 +96,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Decorative wave */}
+      {/* Decorative footer wave */}
       <svg
         className="absolute bottom-0 left-0 w-full"
         xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +109,7 @@ const HeroSection = () => {
         ></path>
       </svg>
 
+      {/* Gradient animation */}
       <style>{`
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }

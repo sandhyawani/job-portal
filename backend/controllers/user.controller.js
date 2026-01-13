@@ -24,7 +24,7 @@ export const register = async (req, res) => {
       });
     }
 
-    // ✅ Handle optional profile photo upload
+    //profile photo upload
     let profilePhoto = "";
     if (req.file) {
       const fileUri = getDataUri(req.file);
@@ -41,7 +41,7 @@ export const register = async (req, res) => {
       password: hashedPassword,
       role,
       profile: {
-        profilePhoto, // can be "" or Cloudinary URL
+        profilePhoto, 
       },
     });
 
@@ -107,7 +107,7 @@ export const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true, // ✅ typo fixed: was "httpsOnly"
+        httpOnly: true, 
         sameSite: "strict",
       })
       .json({
@@ -139,7 +139,7 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body || {};
-    const userId = req.id; // from isAuthenticated middleware
+    const userId = req.id;
     let user = await User.findById(userId);
 
     if (!user) {
@@ -149,7 +149,6 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    // ✅ Handle skills (string or array)
     let skillsArray = [];
     if (skills) {
       if (Array.isArray(skills)) {
@@ -159,7 +158,7 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-     if (req.file) {
+    if (req.file) {
       const fileUri = getDataUri(req.file); // convert buffer -> data URI
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
         resource_type: "auto", // allows pdf, docx, etc.
@@ -168,8 +167,8 @@ export const updateProfile = async (req, res) => {
       user.profile.resume = cloudResponse.secure_url;
       user.profile.resumeOriginalName = req.file.originalname;
     }
-  
-    // ✅ Update only provided fields
+
+    // ✅ Update only this fields
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;

@@ -5,8 +5,7 @@ import { Job } from "../models/job.model.js";
 export const applyJob = async (req, res) => {
   try {
     const userId = req.id;
-    // 👇 Change this depending on how you send jobId (params or body)
-    const jobId = req.params.id || req.body.job; 
+    const jobId = req.params.id || req.body.job;
 
     if (!jobId) {
       return res.status(400).json({
@@ -24,7 +23,10 @@ export const applyJob = async (req, res) => {
     }
 
     // Check if user already applied
-    const existingApplication = await Application.findOne({ job: jobId, applicant: userId });
+    const existingApplication = await Application.findOne({
+      job: jobId,
+      applicant: userId,
+    });
     if (existingApplication) {
       return res.status(400).json({
         message: "You have already applied for this job",
@@ -162,5 +164,35 @@ export const updateStatus = async (req, res) => {
   } catch (error) {
     console.error("Error in updateStatus:", error);
     return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+export const hasApplied = async (req, res) => {
+  try {
+    const userId = req.id;
+    const jobId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+      return res.status(400).json({
+        applied: false,
+        success: false,
+        message: "Invalid Job ID",
+      });
+    }
+
+    const exists = await Application.exists({
+      job: jobId,
+      applicant: userId,
+    });
+
+    return res.status(200).json({
+      applied: Boolean(exists),
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error in hasApplied:", error);
+    return res.status(500).json({
+      applied: false,
+      success: false,
+    });
   }
 };

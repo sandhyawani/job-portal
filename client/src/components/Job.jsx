@@ -1,80 +1,118 @@
-import React from 'react';
-import { Button } from './ui/button';
-import { Bookmark } from 'lucide-react';
-import { Avatar, AvatarImage } from './ui/avatar';
-import { Badge } from './ui/badge';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Button } from "./ui/button";
+import { Bookmark, Star, MapPin } from "lucide-react";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Badge } from "./ui/badge";
+import { useNavigate } from "react-router-dom";
+import TrustBadge from "./TrustBadge";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
+  const company = job?.company;
 
-  const daysAgoFunction = (mongodbTime) => {
-    const createdAt = new Date(mongodbTime);
-    const currentTime = new Date();
-    const timeDifference = currentTime - createdAt;
-    return Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  const daysAgo = (date) => {
+    const diff = new Date() - new Date(date);
+    return Math.floor(diff / (1000 * 60 * 60 * 24));
   };
 
   return (
-    <div className="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-pink-50 to-white border border-gray-100 
-      hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-in-out">
-
-      {/* Top Row */}
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-sm text-gray-500">
+    <div
+      className="
+        group h-[440px] flex flex-col rounded-2xl bg-white
+        border border-gray-100 shadow-md
+        hover:-translate-y-1 hover:shadow-2xl hover:border-pink-300
+        transition-all duration-300
+      "
+    >
+      {/* HEADER */}
+      <div className="flex items-center justify-between px-5 pt-4">
+        <p className="text-xs text-gray-500">
           {job?.createdAt
-            ? (daysAgoFunction(job.createdAt) === 0 ? 'Today' : `${daysAgoFunction(job.createdAt)} days ago`)
-            : 'Recently'}
+            ? daysAgo(job.createdAt) === 0
+              ? "Today"
+              : `${daysAgo(job.createdAt)} days ago`
+            : "Recently"}
         </p>
-        <Button variant="outline" className="rounded-full hover:bg-pink-50" size="icon">
-          <Bookmark className="text-pink-500" />
+
+        <Button variant="outline" size="icon" className="rounded-full">
+          <Bookmark size={18} className="text-pink-500" />
         </Button>
       </div>
 
-      {/* Company Info */}
-      <div className="flex items-center gap-3 my-3">
-        <Avatar className="w-14 h-14 border border-gray-200 shadow-sm">
-          <AvatarImage src={job?.company?.logo || '/src/assets/logo.png'} alt={job?.company?.name} />
+      {/* COMPANY */}
+      <div className="flex gap-3 px-5 pt-4">
+        <Avatar className="w-12 h-12 border shrink-0">
+          <AvatarImage
+            src={company?.logo || "/logo.png"}
+            alt={company?.name}
+          />
         </Avatar>
-        <div>
-          <h1 className="font-semibold text-lg text-gray-900">{job?.company?.name || 'Company Name'}</h1>
-          <p className="text-sm text-gray-500">{job?.location || 'India'}</p>
+
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
+            {company?.name}
+          </h3>
+
+          <div className="flex items-center gap-3 mt-1">
+            <TrustBadge trustLevel={company?.trustLevel} />
+
+            {company?.trustScore && (
+              <span className="flex items-center gap-1 text-xs text-yellow-600">
+                <Star size={12} fill="currentColor" />
+                <span className="font-medium">
+                  {company.trustScore}/5
+                </span>
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Job Title & Description */}
-      <div>
-        <h1 className="font-bold text-xl text-gray-900 my-2">{job?.title || 'Job Title'}</h1>
-        <p className="text-sm text-gray-600 line-clamp-3">
-          {job?.description || 'Job description will appear here. Short summary of the role and requirements.'}
+      {/* JOB TITLE */}
+      <div className="px-5 pt-4">
+        <h2 className="font-bold text-base text-gray-900 line-clamp-2 group-hover:text-pink-700 transition">
+          {job?.title}
+        </h2>
+
+        {/* LOCATION */}
+        <p className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+          <MapPin size={12} />
+          {job?.location}
         </p>
       </div>
 
-      {/* Badges */}
-      <div className="flex flex-wrap items-center gap-2 mt-4">
-        <Badge className="bg-pink-100 text-pink-700 font-semibold">
-          {job?.position || 1} Positions
+      {/* DESCRIPTION */}
+      <div className="px-5 pt-3 flex-1">
+        <p className="text-sm text-gray-600 line-clamp-3">
+          {job?.description}
+        </p>
+      </div>
+
+      {/* TAGS */}
+      <div className="flex flex-wrap gap-2 px-5 pb-3">
+        <Badge className="bg-pink-100 text-pink-700 text-xs">
+          {job?.position} Positions
         </Badge>
-        <Badge className="bg-pink-200 text-pink-600 font-semibold">
-          {job?.jobType || 'Full-Time'}
+        <Badge className="bg-pink-200 text-pink-700 text-xs">
+          {job?.jobType}
         </Badge>
-        <Badge className="bg-pink-300 text-pink-700 font-semibold">
-          {job?.salary || 'Not Disclosed'} LPA
+        <Badge className="bg-pink-300 text-pink-700 text-xs">
+          {job?.salary}
         </Badge>
       </div>
 
-      {/* Actions */}
-      <div className="flex items-center gap-4 mt-6">
+      {/* FOOTER */}
+      <div className="px-5 pb-4 pt-3 border-t flex gap-3">
         <Button
           onClick={() => navigate(`/description/${job?._id}`)}
           variant="outline"
-          className="border-pink-500 text-pink-500 hover:bg-pink-50 transition-all rounded-full px-5 flex-1"
+          className="flex-1 border-pink-500 text-pink-500 rounded-full"
         >
           View Details
         </Button>
-        <Button className="rounded-full flex-1 px-5 bg-gradient-to-r from-pink-500 to-pink-700 
-          hover:from-pink-600 hover:to-pink-800 text-white font-medium shadow-lg">
-          Save For Later
+
+        <Button className="flex-1 rounded-full bg-gradient-to-r from-pink-500 to-pink-700 text-white">
+          Save
         </Button>
       </div>
     </div>
@@ -82,3 +120,5 @@ const Job = ({ job }) => {
 };
 
 export default Job;
+
+

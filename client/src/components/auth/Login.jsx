@@ -59,12 +59,13 @@ const Login = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center min-h-[80vh] px-4">
+      {/* Add top padding to avoid overlap with fixed navbar */}
+      <div className="pt-24 flex items-center justify-center min-h-[80vh] px-4">
         <form
           onSubmit={submitHandler}
           className="w-full max-w-lg border border-gray-200 rounded-xl shadow-lg p-8 bg-white"
         >
-          <h1 className="font-bold text-3xl mb-8 text-center">Login</h1>
+          <h1 className="font-bold text-3xl mb-10 text-center">Login</h1>
 
           <div className="space-y-5">
             {/* Email */}

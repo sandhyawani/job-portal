@@ -4,12 +4,16 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Badge } from "./ui/badge";
 
 const AppliedJobTable = () => {
+  // Get all applied jobs from Redux store
   const { allAppliedJobs } = useSelector((store) => store.job);
 
   return (
     <div>
       <Table>
+        {/* Table description */}
         <TableCaption>A list of your applied jobs</TableCaption>
+
+        {/* Table header */}
         <TableHeader>
           <TableRow>
             <TableHead>Date</TableHead>
@@ -18,13 +22,22 @@ const AppliedJobTable = () => {
             <TableHead className="text-right">Status</TableHead>
           </TableRow>
         </TableHeader>
+
+        {/* Table body */}
         <TableBody>
           {allAppliedJobs && allAppliedJobs.length > 0 ? (
             allAppliedJobs.map((appliedJob) => (
               <TableRow key={appliedJob._id}>
+                {/* Applied date */}
                 <TableCell>{appliedJob?.createdAt?.split("T")[0] ?? "N/A"}</TableCell>
+
+                {/* Job title */}
                 <TableCell>{appliedJob.job?.title ?? "N/A"}</TableCell>
+
+                {/* Company name */}
                 <TableCell>{appliedJob.job?.company?.name ?? "N/A"}</TableCell>
+
+                {/* Application status */}
                 <TableCell className="text-right">
                   <Badge
                     className={`${
@@ -41,6 +54,7 @@ const AppliedJobTable = () => {
               </TableRow>
             ))
           ) : (
+            // Empty state
             <TableRow>
               <TableCell colSpan={4} className="text-center">
                 You haven't applied to any jobs yet.

@@ -15,39 +15,37 @@ import { toast } from "sonner";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 
-// two possible statuses for applicant
+// shortlisting actions
 const shortlistingStatus = ["Accepted", "Rejected"];
 
 const ApplicantsTable = () => {
-  // get applicants data from redux
   const { applicants } = useSelector((store) => store.application);
 
-  // update status (accept/reject) for applicant
   const statusHandler = async (status, id) => {
-    console.log("called");
     try {
       axios.defaults.withCredentials = true;
+
       const res = await axios.post(
         `${APPLICATION_API_END_POINT}/status/${id}/update`,
         { status }
       );
-      console.log(res);
+
       if (res.data.success) {
-        toast.success(res.data.message); // show success toast
+        toast.success(res.data.message);
       }
     } catch (error) {
-      toast.error(error.response.data.message); // show error toast
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div>
       <Table>
-        {/* small description for table */}
-        <TableCaption>A list of your recent applied user</TableCaption>
+        <TableCaption>Recent job applications</TableCaption>
+
         <TableHeader>
           <TableRow>
-            <TableHead>FullName</TableHead>
+            <TableHead>Full Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Contact</TableHead>
             <TableHead>Resume</TableHead>
@@ -57,57 +55,54 @@ const ApplicantsTable = () => {
         </TableHeader>
 
         <TableBody>
-          {applicants &&
-            applicants?.applications?.map((item) => (
-              <tr key={item._id}>
-                {/* name */}
-                <TableCell>{item?.applicant?.fullname}</TableCell>
-                {/* email */}
-                <TableCell>{item?.applicant?.email}</TableCell>
-                {/* phone */}
-                <TableCell>{item?.applicant?.phoneNumber}</TableCell>
-                {/* resume link if available */}
-                <TableCell>
-                  {item.applicant?.profile?.resume ? (
-                    <a
-                      className="text-blue-600 cursor-pointer"
-                      href={item?.applicant?.profile?.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item?.applicant?.profile?.resumeOriginalName}
-                    </a>
-                  ) : (
-                    <span>NA</span>
-                  )}
-                </TableCell>
-                {/* date only (not time) */}
-                <TableCell>{item?.applicant.createdAt.split("T")[0]}</TableCell>
+          {applicants?.applications?.map((item) => (
+            <TableRow key={item._id}>
+              <TableCell>{item?.applicant?.fullname}</TableCell>
+              <TableCell>{item?.applicant?.email}</TableCell>
+              <TableCell>{item?.applicant?.phoneNumber}</TableCell>
 
-                {/* action menu (3 dots) */}
-                <TableCell className="float-right cursor-pointer">
-                  <Popover>
-                    <PopoverTrigger>
+              <TableCell>
+                {item?.applicant?.profile?.resume ? (
+                  <a
+                    href={item.applicant.profile.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {item.applicant.profile.resumeOriginalName}
+                  </a>
+                ) : (
+                  <span>NA</span>
+                )}
+              </TableCell>
+
+              <TableCell>
+                {item?.applicant?.createdAt?.split("T")[0]}
+              </TableCell>
+
+              <TableCell className="text-right">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="p-2 rounded-full hover:bg-gray-100 transition">
                       <MoreHorizontal />
-                    </PopoverTrigger>
-                    <PopoverContent className="w-32">
-                      {/* loop through Accepted / Rejected */}
-                      {shortlistingStatus.map((status, index) => {
-                        return (
-                          <div
-                            onClick={() => statusHandler(status, item?._id)}
-                            key={index}
-                            className="flex w-fit items-center my-2 cursor-pointer"
-                          >
-                            <span>{status}</span>
-                          </div>
-                        );
-                      })}
-                    </PopoverContent>
-                  </Popover>
-                </TableCell>
-              </tr>
-            ))}
+                    </button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-32">
+                    {shortlistingStatus.map((status) => (
+                      <div
+                        key={status}
+                        onClick={() => statusHandler(status, item._id)}
+                        className="cursor-pointer px-2 py-1 rounded hover:bg-gray-100 transition"
+                      >
+                        {status}
+                      </div>
+                    ))}
+                  </PopoverContent>
+                </Popover>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

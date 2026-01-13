@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required: true
+        
     },
     email: {
         type: String,
@@ -21,7 +22,9 @@ const userSchema = new mongoose.Schema({
     role:{
         type:String,
         enum:['student','recruiter'],
+        
         required:true
+        
     },
     profile:{
         bio:{type:String},
@@ -33,6 +36,7 @@ const userSchema = new mongoose.Schema({
             type:String,
             default:""
         }
+        
     },
 },{timestamps:true}); 
 export const User = mongoose.model('User', userSchema);
