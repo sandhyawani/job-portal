@@ -17,11 +17,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: "http://localhost:5173",
-    credentials: true,
+  origin: [
+    "http://localhost:5173",
+    "https://job-portal-six-nu.vercel.app" 
+  ],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
@@ -30,14 +37,13 @@ app.use("/api/v1/application", applicationRoute);
 
 const PORT = process.env.PORT || 8000;
 
-// ✅ Connect DB before starting server
 connectDB()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`🚀 Server running at port ${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error("❌ Failed to connect to MongoDB:", err);
-        process.exit(1);
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running at port ${PORT}`);
     });
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to MongoDB:", err);
+    process.exit(1);
+  });
