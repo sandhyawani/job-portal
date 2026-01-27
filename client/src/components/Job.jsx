@@ -60,7 +60,7 @@ const Job = ({ job }) => {
               <span className="flex items-center gap-1 text-xs text-yellow-600">
                 <Star size={12} fill="currentColor" />
                 <span className="font-medium">
-                  {company.trustScore}/5
+                  {company.trustScore}/100
                 </span>
               </span>
             )}

@@ -185,7 +185,7 @@ const JobDescription = () => {
                     <span className="flex items-center gap-1 text-yellow-600">
                       <Star size={14} fill="currentColor" />
                       <span className="font-semibold">
-                        {company.trustScore}/5
+                        {company.trustScore}/100
                       </span>
                       <span className="text-gray-500">Trust Score</span>
                     </span>

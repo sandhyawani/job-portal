@@ -15,7 +15,7 @@ const LatestJobs = () => {
       setLoading(true);
       try {
         const res = await axios.get(`${JOB_API_END_POINT}/get`, { withCredentials: true });
-        console.log("API Response:", res.data); // ✅ debug
+        console.log("API Response:", res.data); 
         if (res.data.success) {
           dispatch(setAllJobs(res.data.jobs));
         }
