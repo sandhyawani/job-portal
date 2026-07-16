@@ -4,9 +4,8 @@ A modern, full-stack Job Portal built using the **MERN (MongoDB, Express, React,
 
 ---
 
-## 🚀 Live Demo & Hosting
-- **Frontend URL:** [job-portal-iota-ruddy-60.vercel.app](https://job-portal-iota-ruddy-60.vercel.app)
-- **Backend URL:** [job-portal-1-fxju.onrender.com](https://job-portal-1-fxju.onrender.com)
+> [!NOTE]
+> This application is configured to run fully locally in your environment using local servers for both frontend and backend.
 
 ---
 
@@ -126,7 +125,7 @@ Open a new terminal session, navigate to the `client` directory, configure envir
 cd client
 npm install
 ```
-*Note: Ensure the API endpoint domain in `client/src/utils/constant.js` matches your local server environment (e.g. `http://localhost:8000/api/v1`).*
+*Note: The frontend is pre-configured to communicate with the local server (`http://localhost:8000/api/v1`) via `client/src/utils/constant.js`.*
 
 Start the development build:
 ```bash
