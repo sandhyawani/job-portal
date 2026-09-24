@@ -1,7 +1,7 @@
 import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { LogOut, User2 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -130,10 +130,20 @@ const Navbar = () => {
                   isHeroPage ? "ring-white/60" : "ring-pink-400"
                 }`}
               >
-                <AvatarImage
-                  src={user?.profile?.profilePhoto || "/default-avatar.png"}
-                  alt={user?.fullname || "Profile"}
-                />
+                {user?.profile?.profilePhoto ? (
+                  <AvatarImage
+                    src={user.profile.profilePhoto}
+                    alt={user?.fullname || "Profile"}
+                  />
+                ) : (
+                  <AvatarImage
+                    src="/default-avatar.svg"
+                    alt={user?.fullname || "Profile"}
+                  />
+                )}
+                <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-semibold text-xs">
+                  {user?.fullname ? user.fullname[0].toUpperCase() : "U"}
+                </AvatarFallback>
               </Avatar>
             </PopoverTrigger>
             <PopoverContent
@@ -145,26 +155,37 @@ const Navbar = () => {
             >
               <div className="flex gap-3 items-center">
                 <Avatar className="h-12 w-12 ring-2 ring-purple-300">
-                  <AvatarImage
-                    src={user?.profile?.profilePhoto || "/default-avatar.png"}
-                    alt={user?.fullname || "Profile"}
-                  />
+                  {user?.profile?.profilePhoto ? (
+                    <AvatarImage
+                      src={user.profile.profilePhoto}
+                      alt={user?.fullname || "Profile"}
+                    />
+                  ) : (
+                    <AvatarImage
+                      src="/default-avatar.svg"
+                      alt={user?.fullname || "Profile"}
+                    />
+                  )}
+                  <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-semibold text-base">
+                    {user?.fullname ? user.fullname[0].toUpperCase() : "U"}
+                  </AvatarFallback>
                 </Avatar>
-                <h4 className="font-semibold text-lg uppercase">{user?.fullname}</h4>
+                <div>
+                  <h4 className="font-semibold text-lg uppercase">{user?.fullname}</h4>
+                  <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+                </div>
               </div>
 
               <div className="flex flex-col mt-4 space-y-2">
-                {user?.role === "student" && (
-                  <Link
-                    to="/profile"
-                    className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
-                      isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
-                    }`}
-                  >
-                    <User2 size={18} />
-                    View Profile
-                  </Link>
-                )}
+                <Link
+                  to="/profile"
+                  className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                    isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                  }`}
+                >
+                  <User2 size={18} />
+                  View Profile
+                </Link>
                 <div
                   onClick={logoutHandler}
                   className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${

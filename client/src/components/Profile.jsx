@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "./shared/Navbar";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { Contact, Mail, Pen } from "lucide-react";
+import { Contact, Mail, Pen, User2 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
@@ -26,13 +26,20 @@ const Profile = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-28 w-28 ring-4 ring-purple-300/30 shadow-lg">
-              <AvatarImage
-                src={
-                  user?.profile?.profilePhoto ||
-                  "/default-avatar.png" // local fallback image
-                }
-                alt={user?.fullname || "Profile"}
-              />
+              {user?.profile?.profilePhoto ? (
+                <AvatarImage
+                  src={user.profile.profilePhoto}
+                  alt={user?.fullname || "Profile"}
+                />
+              ) : (
+                <AvatarImage
+                  src="/default-avatar.svg"
+                  alt={user?.fullname || "Profile"}
+                />
+              )}
+              <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-bold text-3xl">
+                {user?.fullname ? user.fullname[0].toUpperCase() : <User2 size={40} />}
+              </AvatarFallback>
             </Avatar>
             <div>
               <h1 className="font-extrabold text-3xl text-gray-900 uppercase">
@@ -101,10 +108,12 @@ const Profile = () => {
       </div>
 
       {/* Applied Jobs Section */}
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-6 mb-10 transition-transform hover:-translate-y-1 duration-200">
-        <h1 className="font-bold text-xl mb-5 text-gray-800 border-b pb-2">Applied Jobs</h1>
-        <AppliedJobTable />
-      </div>
+      {user?.role === "student" && (
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-6 mb-10 transition-transform hover:-translate-y-1 duration-200">
+          <h1 className="font-bold text-xl mb-5 text-gray-800 border-b pb-2">Applied Jobs</h1>
+          <AppliedJobTable />
+        </div>
+      )}
 
       {/* Update Profile Dialog */}
       <UpdateProfileDialog open={open} setOpen={setOpen} />

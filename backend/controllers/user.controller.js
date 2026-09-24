@@ -160,14 +160,21 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    if (req.file) {
-      const fileUri = getDataUri(req.file); // convert buffer -> data URI
+    // Support files from req.files (array) or req.file (single)
+    const uploadedFiles = req.files && req.files.length > 0 ? req.files : (req.file ? [req.file] : []);
+    for (const file of uploadedFiles) {
+      const fileUri = getDataUri(file);
+      const isPhoto = file.fieldname === "profilePhoto" || file.mimetype.startsWith("image/");
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-        resource_type: "auto", // allows pdf, docx, etc.
+        resource_type: isPhoto ? "image" : "auto",
       });
 
-      user.profile.resume = cloudResponse.secure_url;
-      user.profile.resumeOriginalName = req.file.originalname;
+      if (isPhoto) {
+        user.profile.profilePhoto = cloudResponse.secure_url;
+      } else {
+        user.profile.resume = cloudResponse.secure_url;
+        user.profile.resumeOriginalName = file.originalname;
+      }
     }
 
     // ✅ Update only this fields

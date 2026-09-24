@@ -26,6 +26,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     bio: user?.profile?.bio || "",
     skills: user?.profile?.skills?.join(", ") || "",
     file: null,
+    profilePhoto: null,
   });
 
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
   const fileChangeHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
+  };
+
+  const photoChangeHandler = (e) => {
+    setInput({ ...input, profilePhoto: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {
@@ -55,6 +60,10 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
       .forEach((skill) => {
         formData.append("skills[]", skill);
       });
+
+    if (input.profilePhoto) {
+      formData.append("profilePhoto", input.profilePhoto);
+    }
 
     if (input.file) {
       formData.append("file", input.file);
@@ -184,23 +193,43 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             />
           </div>
 
-          {/* Resume Upload */}
+          {/* Profile Photo Upload */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label
-              htmlFor="file"
+              htmlFor="profilePhoto"
               className="text-right font-medium text-gray-700"
             >
-              Resume
+              Photo
             </Label>
             <Input
-              id="file"
-              name="file"
+              id="profilePhoto"
+              name="profilePhoto"
               type="file"
-              accept="application/pdf"
-              onChange={fileChangeHandler}
+              accept="image/*"
+              onChange={photoChangeHandler}
               className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
             />
           </div>
+
+          {/* Resume Upload (for students) */}
+          {user?.role === "student" && (
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="file"
+                className="text-right font-medium text-gray-700"
+              >
+                Resume
+              </Label>
+              <Input
+                id="file"
+                name="file"
+                type="file"
+                accept="application/pdf"
+                onChange={fileChangeHandler}
+                className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              />
+            </div>
+          )}
 
           {/* Submit Button */}
           <Button
