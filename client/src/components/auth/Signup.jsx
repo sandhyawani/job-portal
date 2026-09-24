@@ -75,12 +75,12 @@ const Signup = () => {
   }, [user, navigate]);
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto mt-10">
+      <div className="pt-24 pb-12 flex items-center justify-center max-w-7xl mx-auto px-4">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-sm bg-white"
+          className="w-full max-w-md border border-gray-200 rounded-2xl p-8 shadow-lg bg-white"
         >
           <h1 className="font-bold text-2xl mb-6 text-center">Sign Up</h1>
 

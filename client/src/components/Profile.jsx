@@ -18,11 +18,11 @@ const Profile = () => {
   const isResume = Boolean(user?.profile?.resume);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen pt-24 pb-12 px-4">
       <Navbar />
 
       {/* Profile Card */}
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl my-8 p-8 transition-transform hover:-translate-y-1 duration-200">
+      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl mb-8 p-8 transition-transform hover:-translate-y-1 duration-200">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-28 w-28 ring-4 ring-purple-300/30 shadow-lg">
