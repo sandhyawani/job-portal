@@ -19,7 +19,8 @@ app.use(cookieParser());
 const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://job-portal-iota-ruddy-60.vercel.app" 
+    "https://sandhyawani-job-portal.vercel.app",
+    "https://job-portal-iota-ruddy-60.vercel.app"
   ],
   credentials: true,
 };
