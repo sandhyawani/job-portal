@@ -20,7 +20,9 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "https://sandhyawani-job-portal.vercel.app",
-    "https://job-portal-iota-ruddy-60.vercel.app"
+    "https://job-portal-flax-omega.vercel.app",
+    "https://job-portal-iota-ruddy-60.vercel.app",
+    /\.vercel\.app$/
   ],
   credentials: true,
 };
