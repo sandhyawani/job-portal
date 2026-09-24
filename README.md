@@ -4,8 +4,10 @@ A modern, full-stack Job Portal built using the **MERN (MongoDB, Express, React,
 
 ---
 
-> [!NOTE]
-> This application is configured to run fully locally in your environment using local servers for both frontend and backend.
+## 🌐 Live Demo & Deployment
+
+* **Frontend (Vercel):** [https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)
+* **Backend API (Render):** [https://job-portal-fy3b.onrender.com](https://job-portal-fy3b.onrender.com)
 
 ---
 
