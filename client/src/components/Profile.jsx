@@ -26,19 +26,14 @@ const Profile = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <div className="flex items-center gap-6">
             <Avatar className="h-28 w-28 ring-4 ring-purple-300/30 shadow-lg">
-              {user?.profile?.profilePhoto ? (
+              {user?.profile?.profilePhoto && (
                 <AvatarImage
                   src={user.profile.profilePhoto}
                   alt={user?.fullname || "Profile"}
                 />
-              ) : (
-                <AvatarImage
-                  src="/default-avatar.svg"
-                  alt={user?.fullname || "Profile"}
-                />
               )}
-              <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-bold text-3xl">
-                {user?.fullname ? user.fullname[0].toUpperCase() : <User2 size={40} />}
+              <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold text-4xl flex items-center justify-center size-full">
+                {user?.fullname ? user.fullname[0].toUpperCase() : "A"}
               </AvatarFallback>
             </Avatar>
             <div>

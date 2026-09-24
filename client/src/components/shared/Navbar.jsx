@@ -130,19 +130,14 @@ const Navbar = () => {
                   isHeroPage ? "ring-white/60" : "ring-pink-400"
                 }`}
               >
-                {user?.profile?.profilePhoto ? (
+                {user?.profile?.profilePhoto && (
                   <AvatarImage
                     src={user.profile.profilePhoto}
                     alt={user?.fullname || "Profile"}
                   />
-                ) : (
-                  <AvatarImage
-                    src="/default-avatar.svg"
-                    alt={user?.fullname || "Profile"}
-                  />
                 )}
-                <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-semibold text-xs">
-                  {user?.fullname ? user.fullname[0].toUpperCase() : "U"}
+                <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold text-sm flex items-center justify-center size-full">
+                  {user?.fullname ? user.fullname[0].toUpperCase() : "A"}
                 </AvatarFallback>
               </Avatar>
             </PopoverTrigger>
@@ -155,19 +150,14 @@ const Navbar = () => {
             >
               <div className="flex gap-3 items-center">
                 <Avatar className="h-12 w-12 ring-2 ring-purple-300">
-                  {user?.profile?.profilePhoto ? (
+                  {user?.profile?.profilePhoto && (
                     <AvatarImage
                       src={user.profile.profilePhoto}
                       alt={user?.fullname || "Profile"}
                     />
-                  ) : (
-                    <AvatarImage
-                      src="/default-avatar.svg"
-                      alt={user?.fullname || "Profile"}
-                    />
                   )}
-                  <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-semibold text-base">
-                    {user?.fullname ? user.fullname[0].toUpperCase() : "U"}
+                  <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold text-lg flex items-center justify-center size-full">
+                    {user?.fullname ? user.fullname[0].toUpperCase() : "A"}
                   </AvatarFallback>
                 </Avatar>
                 <div>
