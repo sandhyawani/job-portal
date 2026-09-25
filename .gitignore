@@ -29,9 +29,19 @@ dist-ssr/
 client/dist/
 build/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# Test, fix and scratch files
+fix.js
+*.fix.js
+test.js
+*.test.js
+*.spec.js
+test/
+tests/
+__tests__/
+tmp/
+temp/
+scratch/
+.vscode/
 .idea/
 .DS_Store
 *.suo

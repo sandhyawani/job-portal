@@ -52,7 +52,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("bio", input.bio);
 
-    // ✅ Send skills properly (not JSON)
     input.skills
       .split(",")
       .map((s) => s.trim())

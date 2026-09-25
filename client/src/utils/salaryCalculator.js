@@ -1,10 +1,3 @@
-// src/utils/salaryCalculator.js
-
-/**
- * Calculates estimated monthly in-hand take-home pay based on annual CTC.
- * @param {string|number} rawSalary
- * @returns {{ annualCtc: number, monthlyGross: number, estimatedInHand: number, formattedInHand: string, formattedAnnual: string, valid: boolean }}
- */
 export const calculateMonthlyTakeHome = (rawSalary) => {
   if (!rawSalary) return { valid: false };
 

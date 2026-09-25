@@ -170,9 +170,6 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* ========================================================= */}
-          {/* 🏢 RECRUITER MODE DASHBOARD                               */}
-          {/* ========================================================= */}
           {isRecruiter ? (
             <div>
               {/* Recruiter Metrics Bar */}
@@ -300,9 +297,6 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            /* ========================================================= */
-            /* 🎓 CANDIDATE / STUDENT MODE                               */
-            /* ========================================================= */
             <div>
               {/* Quick Metrics Bar */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">

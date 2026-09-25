@@ -1,11 +1,3 @@
-// src/utils/skillMatcher.js
-
-/**
- * Calculates skill match percentage between candidate skills and job requirements.
- * @param {Array<string>} candidateSkills
- * @param {Object} job
- * @returns {{ matchPercentage: number, matchedSkills: string[], missingSkills: string[], hasSkills: boolean }}
- */
 export const calculateSkillMatch = (candidateSkills = [], job = {}) => {
   if (!candidateSkills || !Array.isArray(candidateSkills) || candidateSkills.length === 0) {
     return {

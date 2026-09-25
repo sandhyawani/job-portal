@@ -183,7 +183,6 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    // ✅ Update only this fields
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;

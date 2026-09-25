@@ -1,5 +1,3 @@
-// src/components/JobDescription.jsx
-
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -116,9 +114,6 @@ const JobDescription = () => {
     window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
   };
 
-  /* =====================================================
-     🔒 CHECK IF USER HAS ALREADY APPLIED (SOURCE OF TRUTH)
-     ===================================================== */
   useEffect(() => {
     if (!user) {
       setIsApplied(false);
@@ -143,9 +138,6 @@ const JobDescription = () => {
     checkApplied();
   }, [jobId, user]);
 
-  /* ======================
-     APPLY JOB
-     ====================== */
   const applyJobHandler = async () => {
     if (!user) {
       toast.error("Please login to apply");
@@ -170,9 +162,6 @@ const JobDescription = () => {
     }
   };
 
-  /* ======================
-     SAVE JOB
-     ====================== */
   const isSaved = Boolean(
     user?.savedJobs?.some((saved) => {
       const id = typeof saved === "object" ? saved?._id : saved;
@@ -202,9 +191,6 @@ const JobDescription = () => {
     }
   };
 
-  /* ======================
-     FETCH JOB DETAILS
-     ====================== */
   useEffect(() => {
     const fetchSingleJob = async () => {
       const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
@@ -244,7 +230,6 @@ const JobDescription = () => {
         {/* Main Clean Card */}
         <div className="bg-white border border-gray-200/80 rounded-2xl shadow-sm p-6 sm:p-8">
           
-          {/* ================= HEADER ================= */}
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-5 pb-6 border-b border-gray-100">
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
@@ -264,7 +249,7 @@ const JobDescription = () => {
               </div>
             </div>
 
-            {/* ACTIONS */}
+            {/* Actions */}
             <div className="shrink-0 flex items-center gap-2.5 w-full sm:w-auto">
               <Button
                 onClick={shareJobHandler}
@@ -309,7 +294,6 @@ const JobDescription = () => {
             </div>
           </div>
 
-          {/* ================= COMPANY INFO BANNER ================= */}
           {company && (
             <div className="my-6 p-4 rounded-xl border border-gray-100 bg-gray-50/70 flex flex-col sm:flex-row sm:items-center gap-4">
               <img
@@ -360,7 +344,6 @@ const JobDescription = () => {
             </div>
           )}
 
-          {/* ================= SKILL MATCH INDICATOR ================= */}
           {skillMatch.hasSkills && (
             <div className="my-6 p-4 rounded-xl border border-purple-200/80 bg-gradient-to-r from-purple-50/70 via-pink-50/40 to-white shadow-2xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -404,7 +387,6 @@ const JobDescription = () => {
             </div>
           )}
 
-          {/* ================= JOB OVERVIEW ================= */}
           <div className="my-6">
             <h2 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
               <Briefcase size={16} className="text-pink-600" />
@@ -447,7 +429,6 @@ const JobDescription = () => {
             </div>
           </div>
 
-          {/* ================= MONTHLY IN-HAND TAKE-HOME CALCULATOR ================= */}
           {takeHome.valid && (
             <div className="my-6 p-5 rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50/50 via-teal-50/20 to-white shadow-2xs">
               <div className="flex items-center gap-2.5 mb-3.5">
@@ -499,7 +480,6 @@ const JobDescription = () => {
             </div>
           )}
 
-          {/* ================= HIRING TRANSPARENCY & COMPETITION ================= */}
           <div className="my-6 p-4 rounded-xl border border-indigo-100 bg-indigo-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
@@ -529,7 +509,6 @@ const JobDescription = () => {
             </button>
           </div>
 
-          {/* ================= ABOUT ROLE ================= */}
           <div className="pt-6 border-t border-gray-100">
             <h3 className="text-base font-bold text-gray-900 mb-2">
               About this role
@@ -539,7 +518,6 @@ const JobDescription = () => {
             </p>
           </div>
 
-          {/* ================= REQUIREMENTS (IF PRESENT) ================= */}
           {requirements.length > 0 && (
             <div className="pt-6 mt-6 border-t border-gray-100">
               <h3 className="text-base font-bold text-gray-900 mb-3">
@@ -562,7 +540,6 @@ const JobDescription = () => {
   );
 };
 
-/* ================= COMPACT OVERVIEW ITEM ================= */
 const OverviewItem = ({ icon, label, value }) => (
   <div className="flex items-center gap-3 p-3 rounded-xl border border-gray-200/60 bg-gray-50/60 hover:bg-pink-50/30 transition-colors">
     <div className="w-8 h-8 rounded-lg bg-white border border-gray-200/80 shadow-2xs flex items-center justify-center shrink-0">

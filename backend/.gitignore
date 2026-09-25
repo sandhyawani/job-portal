@@ -4,3 +4,14 @@ node_modules/
 !.env.example
 logs
 *.log
+fix.js
+*.fix.js
+test.js
+*.test.js
+*.spec.js
+test/
+tests/
+__tests__/
+tmp/
+temp/
+scratch/

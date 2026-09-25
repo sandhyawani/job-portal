@@ -36,3 +36,16 @@ client/.env
 dist
 build
 .DS_Store
+
+# Test, fix and scratch files
+fix.js
+*.fix.js
+test.js
+*.test.js
+*.spec.js
+test/
+tests/
+__tests__/
+tmp/
+temp/
+scratch/
