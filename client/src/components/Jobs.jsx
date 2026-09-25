@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './shared/Navbar';
 import FilterCard from './FilterCard';
 import Job from './Job';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
+import { setSearchedQuery } from '@/redux/jobSlice';
 
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
   const [filterJobs, setFilterJobs] = useState(allJobs);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (searchedQuery) {
@@ -64,6 +66,33 @@ const Jobs = () => {
 
         {/* Job List */}
         <div className="flex-1 flex flex-col min-h-[calc(100vh-5rem)]">
+          {/* Header bar with count & active filter chip */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-5 px-1">
+            <h1 className="text-xl font-bold text-gray-800">
+              {searchedQuery ? (
+                <span>
+                  Results for &ldquo;<span className="text-pink-600">{searchedQuery}</span>&rdquo;
+                </span>
+              ) : (
+                "All Available Jobs"
+              )}
+              <span className="ml-2 text-sm font-normal text-gray-500">
+                ({filterJobs.length} {filterJobs.length === 1 ? "opening" : "openings"})
+              </span>
+            </h1>
+
+            {searchedQuery && (
+              <button
+                onClick={() => dispatch(setSearchedQuery(""))}
+                className="flex items-center gap-1.5 text-xs font-semibold text-pink-700 bg-pink-100 hover:bg-pink-200 px-3 py-1.5 rounded-full transition-colors"
+                title="Clear current filter"
+              >
+                <span>Filtered: &ldquo;{searchedQuery}&rdquo;</span>
+                <span className="font-bold text-sm leading-none">&times;</span>
+              </button>
+            )}
+          </div>
+
           {filterJobs.length <= 0 ? (
             <div className="flex flex-col items-center justify-center flex-1 text-center">
               <img

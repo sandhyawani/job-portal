@@ -15,12 +15,20 @@ const Job = ({ job }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
+  const { allAppliedJobs } = useSelector((store) => store.job);
   const company = job?.company;
 
   const daysAgo = (date) => {
     const diff = new Date() - new Date(date);
     return Math.floor(diff / (1000 * 60 * 60 * 24));
   };
+
+  const isApplied = Boolean(
+    allAppliedJobs?.some((app) => {
+      const appId = typeof app?.job === "object" ? app?.job?._id : app?.job;
+      return appId?.toString() === job?._id?.toString();
+    })
+  );
 
   const isSaved = Boolean(
     user?.savedJobs?.some((saved) => {
@@ -63,13 +71,20 @@ const Job = ({ job }) => {
     >
       {/* HEADER */}
       <div className="flex items-center justify-between px-5 pt-4">
-        <p className="text-xs text-gray-500">
-          {job?.createdAt
-            ? daysAgo(job.createdAt) === 0
-              ? "Today"
-              : `${daysAgo(job.createdAt)} days ago`
-            : "Recently"}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-xs text-gray-500">
+            {job?.createdAt
+              ? daysAgo(job.createdAt) === 0
+                ? "Today"
+                : `${daysAgo(job.createdAt)} days ago`
+              : "Recently"}
+          </p>
+          {isApplied && (
+            <span className="px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200">
+              ✓ Applied
+            </span>
+          )}
+        </div>
 
         <Button
           onClick={saveJobHandler}

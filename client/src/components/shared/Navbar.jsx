@@ -80,12 +80,30 @@ const Navbar = () => {
           {user && user.role === "recruiter" ? (
             <>
               <li>
-                <Link to="/admin/companies" className="hover:text-pink-400 transition-colors duration-300">
+                <Link
+                  to="/admin/companies"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/admin/companies"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
                   Companies
                 </Link>
               </li>
               <li>
-                <Link to="/admin/jobs" className="hover:text-pink-400 transition-colors duration-300">
+                <Link
+                  to="/admin/jobs"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/admin/jobs"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
                   Jobs
                 </Link>
               </li>
@@ -93,17 +111,44 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link to="/" className="hover:text-pink-400 transition-colors duration-300">
+                <Link
+                  to="/"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/jobs" className="hover:text-pink-400 transition-colors duration-300">
+                <Link
+                  to="/jobs"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/jobs"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
                   Jobs
                 </Link>
               </li>
               <li>
-                <Link to="/browse" className="hover:text-pink-400 transition-colors duration-300">
+                <Link
+                  to="/browse"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/browse"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
                   Browse
                 </Link>
               </li>
@@ -234,7 +279,11 @@ const Navbar = () => {
                   <Link
                     to="/admin/companies"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block py-2 hover:text-pink-500 transition-colors"
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/admin/companies"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
                   >
                     🏢 Companies
                   </Link>
@@ -243,7 +292,11 @@ const Navbar = () => {
                   <Link
                     to="/admin/jobs"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block py-2 hover:text-pink-500 transition-colors"
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/admin/jobs"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
                   >
                     💼 Jobs
                   </Link>
@@ -255,7 +308,11 @@ const Navbar = () => {
                   <Link
                     to="/"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block py-2 hover:text-pink-500 transition-colors"
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
                   >
                     🏠 Home
                   </Link>
@@ -264,7 +321,11 @@ const Navbar = () => {
                   <Link
                     to="/jobs"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block py-2 hover:text-pink-500 transition-colors"
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/jobs"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
                   >
                     🔍 Jobs
                   </Link>
@@ -273,7 +334,11 @@ const Navbar = () => {
                   <Link
                     to="/browse"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block py-2 hover:text-pink-500 transition-colors"
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/browse"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
                   >
                     📁 Browse
                   </Link>
