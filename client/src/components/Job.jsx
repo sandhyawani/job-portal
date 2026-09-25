@@ -14,6 +14,26 @@ import { calculateSkillMatch } from "@/utils/skillMatcher";
 import { calculateMonthlyTakeHome } from "@/utils/salaryCalculator";
 import { Zap } from "lucide-react";
 
+const formatJobType = (type) => {
+  if (!type) return "Full-Time";
+  const str = String(type).trim().toLowerCase();
+  if (str === "full time" || str === "full-time" || str === "fulltime") return "Full-Time";
+  if (str === "part time" || str === "part-time" || str === "parttime") return "Part-Time";
+  if (str === "internship" || str === "intern") return "Internship";
+  if (str === "contract") return "Contract";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const formatSalaryDisplay = (rawSalary, takeHome) => {
+  if (takeHome?.valid) return takeHome.formattedInHand;
+  if (!rawSalary) return "Competitive";
+  const clean = String(rawSalary).replace(/[₹,]/g, "").trim();
+  const num = parseFloat(clean);
+  if (isNaN(num) || num <= 0) return "Competitive";
+  if (num <= 100) return `₹${num} LPA`;
+  return `₹${num.toLocaleString("en-IN")}/mo`;
+};
+
 const Job = ({ job }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -177,30 +197,22 @@ const Job = ({ job }) => {
 
       {/* DESCRIPTION */}
       <div className="px-5 pt-3 flex-1">
-        <p className="text-sm text-gray-600 line-clamp-3">
-          {job?.description}
+        <p className="text-sm text-gray-600 line-clamp-3 min-h-[3.75rem] leading-relaxed">
+          {job?.description || "No description provided."}
         </p>
       </div>
 
       {/* TAGS */}
-      <div className="flex flex-wrap gap-1.5 px-5 pb-3">
+      <div className="flex flex-wrap items-center gap-1.5 px-5 pb-3">
         <Badge className="bg-pink-50 text-pink-700 border border-pink-200 text-xs font-medium">
-          {job?.position} {job?.position === 1 ? "Opening" : "Openings"}
+          {job?.position || 1} {job?.position === 1 ? "Position" : "Positions"}
         </Badge>
         <Badge className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium">
-          {job?.jobType}
+          {formatJobType(job?.jobType)}
         </Badge>
-        <Badge className="bg-pink-100 text-pink-700 text-xs font-semibold">
-          {job?.salary?.toString().startsWith("₹") ? job.salary : `₹${job?.salary}`}
+        <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
+          {formatSalaryDisplay(job?.salary, takeHome)}
         </Badge>
-        {takeHome.valid && (
-          <Badge
-            className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold"
-            title="Estimated monthly take-home pay"
-          >
-            {takeHome.formattedInHand} in-hand
-          </Badge>
-        )}
         {applicantCount <= 5 && (
           <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium">
             🟢 Low Competition

@@ -1,10 +1,11 @@
+import React from "react";
 import { Badge } from "./ui/badge";
 import { ShieldAlert, ShieldCheck } from "lucide-react";
 
 const trustStyles = {
-  HIGH: "bg-green-100 text-green-700 border border-green-300",
-  MEDIUM: "bg-yellow-100 text-yellow-700 border border-yellow-300",
-  LOW: "bg-red-100 text-red-700 border border-red-300",
+  HIGH: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  MEDIUM: "bg-amber-50 text-amber-700 border-amber-200",
+  LOW: "bg-rose-50 text-rose-700 border-rose-200",
 };
 
 const trustLabel = {
@@ -13,32 +14,34 @@ const trustLabel = {
   LOW: "Low Trust",
 };
 
-const trustWarning = {
+const trustTooltip = {
+  HIGH: "Verified company with high trust rating",
   MEDIUM: "Company details are partially verified. Apply with caution.",
-  LOW: "Company information may be unreliable.",
+  LOW: "Company information may be unverified.",
 };
 
-const TrustBadge = ({ trustLevel }) => {
+const TrustBadge = ({ trustLevel, showWarning = false }) => {
   if (!trustLevel || !trustStyles[trustLevel]) return null;
 
   const isHigh = trustLevel === "HIGH";
 
   return (
-    <div className="mt-1 space-y-1 max-w-xs">
+    <div className="inline-flex flex-col items-start gap-1 shrink-0">
       <Badge
-        className={`flex items-center gap-1 w-fit font-semibold ${trustStyles[trustLevel]}`}
+        title={trustTooltip[trustLevel]}
+        className={`inline-flex items-center gap-1 font-semibold text-[11px] px-2 py-0.5 rounded-md shadow-2xs whitespace-nowrap ${trustStyles[trustLevel]}`}
       >
         {isHigh ? (
-          <ShieldCheck size={14} />
+          <ShieldCheck size={13} className="shrink-0" />
         ) : (
-          <ShieldAlert size={14} />
+          <ShieldAlert size={13} className="shrink-0" />
         )}
-        {trustLabel[trustLevel]}
+        <span>{trustLabel[trustLevel]}</span>
       </Badge>
 
-      {!isHigh && (
-        <p className="text-xs text-gray-500 leading-snug">
-          ⚠ {trustWarning[trustLevel]}
+      {showWarning && !isHigh && (
+        <p className="text-xs text-amber-700/90 leading-snug">
+          ⚠ {trustTooltip[trustLevel]}
         </p>
       )}
     </div>
