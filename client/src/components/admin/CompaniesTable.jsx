@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -34,7 +34,7 @@ const CompaniesTable = () => {
   }, [companies, searchCompanyByText]);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm bg-white">
       <Table>
         <TableCaption className="text-gray-500 italic p-4">
           Registered companies
@@ -61,6 +61,9 @@ const CompaniesTable = () => {
                 <TableCell>
                   <Avatar className="h-10 w-10 ring-2 ring-gray-200">
                     <AvatarImage src={company.logo} alt={company.name} />
+                    <AvatarFallback className="bg-pink-100 text-pink-700 font-bold">
+                      {company.name?.charAt(0)?.toUpperCase() || "C"}
+                    </AvatarFallback>
                   </Avatar>
                 </TableCell>
 

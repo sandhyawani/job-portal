@@ -92,7 +92,7 @@ const CompanySetup = () => {
       {/* Navbar */}
       <Navbar />
 
-      <div className="max-w-3xl mx-auto px-6 pt-28 pb-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <Button
@@ -108,9 +108,9 @@ const CompanySetup = () => {
         {/* Company update form */}
         <form
           onSubmit={submitHandler}
-          className="bg-white rounded-2xl shadow-lg border p-8"
+          className="bg-white rounded-2xl shadow-lg border p-4 sm:p-8"
         >
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <InputField label="Company Name" name="name" value={input.name} onChange={changeEventHandler} />
             <InputField label="Description" name="description" value={input.description} onChange={changeEventHandler} />
             <InputField label="Website" name="website" value={input.website} onChange={changeEventHandler} />

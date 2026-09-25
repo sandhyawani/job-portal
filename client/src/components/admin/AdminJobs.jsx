@@ -25,14 +25,10 @@ const AdminJobs = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      
-      {/* navbar */}
-      <div className="fixed top-0 left-0 w-full z-50 shadow-sm backdrop-blur-md bg-white/70">
-        <Navbar />
-      </div>
+      <Navbar />
 
       {/* page content */}
-      <div className="relative z-10 max-w-6xl mx-auto pt-28 pb-16 px-6">
+      <div className="relative z-10 max-w-6xl mx-auto pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
         
         {/* Search and create job actions */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
@@ -44,7 +40,7 @@ const AdminJobs = () => {
 
           <Button
             onClick={() => navigate("/admin/jobs/create")}
-            className="rounded-xl px-6 py-3 font-semibold text-white shadow-lg 
+            className="w-full sm:w-auto rounded-xl px-6 py-3 font-semibold text-white shadow-lg 
                        bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
                        hover:shadow-xl hover:scale-105 transition-all duration-300"
           >
@@ -53,7 +49,7 @@ const AdminJobs = () => {
         </div>
 
         {/* Jobs list */}
-        <div className="bg-white/80 backdrop-blur-lg shadow-xl rounded-2xl p-6 border border-gray-100">
+        <div className="bg-white/80 backdrop-blur-lg shadow-xl rounded-2xl p-4 sm:p-6 border border-gray-100">
           <AdminJobsTable />
         </div>
       </div>

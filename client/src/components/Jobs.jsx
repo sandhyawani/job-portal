@@ -4,10 +4,12 @@ import FilterCard from './FilterCard';
 import Job from './Job';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
 
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
   const [filterJobs, setFilterJobs] = useState(allJobs);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   useEffect(() => {
     if (searchedQuery) {
@@ -27,8 +29,28 @@ const Jobs = () => {
   return (
     <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
       <Navbar />
-      <div className="max-w-7xl mx-auto pt-20 px-4 flex gap-6">
-        {/* Sidebar */}
+      <div className="max-w-7xl mx-auto pt-24 px-4 flex flex-col lg:flex-row gap-6">
+        {/* Mobile Filter Toggle */}
+        <div className="lg:hidden w-full">
+          <button
+            type="button"
+            onClick={() => setShowMobileFilter(!showMobileFilter)}
+            className="w-full flex items-center justify-between px-5 py-3.5 bg-white rounded-2xl shadow-sm border border-gray-200 text-gray-800 font-semibold"
+          >
+            <span className="flex items-center gap-2">
+              <SlidersHorizontal size={18} className="text-pink-500" />
+              Filter Jobs
+            </span>
+            {showMobileFilter ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          </button>
+          {showMobileFilter && (
+            <div className="mt-3 bg-white p-4 rounded-2xl shadow-md border border-gray-100">
+              <FilterCard />
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Sidebar */}
         <div className="w-[20%] hidden lg:flex flex-col">
           <div className="sticky top-32 flex-1">
             <div className="h-full bg-white p-4 rounded-2xl shadow-md border border-gray-100 flex flex-col">

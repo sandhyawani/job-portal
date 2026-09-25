@@ -111,10 +111,10 @@ const PostJob = () => {
     <div className="min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="pt-28 pb-16 flex justify-center px-4">
+      <div className="pt-24 sm:pt-28 pb-16 flex justify-center px-4">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8"
+          className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-4 sm:p-8"
         >
           {/* Page title */}
           <h1 className="text-3xl font-extrabold text-center text-pink-500 mb-8">
@@ -190,7 +190,7 @@ const PostJob = () => {
               type="submit"
               disabled={loading}
               className="
-                px-12 py-3 font-semibold rounded-xl
+                w-full sm:w-auto px-8 sm:px-12 py-3 font-semibold rounded-xl
                 text-white shadow-xl transition-all duration-300
                 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600
                 hover:shadow-2xl hover:scale-105

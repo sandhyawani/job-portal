@@ -112,13 +112,13 @@ const JobDescription = () => {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <Navbar />
 
-      <div className="max-w-6xl mx-auto pt-28 px-6 pb-20">
-        <div className="bg-white/80 backdrop-blur-xl border rounded-3xl shadow-2xl p-10">
+      <div className="max-w-6xl mx-auto pt-24 sm:pt-28 px-4 sm:px-6 pb-20">
+        <div className="bg-white/80 backdrop-blur-xl border rounded-3xl shadow-2xl p-5 sm:p-8 md:p-10">
 
           {/* ================= HEADER ================= */}
           <div className="flex flex-col lg:flex-row justify-between gap-8 mb-12">
             <div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 break-words">
                 {singleJob.title}
               </h1>
 
@@ -136,11 +136,11 @@ const JobDescription = () => {
             </div>
 
             {/* APPLY BUTTON */}
-            <div className="lg:self-center">
+            <div className="lg:self-center w-full sm:w-auto">
               <Button
                 disabled={isApplied}
                 onClick={isApplied ? undefined : applyJobHandler}
-                className={`px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl transition
+                className={`w-full sm:w-auto px-8 py-4 rounded-2xl text-lg font-semibold shadow-xl transition
                   ${
                     isApplied
                       ? "bg-gray-400 text-white cursor-not-allowed"
@@ -155,7 +155,7 @@ const JobDescription = () => {
 
           {/* ================= COMPANY + TRUST ================= */}
           {company && (
-            <div className="mb-12 rounded-2xl border bg-gradient-to-r from-pink-50 to-purple-50 p-6 flex gap-5 items-start">
+            <div className="mb-12 rounded-2xl border bg-gradient-to-r from-pink-50 to-purple-50 p-4 sm:p-6 flex flex-col sm:flex-row gap-5 items-start">
               <img
                 src={company.logo || "/logo.png"}
                 alt={company.name}

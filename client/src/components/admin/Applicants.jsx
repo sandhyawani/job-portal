@@ -30,7 +30,7 @@ const Applicants = () => {
   }, [id, dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12 px-6">
+    <div className="min-h-screen bg-gray-50 pt-24 sm:pt-28 pb-12 px-4 sm:px-6">
       <Navbar />
 
       <div className="max-w-7xl mx-auto">

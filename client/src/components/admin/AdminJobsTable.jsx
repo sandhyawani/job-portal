@@ -37,7 +37,7 @@ const AdminJobsTable = () => {
   }, [allAdminJobs, searchJobByText]);
 
   return (
-    <div>
+    <div className="overflow-x-auto w-full">
       <Table>
         <TableCaption>Recently posted jobs</TableCaption>
 

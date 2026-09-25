@@ -55,10 +55,10 @@ const CompanyCreate = () => {
       {/* Navbar */}
       <Navbar />
 
-      <div className="max-w-3xl mx-auto px-6 pt-28 pb-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-16">
         {/* Page heading */}
         <div className="mb-10 text-center">
-          <h1 className="font-extrabold text-3xl md:text-4xl tracking-tight text-gray-900">
+          <h1 className="font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight text-gray-900">
             Create Company
           </h1>
           <p className="text-gray-500 mt-3 max-w-lg mx-auto">
@@ -67,7 +67,7 @@ const CompanyCreate = () => {
         </div>
 
         {/* Form card */}
-        <div className="bg-white/80 backdrop-blur-md p-10 rounded-2xl shadow-xl border border-gray-100">
+        <div className="bg-white/80 backdrop-blur-md p-5 sm:p-10 rounded-2xl shadow-xl border border-gray-100">
           <div className="mb-6">
             <Label className="text-gray-700 font-medium">Company Name</Label>
             <Input
@@ -79,11 +79,11 @@ const CompanyCreate = () => {
             />
           </div>
 
-          <div className="flex justify-end gap-4 mt-10">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 mt-8">
             <Button
               variant="outline"
               onClick={() => navigate("/admin/companies")}
-              className="rounded-xl px-6"
+              className="w-full sm:w-auto rounded-xl px-6"
             >
               Cancel
             </Button>
@@ -91,7 +91,7 @@ const CompanyCreate = () => {
             <Button
               disabled={loading || !companyName.trim()}
               onClick={registerNewCompany}
-              className="rounded-xl px-6 font-semibold text-white shadow-lg 
+              className="w-full sm:w-auto rounded-xl px-6 font-semibold text-white shadow-lg 
                          bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
                          hover:scale-105 hover:shadow-xl transition-all duration-300
                          disabled:opacity-50 disabled:cursor-not-allowed"

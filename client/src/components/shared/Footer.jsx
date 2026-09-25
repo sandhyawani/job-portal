@@ -4,11 +4,11 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/f
 const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
 
         {/* Brand Info */}
         <div>
-          <h2 className="text-2xl font-bold text-pink-400">YourBrand</h2>
+          <h2 className="text-2xl font-bold text-pink-400">Job<span className="text-white">Portal</span></h2>
           <p className="mt-3 text-gray-400 text-sm leading-relaxed">
             Empowering you with premium tools and resources to learn, grow, and succeed.
           </p>

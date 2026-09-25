@@ -95,22 +95,22 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[525px] bg-white rounded-2xl shadow-lg border border-gray-200">
+      <DialogContent className="w-[94vw] sm:max-w-[525px] max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-lg border border-gray-200 p-5 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-800">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-800">
             Update Profile
           </DialogTitle>
-          <DialogDescription className="text-gray-500">
+          <DialogDescription className="text-sm text-gray-500">
             Make changes to your profile information here.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={submitHandler} className="space-y-6">
+        <form onSubmit={submitHandler} className="space-y-4 sm:space-y-5">
           {/* Full Name */}
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
             <Label
               htmlFor="fullname"
-              className="text-right font-medium text-gray-700"
+              className="text-left sm:text-right font-medium text-gray-700"
             >
               Name
             </Label>
@@ -120,15 +120,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="text"
               value={input.fullname}
               onChange={changeEventHandler}
-              className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
             />
           </div>
 
           {/* Email */}
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
             <Label
               htmlFor="email"
-              className="text-right font-medium text-gray-700"
+              className="text-left sm:text-right font-medium text-gray-700"
             >
               Email
             </Label>
@@ -138,15 +138,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="email"
               value={input.email}
               onChange={changeEventHandler}
-              className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
             />
           </div>
 
           {/* Phone Number */}
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
             <Label
               htmlFor="phoneNumber"
-              className="text-right font-medium text-gray-700"
+              className="text-left sm:text-right font-medium text-gray-700"
             >
               Phone
             </Label>
@@ -156,15 +156,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="text"
               value={input.phoneNumber}
               onChange={changeEventHandler}
-              className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
             />
           </div>
 
           {/* Bio */}
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
             <Label
               htmlFor="bio"
-              className="text-right font-medium text-gray-700"
+              className="text-left sm:text-right font-medium text-gray-700"
             >
               Bio
             </Label>
@@ -174,13 +174,13 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="text"
               value={input.bio}
               onChange={changeEventHandler}
-              className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
             />
           </div>
 
           {/* Skills */}
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="skills" className="text-right">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
+            <Label htmlFor="skills" className="text-left sm:text-right font-medium text-gray-700">
               Skills
             </Label>
             <Input
@@ -189,15 +189,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               value={input.skills}
               onChange={changeEventHandler}
               placeholder="e.g. HTML, CSS, JavaScript"
-              className="col-span-3"
+              className="sm:col-span-3 rounded-xl border-gray-300"
             />
           </div>
 
           {/* Profile Photo Upload */}
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
             <Label
               htmlFor="profilePhoto"
-              className="text-right font-medium text-gray-700"
+              className="text-left sm:text-right font-medium text-gray-700"
             >
               Photo
             </Label>
@@ -207,16 +207,16 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="file"
               accept="image/*"
               onChange={photoChangeHandler}
-              className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+              className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm text-sm"
             />
           </div>
 
           {/* Resume Upload (for students) */}
           {user?.role === "student" && (
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-1.5 sm:gap-4">
               <Label
                 htmlFor="file"
-                className="text-right font-medium text-gray-700"
+                className="text-left sm:text-right font-medium text-gray-700"
               >
                 Resume
               </Label>
@@ -226,7 +226,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 type="file"
                 accept="application/pdf"
                 onChange={fileChangeHandler}
-                className="col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm"
+                className="sm:col-span-3 rounded-xl border-gray-300 focus:ring-2 focus:ring-purple-400 shadow-sm text-sm"
               />
             </div>
           )}

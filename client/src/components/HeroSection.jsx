@@ -46,37 +46,37 @@ const HeroSection = () => {
         </span>
 
         {/* Main heading */}
-        <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 animate-gradient drop-shadow-[0_2px_25px_rgba(255,192,203,0.5)]">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 animate-gradient drop-shadow-[0_2px_25px_rgba(255,192,203,0.5)]">
           Your Career, <span className="text-pink-400">Your Way</span>
           <br /> Start Today
         </h1>
 
         {/* Supporting text */}
-        <p className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+        <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
           Connect with top recruiters, explore premium opportunities, and shape
           the future you deserve.
         </p>
 
         {/* Job search input */}
-        <div className="mt-10 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-xl rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
+        <div className="mt-8 sm:mt-10 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-xl rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
           <input
             type="text"
             placeholder="Search your dream job..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && searchJobHandler()}
-            className="flex-1 px-5 py-4 text-gray-200 placeholder-gray-400 bg-transparent outline-none border-none"
+            className="flex-1 px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-gray-200 placeholder-gray-400 bg-transparent outline-none border-none min-w-0"
           />
           <Button
             onClick={searchJobHandler}
-            className="h-14 px-8 flex items-center justify-center gap-2 
+            className="h-12 sm:h-14 px-4 sm:px-8 flex items-center justify-center gap-2 
                        bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600
                        hover:from-pink-600 hover:via-pink-700 hover:to-purple-700
                        text-white font-semibold rounded-full shadow-lg shadow-pink-500/40
-                       transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
+                       transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-sm sm:text-base"
           >
-            <Search className="h-5 w-5" />
-            Search
+            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden xs:inline">Search</span>
           </Button>
         </div>
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Bookmark, Star, MapPin } from "lucide-react";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import TrustBadge from "./TrustBadge";
@@ -18,7 +18,7 @@ const Job = ({ job }) => {
   return (
     <div
       className="
-        group h-[440px] flex flex-col rounded-2xl bg-white
+        group min-h-[430px] h-full flex flex-col rounded-2xl bg-white
         border border-gray-100 shadow-md
         hover:-translate-y-1 hover:shadow-2xl hover:border-pink-300
         transition-all duration-300
@@ -42,10 +42,15 @@ const Job = ({ job }) => {
       {/* COMPANY */}
       <div className="flex gap-3 px-5 pt-4">
         <Avatar className="w-12 h-12 border shrink-0">
-          <AvatarImage
-            src={company?.logo || "/logo.png"}
-            alt={company?.name}
-          />
+          {company?.logo && (
+            <AvatarImage
+              src={company.logo}
+              alt={company?.name}
+            />
+          )}
+          <AvatarFallback className="bg-pink-100 text-pink-700 font-bold text-base">
+            {company?.name ? company.name[0].toUpperCase() : "C"}
+          </AvatarFallback>
         </Avatar>
 
         <div className="flex-1 min-w-0">
