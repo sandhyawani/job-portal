@@ -16,12 +16,22 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const isHeroPage = location.pathname === "/"; 
+  const isTransparent = isHeroPage && !scrolled;
 
   const logoutHandler = async () => {
     try {
@@ -41,10 +51,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b transition-colors duration-300 ${
-        isHeroPage
+      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b transition-all duration-300 ${
+        isTransparent
           ? "bg-transparent border-transparent text-white"
-          : "bg-white border-gray-200 text-gray-800 shadow-md"
+          : "bg-white/95 border-gray-200 text-gray-800 shadow-md"
       }`}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
@@ -52,19 +62,19 @@ const Navbar = () => {
         <Link to="/" className="flex items-center">
           <h1
             className={`text-2xl font-extrabold drop-shadow-lg transition-colors duration-300 ${
-              isHeroPage
+              isTransparent
                 ? "bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent"
                 : "text-gray-900"
             }`}
           >
-            Job<span className={isHeroPage ? "text-pink-500" : "text-pink-600"}>Portal</span>
+            Job<span className={isTransparent ? "text-pink-500" : "text-pink-600"}>Portal</span>
           </h1>
         </Link>
 
         {/* Navigation Links */}
         <ul
           className={`hidden md:flex items-center gap-8 font-medium transition-colors duration-300 ${
-            isHeroPage ? "text-white/80" : "text-gray-700"
+            isTransparent ? "text-white/90" : "text-gray-700"
           }`}
         >
           {user && user.role === "recruiter" ? (
@@ -108,7 +118,7 @@ const Navbar = () => {
               <Link to="/login">
                 <Button
                   className={`rounded-full px-4 sm:px-5 py-2 text-sm shadow-md transition-colors duration-300 ${
-                    isHeroPage
+                    isTransparent
                       ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
                       : "bg-pink-500 text-white hover:bg-pink-600"
                   }`}
@@ -119,7 +129,7 @@ const Navbar = () => {
               <Link to="/signup" className="hidden sm:inline-block">
                 <Button
                   className={`rounded-full px-5 py-2 text-sm shadow-md transition-colors duration-300 ${
-                    isHeroPage
+                    isTransparent
                       ? "bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
                       : "bg-pink-500 text-white hover:bg-pink-600"
                   }`}
@@ -133,7 +143,7 @@ const Navbar = () => {
               <PopoverTrigger asChild>
                 <Avatar
                   className={`cursor-pointer ring-2 hover:ring-purple-400 transition-all shadow-sm ${
-                    isHeroPage ? "ring-white/60" : "ring-pink-400"
+                    isTransparent ? "ring-white/60" : "ring-pink-400"
                   }`}
                 >
                   {user?.profile?.profilePhoto && (
@@ -212,7 +222,7 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div
           className={`md:hidden px-6 pt-3 pb-6 border-b shadow-xl transition-all ${
-            isHeroPage
+            isTransparent
               ? "bg-slate-900/95 backdrop-blur-xl text-white border-white/10"
               : "bg-white text-gray-800 border-gray-200"
           }`}

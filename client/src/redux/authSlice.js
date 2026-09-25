@@ -13,8 +13,13 @@ const authSlice = createSlice({
         },
         setUser:(state, action) => {
             state.user = action.payload;
+        },
+        setSavedJobs:(state, action) => {
+            if (state.user) {
+                state.user.savedJobs = action.payload;
+            }
         }
     }
 });
-export const {setLoading, setUser} = authSlice.actions;
+export const {setLoading, setUser, setSavedJobs} = authSlice.actions;
 export default authSlice.reducer;

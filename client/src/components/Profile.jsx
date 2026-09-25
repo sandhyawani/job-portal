@@ -6,13 +6,17 @@ import { Contact, Mail, Pen, User2 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
+import SavedJobTable from "./SavedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
 import useGetAppliedJobs from "../hooks/useGetAppliedJobs";
+import useGetSavedJobs from "../hooks/useGetSavedJobs";
 
 const Profile = () => {
   useGetAppliedJobs();
+  useGetSavedJobs();
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("applied");
   const { user } = useSelector((store) => store.auth);
 
   const isResume = Boolean(user?.profile?.resume);
@@ -22,22 +26,22 @@ const Profile = () => {
       <Navbar />
 
       {/* Profile Card */}
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl mb-8 p-8 transition-transform hover:-translate-y-1 duration-200">
+      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-3xl shadow-xl mb-8 p-6 sm:p-8 transition-transform hover:-translate-y-1 duration-200">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <div className="flex items-center gap-6">
-            <Avatar className="h-28 w-28 ring-4 ring-purple-300/30 shadow-lg">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <Avatar className="h-20 w-20 sm:h-28 sm:w-28 ring-4 ring-purple-300/30 shadow-lg shrink-0">
               {user?.profile?.profilePhoto && (
                 <AvatarImage
                   src={user.profile.profilePhoto}
                   alt={user?.fullname || "Profile"}
                 />
               )}
-              <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold text-4xl flex items-center justify-center size-full">
+              <AvatarFallback className="bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold text-2xl sm:text-4xl flex items-center justify-center size-full">
                 {user?.fullname ? user.fullname[0].toUpperCase() : "A"}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="font-extrabold text-3xl text-gray-900 uppercase">
+              <h1 className="font-extrabold text-2xl sm:text-3xl text-gray-900 uppercase">
                 {user?.fullname || "Unnamed User"}
               </h1>
               <p className="text-gray-500 mt-1">
@@ -102,11 +106,33 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Applied Jobs Section */}
+      {/* Applied & Saved Jobs Section */}
       {user?.role === "student" && (
         <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-6 mb-10 transition-transform hover:-translate-y-1 duration-200">
-          <h1 className="font-bold text-xl mb-5 text-gray-800 border-b pb-2">Applied Jobs</h1>
-          <AppliedJobTable />
+          <div className="flex items-center gap-6 border-b pb-3 mb-5">
+            <button
+              onClick={() => setActiveTab("applied")}
+              className={`font-bold text-lg pb-2 transition-all ${
+                activeTab === "applied"
+                  ? "text-pink-600 border-b-2 border-pink-600 -mb-[13px]"
+                  : "text-gray-500 hover:text-gray-800"
+              }`}
+            >
+              Applied Jobs
+            </button>
+            <button
+              onClick={() => setActiveTab("saved")}
+              className={`font-bold text-lg pb-2 transition-all ${
+                activeTab === "saved"
+                  ? "text-pink-600 border-b-2 border-pink-600 -mb-[13px]"
+                  : "text-gray-500 hover:text-gray-800"
+              }`}
+            >
+              Saved Jobs
+            </button>
+          </div>
+
+          {activeTab === "applied" ? <AppliedJobTable /> : <SavedJobTable />}
         </div>
       )}
 

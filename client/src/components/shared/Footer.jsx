@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -18,10 +19,10 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-gray-300 text-sm">
-            <li><a href="/" className="hover:text-pink-400 transition">Home</a></li>
-            <li><a href="/about" className="hover:text-pink-400 transition">About Us</a></li>
-            <li><a href="/services" className="hover:text-pink-400 transition">Services</a></li>
-            <li><a href="/contact" className="hover:text-pink-400 transition">Contact</a></li>
+            <li><Link to="/" className="hover:text-pink-400 transition">Home</Link></li>
+            <li><Link to="/jobs" className="hover:text-pink-400 transition">Explore Jobs</Link></li>
+            <li><Link to="/browse" className="hover:text-pink-400 transition">Browse Categories</Link></li>
+            <li><Link to="/signup" className="hover:text-pink-400 transition">Get Started</Link></li>
           </ul>
         </div>
 
@@ -29,10 +30,10 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-4">Support</h3>
           <ul className="space-y-2 text-gray-300 text-sm">
-            <li><a href="/faq" className="hover:text-pink-400 transition">FAQs</a></li>
-            <li><a href="/privacy" className="hover:text-pink-400 transition">Privacy Policy</a></li>
-            <li><a href="/terms" className="hover:text-pink-400 transition">Terms & Conditions</a></li>
-            <li><a href="/help" className="hover:text-pink-400 transition">Help Center</a></li>
+            <li><a href="#help" className="hover:text-pink-400 transition">FAQs</a></li>
+            <li><a href="#help" className="hover:text-pink-400 transition">Privacy Policy</a></li>
+            <li><a href="#help" className="hover:text-pink-400 transition">Terms & Conditions</a></li>
+            <li><a href="#help" className="hover:text-pink-400 transition">Help Center</a></li>
           </ul>
         </div>
 

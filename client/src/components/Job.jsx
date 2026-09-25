@@ -5,14 +5,51 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import TrustBadge from "./TrustBadge";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { setSavedJobs } from "@/redux/authSlice";
+import { toast } from "sonner";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.auth);
   const company = job?.company;
 
   const daysAgo = (date) => {
     const diff = new Date() - new Date(date);
     return Math.floor(diff / (1000 * 60 * 60 * 24));
+  };
+
+  const isSaved = Boolean(
+    user?.savedJobs?.some((saved) => {
+      const id = typeof saved === "object" ? saved?._id : saved;
+      return id?.toString() === job?._id?.toString();
+    })
+  );
+
+  const saveJobHandler = async (e) => {
+    e?.stopPropagation?.();
+    if (!user) {
+      toast.error("Please login to save jobs");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${USER_API_END_POINT}/save-job/${job?._id}`,
+        {},
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        dispatch(setSavedJobs(res.data.savedJobs));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update saved jobs");
+    }
   };
 
   return (
@@ -34,8 +71,21 @@ const Job = ({ job }) => {
             : "Recently"}
         </p>
 
-        <Button variant="outline" size="icon" className="rounded-full">
-          <Bookmark size={18} className="text-pink-500" />
+        <Button
+          onClick={saveJobHandler}
+          variant="outline"
+          size="icon"
+          title={isSaved ? "Remove from saved" : "Save job"}
+          className={`rounded-full transition-colors ${
+            isSaved ? "border-pink-500 bg-pink-50" : "hover:border-pink-300"
+          }`}
+        >
+          <Bookmark
+            size={18}
+            className={`${
+              isSaved ? "text-pink-600 fill-pink-600" : "text-pink-500"
+            }`}
+          />
         </Button>
       </div>
 
@@ -116,8 +166,15 @@ const Job = ({ job }) => {
           View Details
         </Button>
 
-        <Button className="flex-1 rounded-full bg-gradient-to-r from-pink-500 to-pink-700 text-white">
-          Save
+        <Button
+          onClick={saveJobHandler}
+          className={`flex-1 rounded-full font-medium transition-all duration-300 ${
+            isSaved
+              ? "bg-pink-100 text-pink-700 hover:bg-pink-200 border border-pink-300"
+              : "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:shadow-lg hover:scale-105"
+          }`}
+        >
+          {isSaved ? "✓ Saved" : "Save"}
         </Button>
       </div>
     </div>
