@@ -144,15 +144,23 @@ export const updateJob = async (req, res) => {
   try {
     const jobId = req.params.id;
 
+    let formattedRequirements = [];
+    if (req.body.requirements) {
+      if (Array.isArray(req.body.requirements)) {
+        formattedRequirements = req.body.requirements;
+      } else if (typeof req.body.requirements === "string") {
+        formattedRequirements = req.body.requirements.split(",").map((r) => r.trim());
+      }
+    }
+
+    const updateData = { ...req.body };
+    if (req.body.requirements) updateData.requirements = formattedRequirements;
+    if (req.body.experience) updateData.experienceLevel = req.body.experience;
+    if (req.body.companyId) updateData.company = req.body.companyId;
+
     const updatedJob = await Job.findByIdAndUpdate(
       jobId,
-      {
-        ...req.body,
-        requirements: req.body.requirements
-          ? req.body.requirements.split(",").map((r) => r.trim())
-          : [],
-        experienceLevel: req.body.experience,
-      },
+      updateData,
       { new: true }
     );
 

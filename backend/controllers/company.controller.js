@@ -75,10 +75,7 @@ export const getCompanyById = async (req, res) => {
       });
     }
 
-    const company = await Company.findOne({
-      _id: id,
-      userId: req.id,
-    });
+    const company = await Company.findById(id);
 
     if (!company) {
       return res.status(404).json({

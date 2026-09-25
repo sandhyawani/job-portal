@@ -1,7 +1,7 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
@@ -72,10 +72,13 @@ const appRouter = createBrowserRouter([
     element:<ProtectedRoute><Applicants/></ProtectedRoute> 
   },
   {
-  path: "/admin/jobs/:id/edit",
-  element: <ProtectedRoute><PostJob /></ProtectedRoute>
-}
-
+    path: "/admin/jobs/:id/edit",
+    element: <ProtectedRoute><PostJob /></ProtectedRoute>
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />
+  }
 ])
 function App() {
 
