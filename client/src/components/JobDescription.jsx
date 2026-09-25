@@ -8,13 +8,16 @@ import axios from "axios";
 import {
   APPLICATION_API_END_POINT,
   JOB_API_END_POINT,
+  USER_API_END_POINT,
 } from "@/utils/constant";
 import { setSingleJob } from "@/redux/jobSlice";
+import { setSavedJobs } from "@/redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import Navbar from "./shared/Navbar";
 import {
   ArrowLeft,
+  Bookmark,
   Briefcase,
   Calendar,
   Clock,
@@ -126,6 +129,38 @@ const JobDescription = () => {
   };
 
   /* ======================
+     SAVE JOB
+     ====================== */
+  const isSaved = Boolean(
+    user?.savedJobs?.some((saved) => {
+      const id = typeof saved === "object" ? saved?._id : saved;
+      return id?.toString() === jobId?.toString();
+    })
+  );
+
+  const saveJobHandler = async () => {
+    if (!user) {
+      toast.error("Please login to save jobs");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${USER_API_END_POINT}/save-job/${jobId}`,
+        {},
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        dispatch(setSavedJobs(res.data.savedJobs));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update saved jobs");
+    }
+  };
+
+  /* ======================
      FETCH JOB DETAILS
      ====================== */
   useEffect(() => {
@@ -187,12 +222,31 @@ const JobDescription = () => {
               </div>
             </div>
 
-            {/* APPLY ACTION */}
-            <div className="shrink-0 w-full sm:w-auto">
+            {/* ACTIONS */}
+            <div className="shrink-0 flex items-center gap-2.5 w-full sm:w-auto">
+              <Button
+                onClick={saveJobHandler}
+                variant="outline"
+                className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                  isSaved
+                    ? "border-pink-300 bg-pink-50 text-pink-700 hover:bg-pink-100"
+                    : "border-gray-200 text-gray-700 hover:border-pink-300 hover:text-pink-600"
+                }`}
+                title={isSaved ? "Remove from saved" : "Save for later"}
+              >
+                <Bookmark
+                  size={16}
+                  className={`mr-1.5 ${
+                    isSaved ? "fill-pink-600 text-pink-600" : ""
+                  }`}
+                />
+                {isSaved ? "Saved" : "Save"}
+              </Button>
+
               <Button
                 disabled={isApplied}
                 onClick={isApplied ? undefined : applyJobHandler}
-                className={`w-full sm:w-auto px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm ${
+                className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm ${
                   isApplied
                     ? "bg-gray-100 text-gray-500 border border-gray-300 cursor-not-allowed hover:bg-gray-100"
                     : "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 hover:shadow-md"
