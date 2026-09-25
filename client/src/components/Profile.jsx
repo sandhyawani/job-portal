@@ -18,6 +18,7 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("applied");
   const { user } = useSelector((store) => store.auth);
+  const { allAppliedJobs, allSavedJobs } = useSelector((store) => store.job);
 
   const isResume = Boolean(user?.profile?.resume);
 
@@ -74,16 +75,20 @@ const Profile = () => {
         {/* Skills */}
         <div className="my-6">
           <h2 className="text-lg font-bold text-gray-800 mb-2">Skills</h2>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2.5">
             {user?.profile?.skills?.length
-              ? user.profile.skills.map((skill, i) => (
-                  <Badge
-                    key={i}
-                    className="bg-purple-100 text-purple-700 font-medium px-3 py-1 rounded-full shadow-sm"
-                  >
-                    {skill}
-                  </Badge>
-                ))
+              ? user.profile.skills
+                  .flatMap((skill) => (typeof skill === "string" ? skill.split(",") : [skill]))
+                  .map((s) => (typeof s === "string" ? s.trim() : s))
+                  .filter(Boolean)
+                  .map((skill, i) => (
+                    <Badge
+                      key={i}
+                      className="bg-purple-50 text-purple-700 border border-purple-200 font-medium px-3 py-1 rounded-full shadow-none"
+                    >
+                      {skill}
+                    </Badge>
+                  ))
               : <span className="text-gray-400 italic">No skills added</span>}
           </div>
         </div>
@@ -109,26 +114,45 @@ const Profile = () => {
       {/* Applied & Saved Jobs Section */}
       {user?.role === "student" && (
         <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-6 mb-10 transition-transform hover:-translate-y-1 duration-200">
-          <div className="flex items-center gap-6 border-b pb-3 mb-5">
+          <div className="flex items-center gap-8 border-b border-gray-200 mb-6">
             <button
               onClick={() => setActiveTab("applied")}
-              className={`font-bold text-lg pb-2 transition-all ${
+              className={`pb-3.5 font-bold text-base transition-all flex items-center gap-2 border-b-2 ${
                 activeTab === "applied"
-                  ? "text-pink-600 border-b-2 border-pink-600 -mb-[13px]"
-                  : "text-gray-500 hover:text-gray-800"
+                  ? "text-pink-600 border-pink-600 -mb-[1px]"
+                  : "text-gray-500 hover:text-gray-800 border-transparent -mb-[1px]"
               }`}
             >
-              Applied Jobs
+              <span>Applied Jobs</span>
+              <span
+                className={`text-xs px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
+                  activeTab === "applied"
+                    ? "bg-pink-100 text-pink-700"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {allAppliedJobs?.length || 0}
+              </span>
             </button>
+
             <button
               onClick={() => setActiveTab("saved")}
-              className={`font-bold text-lg pb-2 transition-all ${
+              className={`pb-3.5 font-bold text-base transition-all flex items-center gap-2 border-b-2 ${
                 activeTab === "saved"
-                  ? "text-pink-600 border-b-2 border-pink-600 -mb-[13px]"
-                  : "text-gray-500 hover:text-gray-800"
+                  ? "text-pink-600 border-pink-600 -mb-[1px]"
+                  : "text-gray-500 hover:text-gray-800 border-transparent -mb-[1px]"
               }`}
             >
-              Saved Jobs
+              <span>Saved Jobs</span>
+              <span
+                className={`text-xs px-2.5 py-0.5 rounded-full font-semibold transition-colors ${
+                  activeTab === "saved"
+                    ? "bg-pink-100 text-pink-700"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {allSavedJobs?.length || 0}
+              </span>
             </button>
           </div>
 
