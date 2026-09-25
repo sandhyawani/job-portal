@@ -39,75 +39,77 @@ const HeroSection = () => {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-10 text-center px-4 py-28 sm:py-36 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center px-4 pt-24 sm:pt-28 pb-14 sm:pb-18 max-w-5xl mx-auto">
         {/* Highlight badge */}
-        <span className="inline-block px-6 py-2 mb-6 rounded-full bg-white/10 border border-white/20 text-pink-400 font-medium backdrop-blur-md shadow-lg hover:scale-105 transition-transform">
+        <span className="inline-block px-4 sm:px-5 py-1.5 mb-4 rounded-full bg-white/10 border border-white/20 text-pink-400 text-sm font-medium backdrop-blur-md shadow-sm hover:scale-105 transition-transform">
           🚀 Turning Ambitions Into Careers
         </span>
 
         {/* Main heading */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 animate-gradient drop-shadow-[0_2px_25px_rgba(255,192,203,0.5)]">
+        <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 animate-gradient drop-shadow-[0_2px_25px_rgba(255,192,203,0.5)]">
           Your Career, <span className="text-pink-400">Your Way</span>
           <br /> Start Today
         </h1>
 
         {/* Supporting text */}
-        <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+        <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
           Connect with top recruiters, explore premium opportunities, and shape
           the future you deserve.
         </p>
 
         {/* Job search input */}
-        <div className="mt-8 sm:mt-10 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-xl rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
+        <div className="mt-6 sm:mt-7 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-lg rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
           <input
             type="text"
             placeholder="Search your dream job..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && searchJobHandler()}
-            className="flex-1 px-4 sm:px-5 py-3 sm:py-4 text-sm sm:text-base text-gray-200 placeholder-gray-400 bg-transparent outline-none border-none min-w-0"
+            className="flex-1 px-4 sm:px-5 py-3 sm:py-3.5 text-sm sm:text-base text-gray-200 placeholder-gray-400 bg-transparent outline-none border-none min-w-0"
           />
           <Button
             onClick={searchJobHandler}
-            className="h-12 sm:h-14 px-4 sm:px-8 flex items-center justify-center gap-2 
+            className="h-11 sm:h-12 px-4 sm:px-6 flex items-center justify-center gap-2 
                        bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600
                        hover:from-pink-600 hover:via-pink-700 hover:to-purple-700
-                       text-white font-semibold rounded-full shadow-lg shadow-pink-500/40
-                       transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-sm sm:text-base"
+                       text-white font-semibold rounded-full shadow-md shadow-pink-500/40
+                       transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 text-sm"
           >
-            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Search className="h-4 w-4" />
             <span className="hidden xs:inline">Search</span>
           </Button>
         </div>
 
         {/* Primary actions */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link to="/signup">
-            <button className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-500 hover:to-pink-600 rounded-full font-medium text-white shadow-lg hover:shadow-pink-500/50 transition-all transform hover:scale-105">
+            <button className="px-6 py-2.5 text-sm bg-gradient-to-r from-pink-500 to-purple-500 hover:to-pink-600 rounded-full font-medium text-white shadow-md hover:shadow-pink-500/50 transition-all transform hover:scale-105">
               Get Started
             </button>
           </Link>
 
           <Link to="/browse">
-            <button className="px-8 py-3 border border-white/30 hover:border-pink-400 rounded-full font-medium text-white hover:text-pink-400 backdrop-blur-md transition-all hover:scale-105">
-              Learn More
+            <button className="px-6 py-2.5 text-sm border border-white/30 hover:border-pink-400 rounded-full font-medium text-white hover:text-pink-400 backdrop-blur-md transition-all hover:scale-105">
+              Explore Roles
             </button>
           </Link>
         </div>
       </div>
 
       {/* Decorative footer wave */}
-      <svg
-        className="absolute bottom-0 left-0 w-full"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 320"
-      >
-        <path
-          fill="#fff"
-          fillOpacity="1"
-          d="M0,192L60,165.3C120,139,240,85,360,74.7C480,64,600,96,720,133.3C840,171,960,213,1080,197.3C1200,181,1320,107,1380,69.3L1440,32V320H0Z"
-        ></path>
-      </svg>
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none">
+        <svg
+          className="relative block w-full h-6 sm:h-10"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#ffffff"
+            d="M0,0 C150,90 350,-40 500,50 C650,140 900,10 1200,40 L1200,120 L0,120 Z"
+          ></path>
+        </svg>
+      </div>
 
       {/* Gradient animation */}
       <style>{`

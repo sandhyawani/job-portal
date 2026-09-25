@@ -29,8 +29,8 @@ const CategoryCarousel = () => {
   };
 
   return (
-    <div className="relative w-full py-12 bg-gradient-to-b from-white via-pink-50/40 to-white">
-      <h2 className="text-center text-3xl sm:text-4xl font-bold mb-8">
+    <div className="relative w-full pt-8 pb-4 bg-gradient-to-b from-white via-pink-50/30 to-white">
+      <h2 className="text-center text-2xl sm:text-3xl font-bold mb-5">
         Explore <span className="text-pink-500">Categories</span>
       </h2>
 
@@ -43,10 +43,10 @@ const CategoryCarousel = () => {
             >
               <Button
                 onClick={() => searchJobHandler(cat)}
-                className="rounded-full px-5 sm:px-6 py-3 text-base sm:text-lg font-medium 
+                className="rounded-full px-5 py-2.5 text-sm sm:text-base font-medium 
                   bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 
                   hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600
-                  shadow-lg shadow-pink-500/20 text-white transition-all duration-300 transform hover:scale-105"
+                  shadow-md shadow-pink-500/20 text-white transition-all duration-300 transform hover:scale-105"
               >
                 {cat}
               </Button>

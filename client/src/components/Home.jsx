@@ -22,8 +22,8 @@ const Home = () => {
       <Navbar />
       <HeroSection />
       <CategoryCarousel />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-12 sm:my-16">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-12 sm:mb-16">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-5">
           <span className="text-pink-600">Latest & Top </span>Job Openings
         </h2>
         <LatestJobs />
