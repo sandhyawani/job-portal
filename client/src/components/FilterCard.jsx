@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { Label } from './ui/label';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, SlidersHorizontal } from 'lucide-react';
 
 const filterData = [
   {
@@ -48,16 +47,17 @@ const FilterCard = () => {
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-extrabold text-xl text-gray-900">
-          Filter <span className="text-pink-500">Jobs</span>
-        </h1>
+    <div className="w-full bg-white rounded-2xl shadow-sm p-5 border border-gray-200/80">
+      <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
+        <h2 className="font-bold text-base text-gray-900 flex items-center gap-2">
+          <SlidersHorizontal size={16} className="text-pink-600" />
+          Filter Jobs
+        </h2>
 
         {selectedValue && (
           <button
             onClick={clearFilterHandler}
-            className="flex items-center gap-1 text-xs font-semibold text-pink-600 hover:text-pink-700 bg-pink-50 hover:bg-pink-100 px-3 py-1 rounded-full transition-colors"
+            className="flex items-center gap-1 text-xs font-semibold text-pink-600 hover:text-pink-700 bg-pink-50 hover:bg-pink-100 px-2.5 py-1 rounded-full transition-colors"
           >
             <RotateCcw size={12} /> Clear
           </button>
@@ -66,37 +66,30 @@ const FilterCard = () => {
 
       <RadioGroup value={selectedValue} onValueChange={setSelectedValue}>
         {filterData.map((section, index) => (
-          <div
-            key={index}
-            className="mb-6 p-4 rounded-xl bg-gray-50 hover:bg-pink-50 transition-colors duration-200"
-          >
-            {/* Section Title */}
-            <h2 className="font-semibold text-base text-gray-800 border-b border-gray-200 pb-2 mb-3">
+          <div key={index} className="mb-4 last:mb-0">
+            <h3 className="font-bold text-xs text-gray-500 uppercase tracking-wider mb-2">
               {section.filterType}
-            </h2>
+            </h3>
 
-            {/* Options */}
-            {section.options.map((option, idx) => {
-              const itemId = `filter-${index}-${idx}`;
-              return (
-                <div
-                  key={itemId}
-                  className="flex items-center space-x-3 my-2 cursor-pointer hover:text-pink-500 transition-colors"
-                >
-                  <RadioGroupItem
-                    value={option}
-                    id={itemId}
-                    className="w-5 h-5 rounded-full border border-pink-400 bg-gradient-to-r from-pink-400 to-pink-600 text-white focus:ring-2 focus:ring-pink-500"
-                  />
-                  <Label
+            <div className="space-y-1">
+              {section.options.map((option, idx) => {
+                const itemId = `filter-${index}-${idx}`;
+                return (
+                  <label
+                    key={itemId}
                     htmlFor={itemId}
-                    className="text-gray-700 font-medium cursor-pointer text-sm"
+                    className="flex items-center space-x-2.5 py-1 px-2 rounded-lg hover:bg-pink-50/50 cursor-pointer text-sm text-gray-700 hover:text-gray-900 transition-colors"
                   >
-                    {option}
-                  </Label>
-                </div>
-              );
-            })}
+                    <RadioGroupItem
+                      value={option}
+                      id={itemId}
+                      className="border-gray-300 text-pink-600 focus:ring-pink-500"
+                    />
+                    <span className="font-medium text-xs sm:text-sm">{option}</span>
+                  </label>
+                );
+              })}
+            </div>
           </div>
         ))}
       </RadioGroup>

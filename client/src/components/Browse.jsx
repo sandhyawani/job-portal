@@ -20,29 +20,70 @@ const Browse = () => {
     }, [dispatch]);
 
     return (
-        <div className="relative">
+        <div className="min-h-screen bg-slate-50/70 pb-16">
             {/* Navbar */}
             <Navbar />
 
             {/* Main content */}
             <main className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <h1 className="text-3xl font-extrabold text-gray-900 mb-6">
-                    {searchedQuery
-                        ? `Search Results for "${searchedQuery}" (${allJobs.length})`
-                        : `All Jobs (${allJobs.length})`}
-                </h1>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+                        {searchedQuery ? (
+                            <span>
+                                Results for &ldquo;<span className="text-pink-600">{searchedQuery}</span>&rdquo;
+                            </span>
+                        ) : (
+                            "Explore All Openings"
+                        )}
+                        <span className="ml-2 text-sm font-normal text-gray-500">
+                            ({allJobs?.length || 0} {allJobs?.length === 1 ? "opening" : "openings"})
+                        </span>
+                    </h1>
+
+                    {searchedQuery && (
+                        <button
+                            onClick={() => dispatch(setSearchedQuery(""))}
+                            className="flex items-center gap-1.5 text-xs font-semibold text-pink-700 bg-pink-100 hover:bg-pink-200 px-3 py-1.5 rounded-full transition-colors"
+                        >
+                            <span>Filtered: &ldquo;{searchedQuery}&rdquo;</span>
+                            <span className="font-bold text-sm leading-none">&times;</span>
+                        </button>
+                    )}
+                </div>
 
                 {/* Jobs list */}
-                {allJobs.length > 0 ? (
+                {!allJobs || allJobs.length === 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3, 4, 5, 6].map((n) => (
+                            <div
+                                key={n}
+                                className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm animate-pulse space-y-4"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 bg-gray-200 rounded-xl" />
+                                    <div className="flex-1 space-y-2">
+                                        <div className="h-4 bg-gray-200 rounded w-3/4" />
+                                        <div className="h-3 bg-gray-100 rounded w-1/2" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2 pt-2">
+                                    <div className="h-4 bg-gray-200 rounded w-5/6" />
+                                    <div className="h-3 bg-gray-100 rounded w-full" />
+                                    <div className="h-3 bg-gray-100 rounded w-4/5" />
+                                </div>
+                                <div className="flex gap-2 pt-2">
+                                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
+                                    <div className="h-6 w-20 bg-gray-200 rounded-full" />
+                                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {allJobs.map((job) => (
                             <Job key={job._id} job={job} />
                         ))}
-                    </div>
-                ) : (
-                    // Empty state
-                    <div className="text-center py-20 text-gray-500">
-                        No jobs found {searchedQuery && `for "${searchedQuery}"`}
                     </div>
                 )}
             </main>

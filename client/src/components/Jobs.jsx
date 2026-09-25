@@ -49,21 +49,16 @@ const Jobs = () => {
             {showMobileFilter ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </button>
           {showMobileFilter && (
-            <div className="mt-3 bg-white p-4 rounded-2xl shadow-md border border-gray-100">
+            <div className="mt-3">
               <FilterCard />
             </div>
           )}
         </div>
 
         {/* Desktop Sidebar */}
-        <div className="w-[20%] hidden lg:flex flex-col">
-          <div className="sticky top-32 flex-1">
-            <div className="h-full bg-white p-4 rounded-2xl shadow-md border border-gray-100 flex flex-col">
-              <h2 className="text-lg font-semibold mb-4 text-gray-800">Filters</h2>
-              <div className="flex-1">
-                <FilterCard />
-              </div>
-            </div>
+        <div className="w-64 shrink-0 hidden lg:block">
+          <div className="sticky top-28">
+            <FilterCard />
           </div>
         </div>
 

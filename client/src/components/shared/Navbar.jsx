@@ -2,7 +2,7 @@ import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { LogOut, Menu, User2, X } from "lucide-react";
+import { LogOut, Menu, User2, X, Briefcase } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -59,15 +59,18 @@ const Navbar = () => {
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto px-6 h-16">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white shadow-sm font-bold text-sm shrink-0 group-hover:scale-105 transition-transform">
+            <Briefcase size={16} />
+          </div>
           <h1
-            className={`text-2xl font-extrabold drop-shadow-lg transition-colors duration-300 ${
+            className={`text-xl sm:text-2xl font-extrabold tracking-tight transition-colors duration-300 ${
               isTransparent
-                ? "bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent"
+                ? "text-white"
                 : "text-gray-900"
             }`}
           >
-            Job<span className={isTransparent ? "text-pink-500" : "text-pink-600"}>Portal</span>
+            Job<span className="text-pink-600">Portal</span>
           </h1>
         </Link>
 
