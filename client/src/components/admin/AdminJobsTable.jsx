@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Edit2, Eye, MoreHorizontal } from "lucide-react";
+import { Edit2, Eye, MoreHorizontal, Users } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -45,17 +45,35 @@ const AdminJobsTable = () => {
           <TableRow>
             <TableHead>Company Name</TableHead>
             <TableHead>Role</TableHead>
+            <TableHead>Applicants</TableHead>
             <TableHead>Date</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {filteredJobs?.map((job, index) => (
-            <TableRow key={job._id || index}>
-              <TableCell>{job?.company?.name}</TableCell>
-              <TableCell>{job?.title}</TableCell>
-              <TableCell>{job?.createdAt?.split("T")[0]}</TableCell>
+          {filteredJobs?.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                No jobs found matching your search.
+              </TableCell>
+            </TableRow>
+          ) : (
+            filteredJobs?.map((job, index) => (
+              <TableRow key={job._id || index} className="hover:bg-gray-50/70 transition">
+                <TableCell className="font-medium text-gray-800">{job?.company?.name || "N/A"}</TableCell>
+                <TableCell className="font-semibold text-gray-900">{job?.title}</TableCell>
+                <TableCell>
+                  <button
+                    onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-100 transition"
+                    title="View candidate applications"
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    <span>{job?.applications?.length || 0}</span>
+                  </button>
+                </TableCell>
+                <TableCell className="text-gray-500 text-sm">{job?.createdAt?.split("T")[0]}</TableCell>
 
               <TableCell className="text-right">
                 <Popover>
@@ -92,7 +110,8 @@ const AdminJobsTable = () => {
                 </Popover>
               </TableCell>
             </TableRow>
-          ))}
+          ))
+        )}
         </TableBody>
       </Table>
     </div>

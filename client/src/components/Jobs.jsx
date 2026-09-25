@@ -6,25 +6,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
 import { setSearchedQuery } from '@/redux/jobSlice';
+import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const Jobs = () => {
+  useGetAllJobs();
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs);
+  const [filterJobs, setFilterJobs] = useState(allJobs || []);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const jobsList = allJobs || [];
     if (searchedQuery) {
-      const filteredJobs = allJobs.filter((job) => {
+      const filteredJobs = jobsList.filter((job) => {
         return (
-          job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.location.toLowerCase().includes(searchedQuery.toLowerCase())
+          job.title?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.description?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+          job.location?.toLowerCase().includes(searchedQuery.toLowerCase())
         );
       });
       setFilterJobs(filteredJobs);
     } else {
-      setFilterJobs(allJobs);
+      setFilterJobs(jobsList);
     }
   }, [allJobs, searchedQuery]);
 
@@ -93,17 +96,52 @@ const Jobs = () => {
             )}
           </div>
 
-          {filterJobs.length <= 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 text-center">
+          {!allJobs || allJobs.length === 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
+              {[1, 2, 3, 4, 5, 6].map((n) => (
+                <div
+                  key={n}
+                  className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm animate-pulse space-y-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gray-200 rounded-xl" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-3/4" />
+                      <div className="h-3 bg-gray-100 rounded w-1/2" />
+                    </div>
+                  </div>
+                  <div className="space-y-2 pt-2">
+                    <div className="h-4 bg-gray-200 rounded w-5/6" />
+                    <div className="h-3 bg-gray-100 rounded w-full" />
+                    <div className="h-3 bg-gray-100 rounded w-4/5" />
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
+                    <div className="h-6 w-20 bg-gray-200 rounded-full" />
+                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filterJobs.length <= 0 ? (
+            <div className="flex flex-col items-center justify-center flex-1 text-center py-12">
               <img
                 src="https://illustrations.popsy.co/gray/work-from-home.svg"
                 alt="No Jobs"
-                className="w-60 mb-6"
+                className="w-52 mb-4"
               />
-              <h3 className="text-xl font-semibold text-gray-700">No jobs found</h3>
-              <p className="text-gray-500 mt-1">
-                Try adjusting your search or filter to find more opportunities.
+              <h3 className="text-xl font-semibold text-gray-700">No matching jobs found</h3>
+              <p className="text-gray-500 mt-1 max-w-sm">
+                Try adjusting your search query or filter keywords to discover opportunities.
               </p>
+              {searchedQuery && (
+                <button
+                  onClick={() => dispatch(setSearchedQuery(""))}
+                  className="mt-4 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold rounded-xl shadow-sm transition"
+                >
+                  Reset Filter & Show All Jobs
+                </button>
+              )}
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto pb-6 pr-2">
