@@ -10,6 +10,9 @@ import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { setSavedJobs } from "@/redux/authSlice";
 import { toast } from "sonner";
+import { calculateSkillMatch } from "@/utils/skillMatcher";
+import { calculateMonthlyTakeHome } from "@/utils/salaryCalculator";
+import { Zap } from "lucide-react";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
@@ -17,6 +20,10 @@ const Job = ({ job }) => {
   const { user } = useSelector((store) => store.auth);
   const { allAppliedJobs } = useSelector((store) => store.job);
   const company = job?.company;
+
+  const skillMatch = calculateSkillMatch(user?.profile?.skills, job);
+  const takeHome = calculateMonthlyTakeHome(job?.salary);
+  const applicantCount = job?.applications?.length || 0;
 
   const daysAgo = (date) => {
     const diff = new Date() - new Date(date);
@@ -71,17 +78,34 @@ const Job = ({ job }) => {
     >
       {/* HEADER */}
       <div className="flex items-center justify-between px-5 pt-4">
-        <div className="flex items-center gap-2">
-          <p className="text-xs text-gray-500">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <p className="text-xs text-gray-500 mr-1">
             {job?.createdAt
               ? daysAgo(job.createdAt) === 0
                 ? "Today"
-                : `${daysAgo(job.createdAt)} days ago`
+                : `${daysAgo(job.createdAt)}d ago`
               : "Recently"}
           </p>
           {isApplied && (
             <span className="px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200">
               ✓ Applied
+            </span>
+          )}
+          {skillMatch.hasSkills && skillMatch.matchPercentage > 0 && (
+            <span
+              className={`px-2 py-0.5 text-[11px] font-bold rounded-full border flex items-center gap-1 ${
+                skillMatch.matchPercentage >= 70
+                  ? "bg-purple-50 text-purple-700 border-purple-200"
+                  : "bg-indigo-50 text-indigo-700 border-indigo-200"
+              }`}
+              title={
+                skillMatch.matchedSkills.length > 0
+                  ? `Matched: ${skillMatch.matchedSkills.slice(0, 3).join(", ")}`
+                  : "Skills match"
+              }
+            >
+              <Zap size={10} className="fill-current text-purple-600" />
+              {skillMatch.matchPercentage}% Match
             </span>
           )}
         </div>
@@ -159,16 +183,29 @@ const Job = ({ job }) => {
       </div>
 
       {/* TAGS */}
-      <div className="flex flex-wrap gap-2 px-5 pb-3">
-        <Badge className="bg-pink-100 text-pink-700 text-xs">
-          {job?.position} Positions
+      <div className="flex flex-wrap gap-1.5 px-5 pb-3">
+        <Badge className="bg-pink-50 text-pink-700 border border-pink-200 text-xs font-medium">
+          {job?.position} {job?.position === 1 ? "Opening" : "Openings"}
         </Badge>
-        <Badge className="bg-pink-200 text-pink-700 text-xs">
+        <Badge className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium">
           {job?.jobType}
         </Badge>
-        <Badge className="bg-pink-300 text-pink-700 text-xs">
-          {job?.salary}
+        <Badge className="bg-pink-100 text-pink-700 text-xs font-semibold">
+          {job?.salary?.toString().startsWith("₹") ? job.salary : `₹${job?.salary}`}
         </Badge>
+        {takeHome.valid && (
+          <Badge
+            className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold"
+            title="Estimated monthly take-home pay"
+          >
+            {takeHome.formattedInHand} in-hand
+          </Badge>
+        )}
+        {applicantCount <= 5 && (
+          <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium">
+            🟢 Low Competition
+          </Badge>
+        )}
       </div>
 
       {/* FOOTER */}

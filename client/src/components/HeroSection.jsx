@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Search } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSearchedQuery } from "../redux/jobSlice";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -9,11 +9,12 @@ const HeroSection = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
 
   const searchJobHandler = () => {
     if (!query.trim()) return;
     dispatch(setSearchedQuery(query));
-    navigate("/browse");
+    navigate("/jobs");
   };
 
   return (
@@ -42,7 +43,7 @@ const HeroSection = () => {
       <div className="relative z-10 text-center px-4 pt-24 sm:pt-28 pb-14 sm:pb-18 max-w-5xl mx-auto">
         {/* Highlight badge */}
         <span className="inline-block px-4 sm:px-5 py-1.5 mb-4 rounded-full bg-white/10 border border-white/20 text-pink-400 text-sm font-medium backdrop-blur-md shadow-sm hover:scale-105 transition-transform">
-          🚀 Turning Ambitions Into Careers
+          {user ? `👋 Welcome back, ${user.fullname}` : "🚀 Turning Ambitions Into Careers"}
         </span>
 
         {/* Main heading */}
@@ -53,15 +54,14 @@ const HeroSection = () => {
 
         {/* Supporting text */}
         <p className="mt-4 text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
-          Connect with top recruiters, explore premium opportunities, and shape
-          the future you deserve.
+          Smart matching, real in-hand salary estimates, and transparent hiring with verified recruiters.
         </p>
 
         {/* Job search input */}
         <div className="mt-6 sm:mt-7 flex w-full sm:w-[80%] md:w-[60%] lg:w-[50%] mx-auto shadow-lg rounded-full overflow-hidden border border-white/10 backdrop-blur-xl bg-white/5 hover:scale-105 transition-transform">
           <input
             type="text"
-            placeholder="Search your dream job..."
+            placeholder="Search by title, skill, or location..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && searchJobHandler()}
@@ -80,19 +80,50 @@ const HeroSection = () => {
           </Button>
         </div>
 
+        {/* Quick Vibe Chips */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto text-xs">
+          <span className="text-gray-400 font-medium">Trending:</span>
+          {[
+            { label: "🔥 Remote", query: "Remote" },
+            { label: "🌱 Frontend", query: "Frontend" },
+            { label: "⚡ Full Stack", query: "Full Stack" },
+            { label: "📊 Data", query: "Data" },
+            { label: "💼 Developer", query: "Developer" },
+          ].map((vibe, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                dispatch(setSearchedQuery(vibe.query));
+                navigate("/jobs");
+              }}
+              className="px-3 py-1 rounded-full bg-white/10 hover:bg-pink-600/30 text-gray-200 hover:text-white border border-white/10 hover:border-pink-400/50 backdrop-blur-md transition-all hover:scale-105"
+            >
+              {vibe.label}
+            </button>
+          ))}
+        </div>
+
         {/* Primary actions */}
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link to="/signup">
+          <Link to="/jobs">
             <button className="px-6 py-2.5 text-sm bg-gradient-to-r from-pink-500 to-purple-500 hover:to-pink-600 rounded-full font-medium text-white shadow-md hover:shadow-pink-500/50 transition-all transform hover:scale-105">
-              Get Started
+              Explore All Jobs
             </button>
           </Link>
 
-          <Link to="/browse">
-            <button className="px-6 py-2.5 text-sm border border-white/30 hover:border-pink-400 rounded-full font-medium text-white hover:text-pink-400 backdrop-blur-md transition-all hover:scale-105">
-              Explore Roles
-            </button>
-          </Link>
+          {!user ? (
+            <Link to="/signup">
+              <button className="px-6 py-2.5 text-sm border border-white/30 hover:border-pink-400 rounded-full font-medium text-white hover:text-pink-400 backdrop-blur-md transition-all hover:scale-105">
+                Join As Candidate
+              </button>
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <button className="px-6 py-2.5 text-sm border border-white/30 hover:border-pink-400 rounded-full font-medium text-white hover:text-pink-400 backdrop-blur-md transition-all hover:scale-105">
+                View My Profile
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 
