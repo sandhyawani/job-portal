@@ -37,6 +37,7 @@ test.js
 *.spec.js
 test/
 tests/
+!backend/tests/
 __tests__/
 tmp/
 temp/

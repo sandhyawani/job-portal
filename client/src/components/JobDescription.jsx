@@ -35,7 +35,7 @@ import {
   Check,
   AlertTriangle,
 } from "lucide-react";
-import TrustBadge from "./TrustBadge";
+import TrustBadge, { CompanyVerificationSignals } from "./TrustBadge";
 import ApplicationReadinessModal from "./ApplicationReadinessModal";
 import { calculateSkillMatch } from "@/utils/skillMatcher";
 import { calculateMonthlyTakeHome } from "@/utils/salaryCalculator";
@@ -356,6 +356,9 @@ const JobDescription = () => {
                     </a>
                   )}
                 </div>
+
+                {/* Evidence-Based Observable Signals */}
+                <CompanyVerificationSignals company={company} job={singleJob} />
               </div>
             </div>
           )}
@@ -370,7 +373,7 @@ const JobDescription = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                      Profile Skill Match:{" "}
+                      Profile Skill Alignment:{" "}
                       <span className="text-purple-700 font-extrabold">
                         {skillMatch.matchPercentage}% Compatible
                       </span>
@@ -391,7 +394,7 @@ const JobDescription = () => {
                       </Badge>
                     </h4>
                     <p className="text-xs text-gray-500">
-                      Evaluated against the skills verified on your candidate profile
+                      Evaluated against candidate profile skills; resume attached for recruiter evaluation
                     </p>
                   </div>
                 </div>

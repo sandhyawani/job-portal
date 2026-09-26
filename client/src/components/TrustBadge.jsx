@@ -48,4 +48,42 @@ const TrustBadge = ({ trustLevel, showWarning = false }) => {
   );
 };
 
+export const CompanyVerificationSignals = ({ company, job }) => {
+  const hasWebsite = Boolean(company?.website);
+  const hasDescription = Boolean(company?.description && company.description.length > 15);
+  const hasSalary = Boolean(job?.salary);
+
+  return (
+    <div className="mt-3 pt-3 border-t border-gray-100 space-y-1.5">
+      <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+        Observable Company Signals
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-gray-600">
+        <div className="flex items-center gap-1.5">
+          <span className={hasWebsite ? "text-emerald-600 font-bold" : "text-gray-400"}>
+            {hasWebsite ? "✓" : "•"}
+          </span>
+          <span>{hasWebsite ? "Official website provided" : "Website not provided"}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className={hasDescription ? "text-emerald-600 font-bold" : "text-gray-400"}>
+            {hasDescription ? "✓" : "•"}
+          </span>
+          <span>{hasDescription ? "Company profile information provided" : "Basic profile"}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className={hasSalary ? "text-emerald-600 font-bold" : "text-gray-400"}>
+            {hasSalary ? "✓" : "•"}
+          </span>
+          <span>{hasSalary ? "Transparent compensation provided" : "Undisclosed compensation"}</span>
+        </div>
+        <div className="flex items-center gap-1.5 text-gray-500">
+          <span className="text-amber-500 font-bold">⚠</span>
+          <span>Recruiter identity not independently third-party verified</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default TrustBadge;

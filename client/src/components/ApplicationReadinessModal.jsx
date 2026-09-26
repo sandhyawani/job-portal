@@ -151,15 +151,15 @@ const ApplicationReadinessModal = ({
                     </div>
                     <div>
                       <p className="text-xs font-bold text-gray-900">
-                        {hasResume ? "Resume Verified" : "No Resume Uploaded"}
+                        {hasResume ? "Resume Attached" : "No Resume Uploaded"}
                       </p>
                       <p className="text-[11px] text-gray-600 mt-0.5">
                         {hasResume ? (
                           <span className="font-medium text-emerald-800">
-                            {user.profile?.resumeOriginalName || "resume.pdf"}
+                            {user.profile?.resumeOriginalName || "resume.pdf"} (attached for recruiter review)
                           </span>
                         ) : (
-                          "Recruiters are 3x more likely to shortlist profiles with an uploaded resume."
+                          "Recruiters are 3x more likely to shortlist profiles with an attached resume."
                         )}
                       </p>
                     </div>
@@ -191,10 +191,10 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
                       <Sparkles size={14} className="text-purple-600" />
-                      Role Compatibility
+                      Profile Skill Alignment
                     </span>
                     <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-xs font-bold">
-                      {skillMatch.matchPercentage}% Match
+                      {skillMatch.matchPercentage}% Compatible
                     </Badge>
                   </div>
 
