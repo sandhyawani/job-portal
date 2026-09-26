@@ -1,110 +1,126 @@
-# 💼 JobPortal - Full-Stack Job Portal
+﻿# JobPortal - Full-Stack Hiring Platform
 
-A modern, full-stack Job Portal built using the **MERN (MongoDB, Express, React, Node.js)** stack. This application facilitates interaction between **Job Seekers (Students)** and **Recruiters**, enabling seamless job search, profile management, and hiring workflows, enriched with a **Company Trust Verification System**.
-
----
-
-## 🌐 Live Demo & Deployment
-
-* **Frontend (Vercel):** [https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)
-* **Backend API (Render):** [https://job-portal-fy3b.onrender.com](https://job-portal-fy3b.onrender.com)
+A production-grade, full-stack job portal built on the **MERN stack** (MongoDB, Express, React, Node.js) with a fully enforced backend application pipeline, real take-home salary estimation, skill alignment scoring, company trust signals, and audit-trailed status history.
 
 ---
 
-## 🛡️ Key Features
+## Live Application
 
-### 👤 For Students (Job Seekers)
-* **Auth & Profiles:** Registration & Login, profile picture upload, bio, skills input, and resume/CV upload (handled via Cloudinary).
-* **Job Directory:** Browse and filter jobs by location, industry, salary range, and job titles.
-* **Detailed Job Specifications:** View specific job descriptions, application counts, positions, salaries, and company trust levels.
-* **Application Status Tracking:** Apply with one click and track application status (`Pending`, `Accepted`, `Rejected`) in real-time.
+**Frontend (Vercel):** [https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)
 
-### 🏢 For Recruiters
-* **Company Registration:** Create and manage company pages (Location, Logo, Website, Registration Number).
-* **Job Posting & Management:** Post new positions or edit existing ones. Define required skills, experience level, description, salary, and available positions.
-* **Applicant Screening:** View list of applicants for posted jobs, inspect their resumes, and update application status (`Accepted` or `Rejected`).
-* **Company Verification:** Display trust level classifications to build credibility for applicants.
+**Backend API (Render):** [https://job-portal-fy3b.onrender.com](https://job-portal-fy3b.onrender.com)
 
-### 🌟 Distinct Feature: Company Trust Verification
-* Companies are classified into **High**, **Medium**, and **Low** trust levels.
-* Candidates receive visual badges and security alerts based on whether the recruiter's company profile is verified or has complete details.
+> Note: The backend is hosted on Render's free tier. The first request may take ~30 seconds to wake the server.
 
 ---
 
-## 🛠️ Tech Stack
+## Key Features
+
+### For Candidates (Job Seekers)
+- Register and log in with role-based authentication (JWT + Cookies).
+- Upload profile photo and resume via Cloudinary.
+- Add skills and bio to your profile.
+- Browse all jobs or search by title, skill, or location.
+- View real-time **In-Hand Take-Home Salary Estimates** (Indian New Tax Regime) before applying.
+- See a **Skill Alignment Score** for every job listing based on your profile skills.
+- Apply to jobs with a single click (duplicate protection enforced at backend).
+- Track full application history with a live **Application Timeline** — stage, date, and recruiter comment for every status change.
+- Save jobs and manage a personal saved jobs list.
+
+### For Recruiters
+- Register and manage company profiles (logo, website, description).
+- Post, edit, and manage job listings.
+- View all applicants per job posting.
+- Move applicants through an **enforced hiring pipeline**:
+
+```
+Applied → Under Review → Shortlisted → Interview → Offer → Hired
+```
+
+  Terminal states: `Rejected`, `Withdrawn`.
+- Illegal transitions (e.g. jumping directly to Hired) are rejected at the API level.
+- Every status change is written to `statusHistory` with actor, timestamp, and optional comment.
+
+### Security and Data Integrity
+- Cross-recruiter authorization: Recruiter A cannot view or modify Recruiter B's data.
+- Candidates cannot modify application status.
+- Duplicate applications blocked at the database level.
+- Invalid ObjectId requests handled safely (400, not 500).
+- Unauthenticated requests receive 401 Unauthorized.
+- **15 / 15 automated security and pipeline tests passing.**
+
+### Company Trust Signals
+- Companies are rated **High / Medium / Low** based on observable data points.
+- Trust badge displayed on every job card and job detail page.
+- Honest disclaimer that recruiter identity is not independently third-party verified.
+
+---
+
+## Tech Stack
 
 ### Frontend
-* **Core:** [React 19](https://react.dev/), [Vite](https://vite.dev/) (Build tool)
-* **Routing:** [React Router DOM v7](https://reactrouter.com/)
-* **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/) & [Redux Persist](https://github.com/rt2zz/redux-persist) (for persisted local session state)
-* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-* **Components & UI:** [Radix UI](https://www.radix-ui.com/), [Lucide React](https://lucide.dev/), [Framer Motion](https://www.framer.com/motion/) (animations), [Embla Carousel](https://www.embla-carousel.com/)
-* **Alerts/Toasts:** [Sonner](https://sonner.emilkowal.ski/), [React Hot Toast](https://react-hot-toast.com/)
+| Category | Technology |
+|---|---|
+| Framework | React 18, Vite |
+| Routing | React Router v6 |
+| State | Redux Toolkit, Redux Persist |
+| Styling | Tailwind CSS v4 |
+| UI Primitives | Radix UI, Lucide React, Embla Carousel |
+| Notifications | Sonner |
 
 ### Backend
-* **Runtime:** Node.js (ES Module format)
-* **Framework:** Express.js
-* **Database:** MongoDB via [Mongoose ODM](https://mongoosejs.com/)
-* **Authentication:** JSON Web Tokens (JWT) & Cookies (`cookie-parser`)
-* **File Uploads:** Multer, DataURI, and Cloudinary API (for media & resumes)
-* **Security:** Bcrypt.js (Password hashing), CORS
+| Category | Technology |
+|---|---|
+| Runtime | Node.js (ES Modules) |
+| Framework | Express.js |
+| Database | MongoDB via Mongoose |
+| Auth | JWT + cookie-parser |
+| File Uploads | Multer + Cloudinary |
+| Security | Bcrypt.js, CORS |
 
 ---
 
-## 📂 Project Architecture
+## Project Structure
 
 ```
 job-portal/
 ├── backend/
-│   ├── controllers/      # Route controllers (user, company, job, application)
-│   ├── middlewares/      # Authentication & route guarding
-│   ├── models/           # Mongoose schemas (User, Company, Job, Application)
-│   ├── routes/           # Express router endpoints
-│   ├── services/         # Custom service integrations
-│   ├── utils/            # Helper utils (Database connection, Cloudinary configuration)
-│   ├── index.js          # Express app entry point
-│   └── package.json
+│   ├── controllers/        # Business logic (user, company, job, application)
+│   ├── middlewares/        # Auth guards and role checks
+│   ├── models/             # Mongoose schemas (User, Company, Job, Application)
+│   ├── routes/             # Express route definitions
+│   ├── tests/              # Automated security and pipeline test suite
+│   ├── utils/              # DB connection, Cloudinary config
+│   └── index.js            # App entry point
 └── client/
-    ├── public/           # Static assets
-    ├── src/
-    │   ├── assets/       # React images and SVG assets
-    │   ├── components/   # Application React components
-    │   │   ├── admin/    # Recruiter-only screens (PostJob, Applicants, Companies)
-    │   │   ├── auth/     # Login & Signup screens
-    │   │   ├── ui/       # Custom Radix / styled primitives
-    │   │   └── shared/   # Reusable layouts (Navbar, Footer)
-    │   ├── hooks/        # Custom React hooks (fetch hooks)
-    │   ├── redux/        # Redux slices and store configuration
-    │   ├── utils/        # Constants and api endpoints helper
-    │   ├── App.jsx       # App main component & routes definition
-    │   ├── main.jsx      # React entry point
-    │   └── index.css     # Global styles & Tailwind setups
-    ├── vite.config.js
-    └── package.json
+    └── src/
+        ├── components/
+        │   ├── admin/      # Recruiter-only screens
+        │   ├── auth/       # Login, Signup
+        │   ├── shared/     # Navbar, Footer
+        │   └── ui/         # Radix UI primitives
+        ├── hooks/          # Custom data-fetching hooks
+        ├── redux/          # Store, slices
+        └── utils/          # Constants, salaryCalculator, skillMatcher
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## Local Setup
 
 ### Prerequisites
-* [Node.js](https://nodejs.org/) (v18+)
-* [MongoDB](https://www.mongodb.com/) (Local or Atlas cloud cluster)
-* [Cloudinary Account](https://cloudinary.com/) (For file/resume upload support)
+- Node.js v18+
+- MongoDB (local or Atlas)
+- Cloudinary account
 
-### Step 1: Clone the Repository
+### 1. Clone the repository
 ```bash
 git clone https://github.com/sandhyawani/job-portal.git
 cd job-portal
 ```
 
-### Step 2: Configure the Backend Environment
-Navigate to the `backend` folder and create a `.env` file:
-```bash
-cd backend
-touch .env
-```
-Add the following keys to your `backend/.env`:
+### 2. Configure the backend
+Create `backend/.env` with:
 ```env
 PORT=8000
 MONGO_URI=your_mongodb_connection_uri
@@ -114,51 +130,60 @@ API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
 ```
 
-### Step 3: Run the Backend Server
+### 3. Start the backend
 ```bash
+cd backend
 npm install
 npm run dev
 ```
-The server will boot on `http://localhost:8000`.
+Backend runs at `http://localhost:8000`.
 
-### Step 4: Configure & Run the Frontend (Client)
-Open a new terminal session, navigate to the `client` directory, configure environment URLs, and launch the dev server:
+### 4. Start the frontend
 ```bash
 cd client
 npm install
-```
-*Note: The frontend is pre-configured to communicate with the local server (`http://localhost:8000/api/v1`) via `client/src/utils/constant.js`.*
-
-Start the development build:
-```bash
 npm run dev
 ```
-Open `http://localhost:5173` in your web browser.
+Frontend runs at `http://localhost:5173`.
 
 ---
 
-## 📡 API Endpoints
+## API Reference
 
-| Resource | Method | Endpoint | Description | Auth Required |
+| Resource | Method | Endpoint | Description | Auth |
 |---|---|---|---|---|
-| **Users** | `POST` | `/api/v1/user/register` | Register student or recruiter | No |
-| | `POST` | `/api/v1/user/login` | Login user and set JWT cookie | No |
-| | `GET` | `/api/v1/user/logout` | Log out user and clear cookie | Yes |
-| | `POST` | `/api/v1/user/profile/update` | Update user profile & upload resume | Yes |
-| **Companies** | `POST` | `/api/v1/company/register` | Register a new company profile | Yes (Recruiter) |
-| | `GET` | `/api/v1/company/get` | Get all companies created by user | Yes (Recruiter) |
-| | `GET` | `/api/v1/company/get/:id` | Fetch specific company details | Yes |
-| | `PUT` | `/api/v1/company/update/:id` | Update company profile (logo, name, etc.) | Yes (Recruiter) |
-| **Jobs** | `POST` | `/api/v1/job/post` | Post a new job opening | Yes (Recruiter) |
-| | `GET` | `/api/v1/job/get` | Retrieve all active job postings | No |
-| | `GET` | `/api/v1/job/get/:id` | Fetch details of a specific job | Yes |
-| | `GET` | `/api/v1/job/getadminjobs` | Retrieve all jobs posted by the logged-in admin | Yes (Recruiter) |
-| **Applications** | `POST` | `/api/v1/application/apply/:id` | Apply for a specific job | Yes (Student) |
-| | `GET` | `/api/v1/application/get` | Retrieve all jobs applied by the student | Yes (Student) |
-| | `GET` | `/api/v1/application/:id/applicants` | View list of applicants for a job | Yes (Recruiter) |
-| | `POST` | `/api/v1/application/status/:id/update` | Accept/reject applicant application | Yes (Recruiter) |
+| Users | POST | /api/v1/user/register | Register as student or recruiter | No |
+| | POST | /api/v1/user/login | Login and receive JWT cookie | No |
+| | GET | /api/v1/user/logout | Log out and clear cookie | Yes |
+| | POST | /api/v1/user/profile/update | Update profile and resume | Yes |
+| Companies | POST | /api/v1/company/register | Register a new company | Recruiter |
+| | GET | /api/v1/company/get | List companies owned by recruiter | Recruiter |
+| | PUT | /api/v1/company/update/:id | Update company profile | Recruiter |
+| Jobs | POST | /api/v1/job/post | Post a new job | Recruiter |
+| | GET | /api/v1/job/get | List all active jobs | No |
+| | GET | /api/v1/job/get/:id | Get single job detail | Yes |
+| | GET | /api/v1/job/getadminjobs | List recruiter's own jobs | Recruiter |
+| Applications | POST | /api/v1/application/apply/:id | Apply for a job | Student |
+| | GET | /api/v1/application/get | Get all applications by student | Student |
+| | GET | /api/v1/application/:id/applicants | Get applicants for a job | Recruiter |
+| | POST | /api/v1/application/status/:id/update | Advance pipeline status | Recruiter |
 
 ---
 
-## 📄 License
-This project is open-source and available under the [ISC License](LICENSE).
+## Testing
+
+```bash
+cd backend
+npm test
+```
+
+Expected output:
+```
+TEST SUMMARY: 15 / 15 PASSED
+```
+
+---
+
+## License
+
+This project is open-source under the [ISC License](LICENSE).
