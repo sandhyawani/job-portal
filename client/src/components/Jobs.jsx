@@ -18,12 +18,15 @@ const Jobs = () => {
   useEffect(() => {
     const jobsList = allJobs || [];
     if (searchedQuery) {
+      const query = searchedQuery.toLowerCase().trim();
       const filteredJobs = jobsList.filter((job) => {
-        return (
-          job.title?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.description?.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.location?.toLowerCase().includes(searchedQuery.toLowerCase())
-        );
+        const titleMatch = job.title?.toLowerCase().includes(query);
+        const descMatch = job.description?.toLowerCase().includes(query);
+        const locMatch = job.location?.toLowerCase().includes(query);
+        const reqMatch = Array.isArray(job?.requirements)
+          ? job.requirements.some((r) => r?.toLowerCase().includes(query))
+          : job?.requirements?.toLowerCase().includes(query);
+        return titleMatch || descMatch || locMatch || reqMatch;
       });
       setFilterJobs(filteredJobs);
     } else {

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
+import { User } from "../models/user.model.js";
 
 export const applyJob = async (req, res) => {
   try {
@@ -22,14 +23,17 @@ export const applyJob = async (req, res) => {
       });
     }
 
-    // Check if user already applied
-    const existingApplication = await Application.findOne({
-      job: jobId,
-      applicant: userId,
-    });
-    if (existingApplication) {
-      return res.status(400).json({
-        message: "You have already applied for this job",
+    // Role check: Only candidates can apply for jobs
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+    if (user.role === "recruiter") {
+      return res.status(403).json({
+        message: "Recruiters cannot apply for jobs. Please use a candidate account.",
         success: false,
       });
     }
@@ -39,6 +43,26 @@ export const applyJob = async (req, res) => {
     if (!job) {
       return res.status(404).json({
         message: "Job not found",
+        success: false,
+      });
+    }
+
+    // Prevent recruiter from applying to their own job
+    if (job.created_by.toString() === userId.toString()) {
+      return res.status(400).json({
+        message: "You cannot apply to your own job posting.",
+        success: false,
+      });
+    }
+
+    // Check if user already applied
+    const existingApplication = await Application.findOne({
+      job: jobId,
+      applicant: userId,
+    });
+    if (existingApplication) {
+      return res.status(400).json({
+        message: "You have already applied for this job",
         success: false,
       });
     }
@@ -86,9 +110,11 @@ export const getAppliedJobs = async (req, res) => {
   }
 };
 
+// Only the recruiter who posted the job can view applicants
 export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id;
+    const recruiterId = req.id;
 
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({
@@ -110,6 +136,14 @@ export const getApplicants = async (req, res) => {
       });
     }
 
+    // Ownership check: Recruiter must own this job
+    if (job.created_by.toString() !== recruiterId.toString()) {
+      return res.status(403).json({
+        message: "Unauthorized. You can only view applicants for your own job postings.",
+        success: false,
+      });
+    }
+
     return res.status(200).json({
       job,
       success: true,
@@ -120,14 +154,25 @@ export const getApplicants = async (req, res) => {
   }
 };
 
+// Only the recruiter who posted the job can update candidate application status
 export const updateStatus = async (req, res) => {
   try {
     const { status } = req.body;
     const applicationId = req.params.id;
+    const recruiterId = req.id;
 
     if (!status) {
       return res.status(400).json({
         message: "Status is required",
+        success: false,
+      });
+    }
+
+    const normalizedStatus = status.toLowerCase();
+    const validStatuses = ["pending", "accepted", "rejected"];
+    if (!validStatuses.includes(normalizedStatus)) {
+      return res.status(400).json({
+        message: `Invalid status. Allowed values: ${validStatuses.join(", ")}`,
         success: false,
       });
     }
@@ -139,7 +184,7 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    const application = await Application.findById(applicationId);
+    const application = await Application.findById(applicationId).populate("job");
     if (!application) {
       return res.status(404).json({
         message: "Application not found.",
@@ -147,11 +192,19 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    application.status = status.toLowerCase();
+    // Ownership check: Recruiter must own the job associated with this application
+    if (!application.job || application.job.created_by.toString() !== recruiterId.toString()) {
+      return res.status(403).json({
+        message: "Unauthorized. You can only update application statuses for jobs you posted.",
+        success: false,
+      });
+    }
+
+    application.status = normalizedStatus;
     await application.save();
 
     return res.status(200).json({
-      message: "Status updated successfully.",
+      message: `Status updated to ${normalizedStatus} successfully.`,
       success: true,
     });
   } catch (error) {

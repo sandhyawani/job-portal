@@ -31,6 +31,13 @@ import useGetAllCompanies from "../hooks/useGetAllCompanies";
 const Profile = () => {
   const { user } = useSelector((store) => store.auth);
   const isRecruiter = user?.role === "recruiter";
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   // Data fetching based on active role
   useGetAppliedJobs();
@@ -40,7 +47,8 @@ const Profile = () => {
 
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("applied");
-  const navigate = useNavigate();
+
+  if (!user) return null;
 
   const { allAppliedJobs, allSavedJobs, allAdminJobs } = useSelector((store) => store.job);
   const { companies } = useSelector((store) => store.company);

@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import { Company } from "../models/company.model.js";
+import { User } from "../models/user.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
 import { calculateTrust } from "../services/trust.service.js";
 
-// reg comp
+// Register company (recruiter only)
 export const registerCompany = async (req, res) => {
   try {
-    const name = req.body.name || req.body.companyName;
+    const name = (req.body.name || req.body.companyName || "").trim();
 
     if (!name) {
       return res.status(400).json({
@@ -16,11 +17,20 @@ export const registerCompany = async (req, res) => {
       });
     }
 
+    // Role check: Only recruiters can register companies
+    const user = await User.findById(req.id);
+    if (!user || user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden. Only recruiters can register companies.",
+      });
+    }
+
     const existing = await Company.findOne({ name });
     if (existing) {
       return res.status(400).json({
         success: false,
-        message: "Company already exists",
+        message: "Company already exists with this name",
       });
     }
 

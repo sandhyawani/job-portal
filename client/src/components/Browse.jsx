@@ -19,6 +19,19 @@ const Browse = () => {
         };
     }, [dispatch]);
 
+    // Filter jobs client-side based on searchedQuery matching title, description, location, or requirements
+    const filterJobs = (allJobs || []).filter((job) => {
+        if (!searchedQuery) return true;
+        const query = searchedQuery.toLowerCase().trim();
+        const titleMatch = job?.title?.toLowerCase().includes(query);
+        const descMatch = job?.description?.toLowerCase().includes(query);
+        const locMatch = job?.location?.toLowerCase().includes(query);
+        const reqMatch = Array.isArray(job?.requirements)
+            ? job.requirements.some((r) => r?.toLowerCase().includes(query))
+            : job?.requirements?.toLowerCase().includes(query);
+        return titleMatch || descMatch || locMatch || reqMatch;
+    });
+
     return (
         <div className="min-h-screen bg-slate-50/70 pb-16">
             {/* Navbar */}
@@ -36,7 +49,7 @@ const Browse = () => {
                             "Explore All Openings"
                         )}
                         <span className="ml-2 text-sm font-normal text-gray-500">
-                            ({allJobs?.length || 0} {allJobs?.length === 1 ? "opening" : "openings"})
+                            ({filterJobs.length} {filterJobs.length === 1 ? "opening" : "openings"})
                         </span>
                     </h1>
 
@@ -79,9 +92,25 @@ const Browse = () => {
                             </div>
                         ))}
                     </div>
+                ) : filterJobs.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center text-center py-20 px-4 bg-white rounded-3xl border border-gray-100 shadow-sm my-6">
+                        <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 mb-4 font-bold text-2xl">
+                            🔍
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-800">No matching jobs found</h3>
+                        <p className="text-gray-500 mt-1 max-w-sm text-sm">
+                            We couldn&apos;t find any openings matching &ldquo;{searchedQuery}&rdquo;. Try another keyword or clear the filter.
+                        </p>
+                        <button
+                            onClick={() => dispatch(setSearchedQuery(""))}
+                            className="mt-5 px-5 py-2.5 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all hover:scale-105"
+                        >
+                            Reset Filter & View All Jobs
+                        </button>
+                    </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {allJobs.map((job) => (
+                        {filterJobs.map((job) => (
                             <Job key={job._id} job={job} />
                         ))}
                     </div>
