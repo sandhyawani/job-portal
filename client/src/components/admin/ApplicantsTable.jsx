@@ -69,7 +69,7 @@ const STATUS_CONFIG = {
     icon: <CheckCircle2 size={12} className="text-teal-600" />,
   },
   hired: {
-    label: "Hired 🎉",
+    label: "Hired",
     style: "bg-emerald-50 text-emerald-700 border-emerald-200",
     icon: <CheckCircle2 size={12} className="text-emerald-600" />,
   },
@@ -88,32 +88,32 @@ const STATUS_CONFIG = {
 // Transition matrix strictly adhering to backend rules
 const NEXT_TRANSITIONS = {
   applied: [
-    { key: "under_review", label: "🔍 Move to Under Review" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "under_review", label: "Move to Under Review" },
+    { key: "rejected", label: "Reject Application" },
   ],
   pending: [
-    { key: "under_review", label: "🔍 Move to Under Review" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "under_review", label: "Move to Under Review" },
+    { key: "rejected", label: "Reject Application" },
   ],
   accepted: [
-    { key: "hired", label: "🎉 Mark as Hired" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "hired", label: "Mark as Hired" },
+    { key: "rejected", label: "Reject Application" },
   ],
   under_review: [
-    { key: "shortlisted", label: "⭐ Shortlist Candidate" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "shortlisted", label: "Shortlist Candidate" },
+    { key: "rejected", label: "Reject Application" },
   ],
   shortlisted: [
-    { key: "interview", label: "📅 Schedule / Move to Interview" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "interview", label: "Schedule / Move to Interview" },
+    { key: "rejected", label: "Reject Application" },
   ],
   interview: [
-    { key: "offer", label: "💼 Extend Job Offer" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "offer", label: "Extend Job Offer" },
+    { key: "rejected", label: "Reject Application" },
   ],
   offer: [
-    { key: "hired", label: "🎉 Mark as Hired" },
-    { key: "rejected", label: "❌ Reject Application" },
+    { key: "hired", label: "Mark as Hired" },
+    { key: "rejected", label: "Reject Application" },
   ],
   hired: [],
   rejected: [],

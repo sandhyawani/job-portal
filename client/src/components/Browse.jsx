@@ -4,6 +4,7 @@ import Job from './Job';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import { Search } from 'lucide-react';
 
 const Browse = () => {
     // Fetch all jobs on page load
@@ -94,8 +95,8 @@ const Browse = () => {
                     </div>
                 ) : filterJobs.length === 0 ? (
                     <div className="flex flex-col items-center justify-center text-center py-20 px-4 bg-white rounded-3xl border border-gray-100 shadow-sm my-6">
-                        <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center text-pink-600 mb-4 font-bold text-2xl">
-                            🔍
+                        <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-600 mb-4 shadow-2xs">
+                            <Search size={26} />
                         </div>
                         <h3 className="text-xl font-bold text-gray-800">No matching jobs found</h3>
                         <p className="text-gray-500 mt-1 max-w-sm text-sm">

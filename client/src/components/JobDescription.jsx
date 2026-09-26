@@ -113,7 +113,7 @@ const JobDescription = () => {
 
   const shareToWhatsApp = () => {
     const text = encodeURIComponent(
-      `💼 *${singleJob?.title}* at *${singleJob?.company?.name || "Company"}*\n📍 ${singleJob?.location} | 💰 ${formatSalary(singleJob?.salary)}\n\nApply here: ${window.location.href}`
+      `Job Opening: *${singleJob?.title}* at *${singleJob?.company?.name || "Company"}*\nLocation: ${singleJob?.location} | Compensation: ${formatSalary(singleJob?.salary)}\n\nView details & apply: ${window.location.href}`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
   };
@@ -308,7 +308,7 @@ const JobDescription = () => {
                     : "bg-pink-600 hover:bg-pink-700 text-white hover:shadow-md active:scale-95"
                 }`}
               >
-                {isApplied ? "✓ Already Applied" : "Apply Now"}
+                {isApplied ? "Already Applied" : "Apply Now"}
               </Button>
             </div>
           </div>
@@ -420,9 +420,10 @@ const JobDescription = () => {
                     {skillMatch.matchedSkills.map((s, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-0.5 rounded-md bg-emerald-100/80 text-emerald-800 font-semibold border border-emerald-200"
+                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-100/80 text-emerald-800 font-semibold border border-emerald-200"
                       >
-                        ✓ {s}
+                        <Check size={11} className="stroke-[2.5]" />
+                        <span>{s}</span>
                       </span>
                     ))}
                   </div>
@@ -615,8 +616,9 @@ const JobDescription = () => {
                 <ShieldCheck size={22} />
               </div>
               <div>
-                <p className="text-xs font-bold text-indigo-950 flex items-center gap-2">
-                  ⚡ Active Hiring & Fast Response
+                <p className="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+                  <Zap size={14} className="text-indigo-600 fill-indigo-600 shrink-0" />
+                  <span>Active Hiring & Fast Response</span>
                   {(singleJob.applications?.length || 0) <= 5 && (
                     <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded-full">
                       Low Competition

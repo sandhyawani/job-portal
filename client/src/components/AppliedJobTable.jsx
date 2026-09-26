@@ -13,6 +13,7 @@ import {
   Search,
   History,
   Calendar,
+  MapPin,
 } from "lucide-react";
 
 const PIPELINE_META = {
@@ -60,8 +61,8 @@ const PIPELINE_META = {
   },
   hired: {
     style: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    label: "Hired 🎉",
-    stage: "Final Stage • Welcome Aboard!",
+    label: "Hired",
+    stage: "Final Stage • Candidate Selected",
     icon: <CheckCircle2 size={13} className="text-emerald-600" />,
   },
   rejected: {
@@ -154,8 +155,9 @@ const AppliedJobTable = () => {
                         {appliedJob.job?.title ?? "Position Unavailable"}
                       </div>
                       {appliedJob.job?.location && (
-                        <div className="text-[11px] text-gray-400 font-normal">
-                          📍 {appliedJob.job.location}
+                        <div className="text-[11px] text-gray-400 font-normal flex items-center gap-1 mt-0.5">
+                          <MapPin size={11} className="text-gray-400 shrink-0" />
+                          <span>{appliedJob.job.location}</span>
                         </div>
                       )}
                     </TableCell>

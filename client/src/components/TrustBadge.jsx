@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge } from "./ui/badge";
-import { ShieldAlert, ShieldCheck } from "lucide-react";
+import { ShieldAlert, ShieldCheck, Check, AlertTriangle } from "lucide-react";
 
 const trustStyles = {
   HIGH: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -40,8 +40,9 @@ const TrustBadge = ({ trustLevel, showWarning = false }) => {
       </Badge>
 
       {showWarning && !isHigh && (
-        <p className="text-xs text-amber-700/90 leading-snug">
-          ⚠ {trustTooltip[trustLevel]}
+        <p className="text-xs text-amber-700/90 leading-snug flex items-center gap-1">
+          <AlertTriangle size={12} className="text-amber-600 shrink-0" />
+          <span>{trustTooltip[trustLevel]}</span>
         </p>
       )}
     </div>
@@ -60,25 +61,31 @@ export const CompanyVerificationSignals = ({ company, job }) => {
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-gray-600">
         <div className="flex items-center gap-1.5">
-          <span className={hasWebsite ? "text-emerald-600 font-bold" : "text-gray-400"}>
-            {hasWebsite ? "✓" : "•"}
-          </span>
+          {hasWebsite ? (
+            <Check size={11} className="text-emerald-600 stroke-[2.5] shrink-0" />
+          ) : (
+            <span className="text-gray-400 font-bold">•</span>
+          )}
           <span>{hasWebsite ? "Official website provided" : "Website not provided"}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className={hasDescription ? "text-emerald-600 font-bold" : "text-gray-400"}>
-            {hasDescription ? "✓" : "•"}
-          </span>
+          {hasDescription ? (
+            <Check size={11} className="text-emerald-600 stroke-[2.5] shrink-0" />
+          ) : (
+            <span className="text-gray-400 font-bold">•</span>
+          )}
           <span>{hasDescription ? "Company profile information provided" : "Basic profile"}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className={hasSalary ? "text-emerald-600 font-bold" : "text-gray-400"}>
-            {hasSalary ? "✓" : "•"}
-          </span>
+          {hasSalary ? (
+            <Check size={11} className="text-emerald-600 stroke-[2.5] shrink-0" />
+          ) : (
+            <span className="text-gray-400 font-bold">•</span>
+          )}
           <span>{hasSalary ? "Transparent compensation provided" : "Undisclosed compensation"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-gray-500">
-          <span className="text-amber-500 font-bold">⚠</span>
+          <AlertTriangle size={11} className="text-amber-500 shrink-0" />
           <span>Recruiter identity not independently third-party verified</span>
         </div>
       </div>

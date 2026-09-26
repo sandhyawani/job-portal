@@ -43,7 +43,7 @@ const HeroSection = () => {
       <div className="relative z-10 text-center px-4 pt-24 sm:pt-28 pb-14 sm:pb-18 max-w-5xl mx-auto">
         {/* Highlight badge */}
         <span className="inline-block px-4 sm:px-5 py-1.5 mb-4 rounded-full bg-white/10 border border-white/20 text-pink-400 text-sm font-medium backdrop-blur-md shadow-sm hover:scale-105 transition-transform">
-          {user ? `👋 Welcome back, ${user.fullname}` : "🚀 Turning Ambitions Into Careers"}
+          {user ? `Welcome back, ${user.fullname}` : "Verified Opportunities & Direct Hiring"}
         </span>
 
         {/* Main heading */}
@@ -80,15 +80,15 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        {/* Quick Vibe Chips */}
+        {/* Quick Search Chips */}
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto text-xs">
-          <span className="text-gray-400 font-medium">Trending:</span>
+          <span className="text-gray-400 font-medium">Popular:</span>
           {[
-            { label: "🔥 Remote", query: "Remote" },
-            { label: "🌱 Frontend", query: "Frontend" },
-            { label: "⚡ Full Stack", query: "Full Stack" },
-            { label: "📊 Data", query: "Data" },
-            { label: "💼 Developer", query: "Developer" },
+            { label: "Remote", query: "Remote" },
+            { label: "Frontend", query: "Frontend" },
+            { label: "Full Stack", query: "Full Stack" },
+            { label: "Data Engineering", query: "Data" },
+            { label: "Backend", query: "Backend" },
           ].map((vibe, idx) => (
             <button
               key={idx}

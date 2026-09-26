@@ -15,6 +15,7 @@ import {
   Loader2,
   Check,
   CheckCircle2,
+  X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -208,9 +209,10 @@ const ApplicationReadinessModal = ({
                         {skillMatch.matchedSkills.map((s, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-medium border border-emerald-200"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-medium border border-emerald-200"
                           >
-                            ✓ {s}
+                            <Check size={11} className="stroke-[2.5]" />
+                            <span>{s}</span>
                           </span>
                         ))}
                       </div>
@@ -251,7 +253,7 @@ const ApplicationReadinessModal = ({
                         : "bg-amber-50 text-amber-700 border-amber-200"
                     }`}
                   >
-                    {readinessPercent >= 80 ? "✓ Ready to apply" : "Incomplete Profile"}
+                    {readinessPercent >= 80 ? "Ready to apply" : "Incomplete Profile"}
                   </span>
                 </div>
 
@@ -259,9 +261,9 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center gap-1.5">
                       {user?.fullname ? (
-                        <span className="text-emerald-600 font-bold">✓</span>
+                        <Check size={13} className="text-emerald-600 stroke-[2.5]" />
                       ) : (
-                        <span className="text-rose-500 font-bold">✕</span>
+                        <X size={13} className="text-rose-500 stroke-[2.5]" />
                       )}
                       Name available
                     </span>
@@ -271,9 +273,9 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center gap-1.5">
                       {user?.email ? (
-                        <span className="text-emerald-600 font-bold">✓</span>
+                        <Check size={13} className="text-emerald-600 stroke-[2.5]" />
                       ) : (
-                        <span className="text-rose-500 font-bold">✕</span>
+                        <X size={13} className="text-rose-500 stroke-[2.5]" />
                       )}
                       Email available
                     </span>
@@ -283,9 +285,9 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center gap-1.5">
                       {hasPhone ? (
-                        <span className="text-emerald-600 font-bold">✓</span>
+                        <Check size={13} className="text-emerald-600 stroke-[2.5]" />
                       ) : (
-                        <span className="text-amber-500 font-bold">⚠</span>
+                        <AlertTriangle size={13} className="text-amber-500" />
                       )}
                       Phone number available
                     </span>
@@ -297,9 +299,9 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center gap-1.5">
                       {hasResume ? (
-                        <span className="text-emerald-600 font-bold">✓</span>
+                        <Check size={13} className="text-emerald-600 stroke-[2.5]" />
                       ) : (
-                        <span className="text-amber-500 font-bold">⚠</span>
+                        <AlertTriangle size={13} className="text-amber-500" />
                       )}
                       Resume attached
                     </span>
@@ -311,9 +313,9 @@ const ApplicationReadinessModal = ({
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center gap-1.5">
                       {(user?.profile?.skills?.length || 0) > 0 ? (
-                        <span className="text-emerald-600 font-bold">✓</span>
+                        <Check size={13} className="text-emerald-600 stroke-[2.5]" />
                       ) : (
-                        <span className="text-amber-500 font-bold">•</span>
+                        <span className="text-gray-400 font-bold">•</span>
                       )}
                       Profile skill alignment calculated
                     </span>

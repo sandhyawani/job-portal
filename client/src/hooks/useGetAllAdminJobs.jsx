@@ -24,7 +24,7 @@ const useGetAllAdminJobs = () => {
           toast.error("Failed to load jobs. Please try again.");
         }
       } catch (error) {
-        console.error("❌ Error fetching admin jobs:", error);
+        console.error("Error fetching admin jobs:", error);
         toast.error("Server error while fetching jobs.");
       } finally {
         setLoading(false);

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Bookmark, Star, MapPin, Briefcase, Zap } from "lucide-react";
+import { Bookmark, Star, MapPin, Briefcase, Zap, Check } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -109,8 +109,9 @@ const Job = ({ job }) => {
             </span>
 
             {isApplied && (
-              <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
-                ✓ Applied
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                <Check size={10} className="stroke-[2.5]" />
+                <span>Applied</span>
               </span>
             )}
 

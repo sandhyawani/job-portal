@@ -16,6 +16,7 @@ import {
   Users,
   Sparkles,
   Upload,
+  Check,
 } from "lucide-react";
 import { Badge } from "./ui/badge";
 import AppliedJobTable from "./AppliedJobTable";
@@ -508,8 +509,9 @@ const Profile = () => {
                         <p className="font-bold text-gray-900 text-sm truncate max-w-sm">
                           {user?.profile?.resumeOriginalName || "Resume.pdf"}
                         </p>
-                        <p className="text-xs text-gray-500 mt-0.5">
-                          ✓ Active for recruiter applications
+                        <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                          <Check size={11} className="text-emerald-600 stroke-[2.5]" />
+                          <span>Active for recruiter applications</span>
                         </p>
                       </div>
                     </div>
