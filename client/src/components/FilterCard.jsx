@@ -7,7 +7,11 @@ import { RotateCcw, SlidersHorizontal } from 'lucide-react';
 const filterData = [
   {
     filterType: "Location",
-    options: ["Delhi", "Bengaluru", "Hyderabad", "Pune", "Mumbai", "Nashik"],
+    options: ["Delhi", "Bengaluru", "Hyderabad", "Pune", "Mumbai", "Remote"],
+  },
+  {
+    filterType: "Job Type",
+    options: ["Full-Time", "Part-Time", "Internship", "Contract"],
   },
   {
     filterType: "Job Role",
@@ -16,11 +20,10 @@ const filterData = [
       "Backend Developer",
       "Frontend Developer",
       "Data Analyst",
-      "Data scientist",
       "Marketing Executive",
-      "HR"
-    ]
-  }
+      "HR",
+    ],
+  },
 ];
 
 const FilterCard = () => {

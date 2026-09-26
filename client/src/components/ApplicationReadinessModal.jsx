@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Loader2,
   Check,
+  CheckCircle2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -235,6 +236,109 @@ const ApplicationReadinessModal = ({
                   )}
                 </div>
               )}
+
+              {/* Application Readiness Summary Checklist */}
+              <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs font-bold text-gray-700 uppercase tracking-wide flex items-center gap-1.5">
+                    <CheckCircle2 size={14} className="text-pink-600" />
+                    Application Readiness Checklist
+                  </p>
+                  <span
+                    className={`text-xs font-bold px-2 py-0.5 rounded-full border ${
+                      readinessPercent >= 80
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : "bg-amber-50 text-amber-700 border-amber-200"
+                    }`}
+                  >
+                    {readinessPercent >= 80 ? "✓ Ready to apply" : "Incomplete Profile"}
+                  </span>
+                </div>
+
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-1.5">
+                      {user?.fullname ? (
+                        <span className="text-emerald-600 font-bold">✓</span>
+                      ) : (
+                        <span className="text-rose-500 font-bold">✕</span>
+                      )}
+                      Name available
+                    </span>
+                    <span className="font-medium text-gray-800">{user?.fullname || "Missing"}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-1.5">
+                      {user?.email ? (
+                        <span className="text-emerald-600 font-bold">✓</span>
+                      ) : (
+                        <span className="text-rose-500 font-bold">✕</span>
+                      )}
+                      Email available
+                    </span>
+                    <span className="font-medium text-gray-800">{user?.email || "Missing"}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-1.5">
+                      {hasPhone ? (
+                        <span className="text-emerald-600 font-bold">✓</span>
+                      ) : (
+                        <span className="text-amber-500 font-bold">⚠</span>
+                      )}
+                      Phone number available
+                    </span>
+                    <span className="font-medium text-gray-800">
+                      {hasPhone ? user.phoneNumber : "Missing"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-1.5">
+                      {hasResume ? (
+                        <span className="text-emerald-600 font-bold">✓</span>
+                      ) : (
+                        <span className="text-amber-500 font-bold">⚠</span>
+                      )}
+                      Resume attached
+                    </span>
+                    <span className="font-medium text-gray-800">
+                      {hasResume ? (user.profile?.resumeOriginalName || "Attached") : "Resume missing"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 flex items-center gap-1.5">
+                      {(user?.profile?.skills?.length || 0) > 0 ? (
+                        <span className="text-emerald-600 font-bold">✓</span>
+                      ) : (
+                        <span className="text-amber-500 font-bold">•</span>
+                      )}
+                      Profile skill alignment calculated
+                    </span>
+                    <span className="font-medium text-purple-700">
+                      {(user?.profile?.skills?.length || 0) > 0
+                        ? `${skillMatch?.matchPercentage || 0}% Compatible`
+                        : "No skills on profile"}
+                    </span>
+                  </div>
+                </div>
+
+                {!hasResume && (
+                  <div className="mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex items-center justify-between gap-2">
+                    <span className="flex items-center gap-1.5">
+                      <AlertTriangle size={14} className="text-amber-600 shrink-0" />
+                      <span>
+                        <strong>Resume missing:</strong> Add your resume before applying.
+                      </span>
+                    </span>
+                    <Link to="/profile" className="font-bold underline text-amber-900 shrink-0">
+                      Upload
+                    </Link>
+                  </div>
+                )}
+              </div>
 
               {/* Action Buttons */}
               <div className="pt-2 flex items-center justify-end gap-3 border-t border-gray-100">

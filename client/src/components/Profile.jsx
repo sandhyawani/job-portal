@@ -22,7 +22,7 @@ import AppliedJobTable from "./AppliedJobTable";
 import SavedJobTable from "./SavedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useGetAppliedJobs from "../hooks/useGetAppliedJobs";
 import useGetSavedJobs from "../hooks/useGetSavedJobs";
 import useGetAllAdminJobs from "../hooks/useGetAllAdminJobs";
@@ -32,6 +32,7 @@ const Profile = () => {
   const { user } = useSelector((store) => store.auth);
   const isRecruiter = user?.role === "recruiter";
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
     if (!user) {
@@ -46,7 +47,15 @@ const Profile = () => {
   useGetAllCompanies();
 
   const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("applied");
+  const initialTab = searchParams.get("tab") === "saved" ? "saved" : "applied";
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  React.useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "saved" || tabParam === "applied") {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
 
   if (!user) return null;
 
@@ -55,6 +64,13 @@ const Profile = () => {
 
   const totalApplicants =
     allAdminJobs?.reduce((acc, job) => acc + (job.applications?.length || 0), 0) || 0;
+
+  const activePipelineCount = (allAppliedJobs || []).filter(
+    (app) => !["rejected", "withdrawn", "hired"].includes((app.status || "").toLowerCase())
+  ).length;
+
+  const jobsWithApplicants =
+    allAdminJobs?.filter((job) => (job.applications?.length || 0) > 0).length || 0;
 
   const isResume = Boolean(user?.profile?.resume);
 
@@ -181,34 +197,44 @@ const Profile = () => {
           {isRecruiter ? (
             <div>
               {/* Recruiter Metrics Bar */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
-                <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
+                <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Jobs Posted</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-0.5">{allAdminJobs?.length || 0}</p>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Jobs Posted</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-0.5">{allAdminJobs?.length || 0}</p>
                   </div>
-                  <div className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                    <Briefcase size={20} />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                    <Briefcase size={18} />
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
+                <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Applications Received</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-0.5">{totalApplicants}</p>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Total Applicants</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-0.5">{totalApplicants}</p>
                   </div>
-                  <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                    <Users size={20} />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <Users size={18} />
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
+                <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
                   <div>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Registered Companies</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-0.5">{companies?.length || 0}</p>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Active Pipelines</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-0.5">{jobsWithApplicants}</p>
                   </div>
-                  <div className="w-11 h-11 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center">
-                    <Building2 size={20} />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <ShieldCheck size={18} />
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center justify-between shadow-2xs">
+                  <div>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Companies</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-0.5">{companies?.length || 0}</p>
+                  </div>
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center shrink-0">
+                    <Building2 size={18} />
                   </div>
                 </div>
               </div>
@@ -217,13 +243,13 @@ const Profile = () => {
               <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-50/80 via-purple-50/40 to-pink-50/50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                 <div>
                   <h3 className="font-bold text-sm text-gray-900">Recruiter Quick Hub</h3>
-                  <p className="text-xs text-gray-600 mt-0.5">Post openings, manage candidates, or update company branding.</p>
+                  <p className="text-xs text-gray-600 mt-0.5">Post openings, review candidates, or manage company profiles.</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <Button
                     onClick={() => navigate("/admin/jobs/create")}
                     size="sm"
-                    className="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white font-semibold text-xs shadow-sm flex items-center gap-1.5"
+                    className="rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-semibold text-xs shadow-2xs flex items-center gap-1.5"
                   >
                     <Plus size={14} /> Post New Job
                   </Button>
@@ -303,35 +329,131 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+
+              {/* Recruiter Active Job Openings & Candidate Review */}
+              <div className="pt-6 mt-6 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    Recent Job Postings & Candidate Reviews ({allAdminJobs?.length || 0})
+                  </h3>
+                  <button
+                    onClick={() => navigate("/admin/jobs/create")}
+                    className="text-xs font-semibold text-pink-600 hover:text-pink-700 transition"
+                  >
+                    + Post New Job
+                  </button>
+                </div>
+
+                {allAdminJobs && allAdminJobs.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {allAdminJobs.slice(0, 4).map((adminJob) => {
+                      const count = adminJob.applications?.length || 0;
+                      return (
+                        <div
+                          key={adminJob._id}
+                          className="p-3.5 rounded-xl border border-gray-200/80 bg-white hover:border-pink-300 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-bold text-sm text-gray-900 truncate">
+                                {adminJob.title}
+                              </h4>
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                                {adminJob.jobType || "Full-Time"}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-0.5 truncate">
+                              {adminJob.company?.name || "Company"} • {adminJob.location || "India"}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <Button
+                              onClick={() => navigate(`/admin/jobs/${adminJob._id}/applicants`)}
+                              size="sm"
+                              className="text-xs font-semibold rounded-xl bg-pink-600 hover:bg-pink-700 text-white flex items-center gap-1.5 shadow-2xs"
+                            >
+                              <Users size={13} /> Review Applicants ({count})
+                            </Button>
+                            <Button
+                              onClick={() => navigate(`/admin/jobs/${adminJob._id}/edit`)}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs font-semibold rounded-xl border-gray-200 text-gray-700 hover:text-pink-600"
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {allAdminJobs.length > 4 && (
+                      <div className="text-center pt-2">
+                        <Button
+                          onClick={() => navigate("/admin/jobs")}
+                          variant="ghost"
+                          size="sm"
+                          className="text-xs font-semibold text-pink-600 hover:text-pink-700"
+                        >
+                          View All {allAdminJobs.length} Job Postings →
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-6 rounded-2xl border-2 border-dashed border-gray-200 text-center">
+                    <p className="text-sm font-semibold text-gray-800">No jobs posted yet</p>
+                    <p className="text-xs text-gray-500 mt-1 mb-3">Create your first job listing to start receiving candidate applications.</p>
+                    <Button
+                      onClick={() => navigate("/admin/jobs/create")}
+                      size="sm"
+                      className="rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-semibold"
+                    >
+                      Post a Job
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <div>
-              {/* Quick Metrics Bar */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
+              {/* Quick Metrics Bar for Candidates */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
                 <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
                     <Briefcase size={18} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase">Applied Jobs</p>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase">Applied</p>
                     <p className="text-lg font-bold text-gray-900">{allAppliedJobs?.length || 0}</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                    <ShieldCheck size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase">In Pipeline</p>
+                    <p className="text-lg font-bold text-gray-900">{activePipelineCount}</p>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex items-center gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
                     <Bookmark size={18} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold text-gray-500 uppercase">Saved Jobs</p>
+                    <p className="text-[10px] font-semibold text-gray-500 uppercase">Saved</p>
                     <p className="text-lg font-bold text-gray-900">{allSavedJobs?.length || 0}</p>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-2xl border border-gray-100 bg-gray-50/70 flex flex-col justify-center">
-                  <div className="flex items-center justify-between text-xs font-semibold mb-1.5">
-                    <span className="text-gray-600 flex items-center gap-1">
-                      <Sparkles size={13} className="text-amber-500" /> Profile Strength
+                  <div className="flex items-center justify-between text-xs font-semibold mb-1">
+                    <span className="text-gray-600 flex items-center gap-1 text-[11px]">
+                      <Sparkles size={12} className="text-amber-500" /> Strength
                     </span>
                     <span className="text-purple-700 font-bold">{profileStrength}%</span>
                   </div>

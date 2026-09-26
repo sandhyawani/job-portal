@@ -301,8 +301,8 @@ const AppliedJobTable = () => {
                       </span>
                       <p className="text-[11px] text-gray-400 mt-1">{formattedTime}</p>
                       {hist.comment && (
-                        <p className="text-xs text-gray-600 mt-0.5 bg-gray-50 p-2 rounded-lg border border-gray-100 italic">
-                          &ldquo;{hist.comment}&rdquo;
+                        <p className="text-xs text-gray-700 mt-1 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                          <span className="font-semibold text-gray-800">Recruiter note:</span> {hist.comment}
                         </p>
                       )}
                     </div>

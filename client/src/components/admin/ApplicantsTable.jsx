@@ -44,7 +44,7 @@ const STATUS_CONFIG = {
     icon: <Clock size={12} className="text-blue-600" />,
   },
   accepted: {
-    label: "Accepted / Shortlisted",
+    label: "Historical Stage • Accepted / Shortlisted",
     style: "bg-purple-50 text-purple-700 border-purple-200",
     icon: <CheckCircle2 size={12} className="text-purple-600" />,
   },
@@ -182,10 +182,11 @@ const ApplicantsTable = () => {
         <TableHeader>
           <TableRow className="bg-slate-50/70">
             <TableHead className="font-bold text-xs text-gray-700">Candidate</TableHead>
-            <TableHead className="font-bold text-xs text-gray-700">Contact</TableHead>
+            <TableHead className="font-bold text-xs text-gray-700">Job Role</TableHead>
             <TableHead className="font-bold text-xs text-gray-700">Resume</TableHead>
             <TableHead className="font-bold text-xs text-gray-700">Applied Date</TableHead>
             <TableHead className="font-bold text-xs text-gray-700">Current Status</TableHead>
+            <TableHead className="font-bold text-xs text-gray-700">Timeline</TableHead>
             <TableHead className="text-right font-bold text-xs text-gray-700">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -205,14 +206,15 @@ const ApplicantsTable = () => {
                       {applicant?.fullname || "Candidate"}
                     </div>
                     <div className="text-xs text-gray-500">{applicant?.email}</div>
+                    {applicant?.phoneNumber && (
+                      <div className="text-[11px] text-gray-400 mt-0.5">{applicant.phoneNumber}</div>
+                    )}
                   </TableCell>
 
-                  <TableCell className="text-xs text-gray-600">
-                    {applicant?.phoneNumber ? (
-                      <span>{applicant.phoneNumber}</span>
-                    ) : (
-                      <span className="text-gray-400">Not provided</span>
-                    )}
+                  <TableCell>
+                    <span className="font-medium text-gray-800 text-xs truncate max-w-[140px] block">
+                      {applicants?.title || "Job Opening"}
+                    </span>
                   </TableCell>
 
                   <TableCell>
@@ -224,7 +226,7 @@ const ApplicantsTable = () => {
                         className="inline-flex items-center gap-1 text-xs font-semibold text-pink-600 hover:text-pink-700 hover:underline"
                       >
                         <FileText size={14} />
-                        <span className="max-w-[120px] truncate">
+                        <span className="max-w-[110px] truncate">
                           {applicant.profile.resumeOriginalName || "Resume"}
                         </span>
                         <ExternalLink size={10} />
@@ -234,29 +236,28 @@ const ApplicantsTable = () => {
                     )}
                   </TableCell>
 
-                  <TableCell className="text-xs text-gray-500">
-                    {item?.createdAt?.split("T")[0] || "N/A"}
+                  <TableCell className="text-xs text-gray-500 whitespace-nowrap">
+                    {item?.createdAt?.split("T")[0] || "Recently"}
                   </TableCell>
 
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusInfo.style}`}
-                      >
-                        {statusInfo.icon}
-                        {statusInfo.label}
-                      </span>
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border whitespace-nowrap ${statusInfo.style}`}
+                    >
+                      {statusInfo.icon}
+                      {statusInfo.label}
+                    </span>
+                  </TableCell>
 
-                      {item.statusHistory?.length > 1 && (
-                        <button
-                          onClick={() => openHistoryModal(item)}
-                          className="text-gray-400 hover:text-purple-600 p-1 rounded-md transition"
-                          title="View transition history"
-                        >
-                          <History size={14} />
-                        </button>
-                      )}
-                    </div>
+                  <TableCell>
+                    <button
+                      onClick={() => openHistoryModal(item)}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2.5 py-1 rounded-xl transition shadow-2xs whitespace-nowrap"
+                      title="View transition audit history"
+                    >
+                      <History size={12} />
+                      <span>Timeline</span>
+                    </button>
                   </TableCell>
 
                   <TableCell className="text-right">
@@ -313,7 +314,7 @@ const ApplicantsTable = () => {
             })
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-12 text-gray-500 text-sm">
+              <TableCell colSpan={7} className="text-center py-12 text-gray-500 text-sm">
                 No applicants have submitted applications for this job opening yet.
               </TableCell>
             </TableRow>
@@ -361,8 +362,8 @@ const ApplicantsTable = () => {
                       </span>
                       <p className="text-[11px] text-gray-400 mt-1">{formattedTime}</p>
                       {hist.comment && (
-                        <p className="text-xs text-gray-600 mt-0.5 bg-gray-50 p-2 rounded-lg border border-gray-100 italic">
-                          &ldquo;{hist.comment}&rdquo;
+                        <p className="text-xs text-gray-700 mt-1 bg-gray-50 p-2 rounded-lg border border-gray-100">
+                          <span className="font-semibold text-gray-800">Recruiter note:</span> {hist.comment}
                         </p>
                       )}
                     </div>

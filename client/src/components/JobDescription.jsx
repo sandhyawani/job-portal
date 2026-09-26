@@ -270,6 +270,7 @@ const JobDescription = () => {
               <Button
                 onClick={shareJobHandler}
                 variant="outline"
+                aria-label="Share this job opening"
                 className="px-3.5 py-2.5 rounded-xl font-semibold text-sm border-gray-200 text-gray-700 hover:border-pink-300 hover:text-pink-600 transition-all flex items-center gap-1.5"
                 title="Share this job opening"
               >
@@ -280,6 +281,7 @@ const JobDescription = () => {
               <Button
                 onClick={saveJobHandler}
                 variant="outline"
+                aria-label={isSaved ? "Remove from saved jobs" : "Save this job for later"}
                 className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
                   isSaved
                     ? "border-pink-300 bg-pink-50 text-pink-700 hover:bg-pink-100"
@@ -299,10 +301,11 @@ const JobDescription = () => {
               <Button
                 disabled={isApplied}
                 onClick={isApplied ? undefined : onApplyClick}
-                className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm ${
+                aria-label={isApplied ? "Already applied to this job" : "Apply now for this position"}
+                className={`flex-1 sm:flex-none px-7 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm ${
                   isApplied
                     ? "bg-gray-100 text-gray-500 border border-gray-300 cursor-not-allowed hover:bg-gray-100"
-                    : "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:from-pink-600 hover:to-purple-700 hover:shadow-md"
+                    : "bg-pink-600 hover:bg-pink-700 text-white hover:shadow-md active:scale-95"
                 }`}
               >
                 {isApplied ? "✓ Already Applied" : "Apply Now"}

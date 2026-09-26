@@ -23,10 +23,11 @@ const Jobs = () => {
         const titleMatch = job.title?.toLowerCase().includes(query);
         const descMatch = job.description?.toLowerCase().includes(query);
         const locMatch = job.location?.toLowerCase().includes(query);
+        const typeMatch = job.jobType?.toLowerCase().includes(query);
         const reqMatch = Array.isArray(job?.requirements)
           ? job.requirements.some((r) => r?.toLowerCase().includes(query))
           : job?.requirements?.toLowerCase().includes(query);
-        return titleMatch || descMatch || locMatch || reqMatch;
+        return titleMatch || descMatch || locMatch || typeMatch || reqMatch;
       });
       setFilterJobs(filteredJobs);
     } else {
@@ -122,22 +123,20 @@ const Jobs = () => {
               ))}
             </div>
           ) : filterJobs.length <= 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 text-center py-12">
-              <img
-                src="https://illustrations.popsy.co/gray/work-from-home.svg"
-                alt="No Jobs"
-                className="w-52 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-700">No matching jobs found</h3>
-              <p className="text-gray-500 mt-1 max-w-sm">
-                Try adjusting your search query or filter keywords to discover opportunities.
+            <div className="flex flex-col items-center justify-center flex-1 text-center py-16 px-4 bg-white rounded-2xl border border-gray-200/80 shadow-2xs">
+              <div className="w-14 h-14 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-3">
+                <SlidersHorizontal size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800">No jobs found</h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-sm">
+                Try changing your search or removing some filters to discover open roles.
               </p>
               {searchedQuery && (
                 <button
                   onClick={() => dispatch(setSearchedQuery(""))}
-                  className="mt-4 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold rounded-xl shadow-sm transition"
+                  className="mt-4 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white text-xs font-semibold rounded-xl shadow-2xs transition"
                 >
-                  Reset Filter & Show All Jobs
+                  Clear Filters
                 </button>
               )}
             </div>

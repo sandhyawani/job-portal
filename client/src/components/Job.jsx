@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { Bookmark, Star, MapPin } from "lucide-react";
+import { Bookmark, Star, MapPin, Briefcase, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import { setSavedJobs } from "@/redux/authSlice";
 import { toast } from "sonner";
 import { calculateSkillMatch } from "@/utils/skillMatcher";
 import { calculateMonthlyTakeHome } from "@/utils/salaryCalculator";
-import { Zap } from "lucide-react";
 
 const formatJobType = (type) => {
   if (!type) return "Full-Time";
@@ -89,156 +88,129 @@ const Job = ({ job }) => {
 
   return (
     <div
+      onClick={() => navigate(`/description/${job?._id}`)}
       className="
-        group min-h-[430px] h-full flex flex-col rounded-2xl bg-white
-        border border-gray-100 shadow-md
-        hover:-translate-y-1 hover:shadow-2xl hover:border-pink-300
-        transition-all duration-300
+        group flex flex-col justify-between rounded-2xl bg-white
+        border border-gray-200/80 shadow-xs
+        hover:-translate-y-1 hover:shadow-lg hover:border-pink-300
+        transition-all duration-200 cursor-pointer p-5 h-full min-h-[320px]
       "
     >
-      {/* HEADER */}
-      <div className="flex items-center justify-between px-5 pt-4">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <p className="text-xs text-gray-500 mr-1">
-            {job?.createdAt
-              ? daysAgo(job.createdAt) === 0
-                ? "Today"
-                : `${daysAgo(job.createdAt)}d ago`
-              : "Recently"}
-          </p>
-          {isApplied && (
-            <span className="px-2 py-0.5 text-[11px] font-semibold bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200">
-              ✓ Applied
+      <div>
+        {/* HEADER ROW */}
+        <div className="flex items-center justify-between gap-2 pb-3 border-b border-gray-100">
+          <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+            <span className="text-[11px] text-gray-500">
+              {job?.createdAt
+                ? daysAgo(job.createdAt) === 0
+                  ? "Today"
+                  : `${daysAgo(job.createdAt)}d ago`
+                : "Recently"}
             </span>
-          )}
-          {skillMatch.hasSkills && skillMatch.matchPercentage > 0 && (
-            <span
-              className={`px-2 py-0.5 text-[11px] font-bold rounded-full border flex items-center gap-1 ${
-                skillMatch.matchPercentage >= 70
-                  ? "bg-purple-50 text-purple-700 border-purple-200"
-                  : "bg-indigo-50 text-indigo-700 border-indigo-200"
-              }`}
-              title={
-                skillMatch.matchedSkills.length > 0
-                  ? `Matched: ${skillMatch.matchedSkills.slice(0, 3).join(", ")}`
-                  : "Skills match"
-              }
-            >
-              <Zap size={10} className="fill-current text-purple-600" />
-              {skillMatch.matchPercentage}% Match
-            </span>
-          )}
-        </div>
 
-        <Button
-          onClick={saveJobHandler}
-          variant="outline"
-          size="icon"
-          title={isSaved ? "Remove from saved" : "Save job"}
-          className={`rounded-full transition-colors ${
-            isSaved ? "border-pink-500 bg-pink-50" : "hover:border-pink-300"
-          }`}
-        >
-          <Bookmark
-            size={18}
-            className={`${
-              isSaved ? "text-pink-600 fill-pink-600" : "text-pink-500"
-            }`}
-          />
-        </Button>
-      </div>
+            {isApplied && (
+              <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                ✓ Applied
+              </span>
+            )}
 
-      {/* COMPANY */}
-      <div className="flex gap-3 px-5 pt-4">
-        <Avatar className="w-12 h-12 border shrink-0">
-          {company?.logo && (
-            <AvatarImage
-              src={company.logo}
-              alt={company?.name}
-            />
-          )}
-          <AvatarFallback className="bg-pink-100 text-pink-700 font-bold text-base">
-            {company?.name ? company.name[0].toUpperCase() : "C"}
-          </AvatarFallback>
-        </Avatar>
-
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
-            {company?.name}
-          </h3>
-
-          <div className="flex items-center gap-3 mt-1">
-            <TrustBadge trustLevel={company?.trustLevel} />
-
-            {company?.trustScore && (
-              <span className="flex items-center gap-1 text-xs text-yellow-600">
-                <Star size={12} fill="currentColor" />
-                <span className="font-medium">
-                  {company.trustScore}/100
-                </span>
+            {skillMatch.hasSkills && skillMatch.matchPercentage > 0 && (
+              <span
+                className={`px-2 py-0.5 text-[10px] font-bold rounded-full border flex items-center gap-1 ${
+                  skillMatch.matchPercentage >= 70
+                    ? "bg-purple-50 text-purple-700 border-purple-200"
+                    : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                }`}
+                title={
+                  skillMatch.matchedSkills.length > 0
+                    ? `Matched: ${skillMatch.matchedSkills.slice(0, 3).join(", ")}`
+                    : "Skills match"
+                }
+              >
+                <Zap size={10} className="fill-current text-purple-600" />
+                {skillMatch.matchPercentage}% Match
               </span>
             )}
           </div>
+
+          <Button
+            onClick={saveJobHandler}
+            variant="ghost"
+            size="icon"
+            aria-label={isSaved ? "Remove from saved jobs" : "Save this job"}
+            title={isSaved ? "Remove from saved" : "Save job"}
+            className={`w-8 h-8 rounded-full transition-colors shrink-0 ${
+              isSaved
+                ? "bg-pink-50 text-pink-600 hover:bg-pink-100"
+                : "text-gray-400 hover:text-pink-600 hover:bg-pink-50"
+            }`}
+          >
+            <Bookmark
+              size={15}
+              className={`${
+                isSaved ? "text-pink-600 fill-pink-600" : ""
+              }`}
+            />
+          </Button>
+        </div>
+
+        {/* JOB TITLE & COMPANY */}
+        <div className="pt-3">
+          <h2 className="font-bold text-base text-gray-900 line-clamp-1 group-hover:text-pink-600 transition-colors">
+            {job?.title}
+          </h2>
+
+          <div className="flex items-center gap-2 mt-1">
+            <span className="font-semibold text-xs text-gray-700 truncate max-w-[150px]">
+              {company?.name || "Company"}
+            </span>
+            <TrustBadge trustLevel={company?.trustLevel} />
+          </div>
+
+          {/* KEY DETAILS STRIP: Location, Type, Salary */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 mt-2.5">
+            <span className="flex items-center gap-1 truncate">
+              <MapPin size={12} className="text-gray-400 shrink-0" />
+              {job?.location || "India"}
+            </span>
+            <span className="flex items-center gap-1">
+              <Briefcase size={12} className="text-gray-400 shrink-0" />
+              {formatJobType(job?.jobType)}
+            </span>
+            <span className="font-semibold text-emerald-700">
+              {formatSalaryDisplay(job?.salary, takeHome)}
+            </span>
+          </div>
+
+          {/* DESCRIPTION */}
+          <p className="text-xs text-gray-600 line-clamp-2 mt-2 leading-relaxed">
+            {job?.description || "No description provided."}
+          </p>
         </div>
       </div>
 
-      {/* JOB TITLE */}
-      <div className="px-5 pt-4">
-        <h2 className="font-bold text-base text-gray-900 line-clamp-2 group-hover:text-pink-700 transition">
-          {job?.title}
-        </h2>
-
-        {/* LOCATION */}
-        <p className="flex items-center gap-1 text-xs text-gray-500 mt-1">
-          <MapPin size={12} />
-          {job?.location}
-        </p>
-      </div>
-
-      {/* DESCRIPTION */}
-      <div className="px-5 pt-3 flex-1">
-        <p className="text-sm text-gray-600 line-clamp-3 min-h-[3.75rem] leading-relaxed">
-          {job?.description || "No description provided."}
-        </p>
-      </div>
-
-      {/* TAGS */}
-      <div className="flex flex-wrap items-center gap-1.5 px-5 pb-3">
-        <Badge className="bg-pink-50 text-pink-700 border border-pink-200 text-xs font-medium">
-          {job?.position || 1} {job?.position === 1 ? "Position" : "Positions"}
-        </Badge>
-        <Badge className="bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium">
-          {formatJobType(job?.jobType)}
-        </Badge>
-        <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
-          {formatSalaryDisplay(job?.salary, takeHome)}
-        </Badge>
-        {applicantCount <= 5 && (
-          <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium">
-            🟢 Low Competition
+      {/* FOOTER & ACTIONS */}
+      <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <Badge className="bg-pink-50 text-pink-700 border border-pink-200 text-[11px] font-medium px-2 py-0.5">
+            {job?.position || 1} {job?.position === 1 ? "Position" : "Positions"}
           </Badge>
-        )}
-      </div>
-
-      {/* FOOTER */}
-      <div className="px-5 pb-4 pt-3 border-t flex gap-3">
-        <Button
-          onClick={() => navigate(`/description/${job?._id}`)}
-          variant="outline"
-          className="flex-1 border-pink-500 text-pink-500 rounded-full"
-        >
-          View Details
-        </Button>
+          {applicantCount <= 5 && (
+            <Badge className="bg-blue-50 text-blue-700 border border-blue-200 text-[11px] font-medium px-2 py-0.5">
+              🟢 Low Competition
+            </Badge>
+          )}
+        </div>
 
         <Button
-          onClick={saveJobHandler}
-          className={`flex-1 rounded-full font-medium transition-all duration-300 ${
-            isSaved
-              ? "bg-pink-100 text-pink-700 hover:bg-pink-200 border border-pink-300"
-              : "bg-gradient-to-r from-pink-500 to-purple-600 text-white hover:shadow-lg hover:scale-105"
-          }`}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/description/${job?._id}`);
+          }}
+          size="sm"
+          className="rounded-xl font-bold text-xs bg-pink-600 hover:bg-pink-700 text-white px-3.5 py-1.5 shadow-2xs transition-all"
         >
-          {isSaved ? "✓ Saved" : "Save"}
+          View Job
         </Button>
       </div>
     </div>

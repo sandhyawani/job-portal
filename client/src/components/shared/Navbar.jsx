@@ -2,7 +2,7 @@ import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { LogOut, Menu, User2, X, Briefcase } from "lucide-react";
+import { LogOut, Menu, User2, X, Briefcase, LayoutDashboard, Bookmark, FileText, Building2 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -20,7 +20,7 @@ const Navbar = () => {
 
   React.useEffect(() => {
     setMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -76,12 +76,26 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <ul
-          className={`hidden md:flex items-center gap-8 font-medium transition-colors duration-300 ${
+          className={`hidden md:flex items-center gap-7 font-medium transition-colors duration-300 ${
             isTransparent ? "text-white/90" : "text-gray-700"
           }`}
         >
           {user && user.role === "recruiter" ? (
             <>
+              <li>
+                <Link
+                  to="/profile"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/profile"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Dashboard
+                </Link>
+              </li>
               <li>
                 <Link
                   to="/admin/companies"
@@ -108,6 +122,79 @@ const Navbar = () => {
                   }`}
                 >
                   Jobs
+                </Link>
+              </li>
+            </>
+          ) : user ? (
+            <>
+              <li>
+                <Link
+                  to="/"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/jobs"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/jobs"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Jobs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/browse"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/browse"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Browse
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile?tab=applied"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/profile" && location.search !== "?tab=saved"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Applications
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile?tab=saved"
+                  className={`transition-all duration-200 pb-1 ${
+                    location.pathname === "/profile" && location.search === "?tab=saved"
+                      ? isTransparent
+                        ? "text-pink-400 font-bold border-b-2 border-pink-400"
+                        : "text-pink-600 font-bold border-b-2 border-pink-600"
+                      : "hover:text-pink-500"
+                  }`}
+                >
+                  Saved Jobs
                 </Link>
               </li>
             </>
@@ -230,24 +317,78 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col mt-4 space-y-2">
-                  <Link
-                    to="/profile"
-                    className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
-                      isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
-                    }`}
-                  >
-                    <User2 size={18} />
-                    View Profile
-                  </Link>
-                  <div
-                    onClick={logoutHandler}
-                    className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
-                      isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
-                    }`}
-                  >
-                    <LogOut size={18} />
-                    Logout
+                <div className="flex flex-col mt-4 space-y-2 text-sm">
+                  {user?.role === "recruiter" ? (
+                    <>
+                      <Link
+                        to="/profile"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <LayoutDashboard size={16} />
+                        Recruiter Dashboard
+                      </Link>
+                      <Link
+                        to="/admin/companies"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <Building2 size={16} />
+                        Manage Companies
+                      </Link>
+                      <Link
+                        to="/admin/jobs"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <Briefcase size={16} />
+                        Manage Postings
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/profile"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <User2 size={16} />
+                        Profile & Skills
+                      </Link>
+                      <Link
+                        to="/profile?tab=applied"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <FileText size={16} />
+                        My Applications
+                      </Link>
+                      <Link
+                        to="/profile?tab=saved"
+                        className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                          isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                        }`}
+                      >
+                        <Bookmark size={16} />
+                        Saved Jobs
+                      </Link>
+                    </>
+                  )}
+                  <div className="pt-2 border-t border-gray-100">
+                    <div
+                      onClick={logoutHandler}
+                      className={`flex w-fit items-center gap-2 cursor-pointer transition-colors duration-300 ${
+                        isHeroPage ? "hover:text-pink-500" : "hover:text-pink-600"
+                      }`}
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </div>
                   </div>
                 </div>
               </PopoverContent>
@@ -275,9 +416,22 @@ const Navbar = () => {
               : "bg-white text-gray-800 border-gray-200"
           }`}
         >
-          <ul className="flex flex-col gap-3 font-medium py-2">
+          <ul className="flex flex-col gap-2 font-medium py-2">
             {user && user.role === "recruiter" ? (
               <>
+                <li>
+                  <Link
+                    to="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/profile"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    📊 Dashboard
+                  </Link>
+                </li>
                 <li>
                   <Link
                     to="/admin/companies"
@@ -302,6 +456,74 @@ const Navbar = () => {
                     }`}
                   >
                     💼 Jobs
+                  </Link>
+                </li>
+              </>
+            ) : user ? (
+              <>
+                <li>
+                  <Link
+                    to="/"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    🏠 Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/jobs"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/jobs"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    🔍 Jobs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/browse"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/browse"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    📁 Browse
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/profile?tab=applied"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/profile" && location.search !== "?tab=saved"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    📄 Applications
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/profile?tab=saved"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block py-2 px-3 rounded-xl transition-colors ${
+                      location.pathname === "/profile" && location.search === "?tab=saved"
+                        ? "bg-pink-500/10 text-pink-600 font-bold"
+                        : "hover:text-pink-500"
+                    }`}
+                  >
+                    🔖 Saved Jobs
                   </Link>
                 </li>
               </>
@@ -350,11 +572,11 @@ const Navbar = () => {
             )}
 
             {user && (
-              <li className="border-t border-gray-200/40 pt-3">
+              <li className="border-t border-gray-200/40 pt-2">
                 <Link
                   to="/profile"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 py-2 text-pink-600 font-semibold"
+                  className="flex items-center gap-2 py-2 px-3 text-pink-600 font-semibold"
                 >
                   <User2 size={18} /> My Profile
                 </Link>
