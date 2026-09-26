@@ -33,8 +33,10 @@ import {
   ShieldCheck,
   Copy,
   Check,
+  AlertTriangle,
 } from "lucide-react";
 import TrustBadge from "./TrustBadge";
+import ApplicationReadinessModal from "./ApplicationReadinessModal";
 import { calculateSkillMatch } from "@/utils/skillMatcher";
 import { calculateMonthlyTakeHome } from "@/utils/salaryCalculator";
 
@@ -77,6 +79,8 @@ const JobDescription = () => {
   const [isApplied, setIsApplied] = useState(false);
   const [checking, setChecking] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [readinessModalOpen, setReadinessModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { id: jobId } = useParams();
   const dispatch = useDispatch();
@@ -138,15 +142,25 @@ const JobDescription = () => {
     checkApplied();
   }, [jobId, user]);
 
-  const applyJobHandler = async () => {
+  const onApplyClick = () => {
     if (!user) {
-      toast.error("Please login to apply");
+      toast.error("Please login as a candidate to apply");
+      navigate("/login");
       return;
     }
-
+    if (user.role === "recruiter") {
+      toast.error("Recruiters cannot apply for jobs. Please use a candidate account.");
+      return;
+    }
     if (isApplied) return;
+    setReadinessModalOpen(true);
+  };
+
+  const handleConfirmApply = async () => {
+    if (!user || user.role === "recruiter" || isApplied) return;
 
     try {
+      setIsSubmitting(true);
       const res = await axios.get(
         `${APPLICATION_API_END_POINT}/apply/${jobId}`,
         { withCredentials: true }
@@ -154,11 +168,13 @@ const JobDescription = () => {
 
       if (res.data.success) {
         setIsApplied(true);
-        toast.success(res.data.message);
+        toast.success(res.data.message || "Application submitted successfully!");
       }
     } catch (error) {
       toast.info(error.response?.data?.message || "Already applied");
       setIsApplied(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -282,7 +298,7 @@ const JobDescription = () => {
 
               <Button
                 disabled={isApplied}
-                onClick={isApplied ? undefined : applyJobHandler}
+                onClick={isApplied ? undefined : onApplyClick}
                 className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm ${
                   isApplied
                     ? "bg-gray-100 text-gray-500 border border-gray-300 cursor-not-allowed hover:bg-gray-100"
@@ -344,9 +360,10 @@ const JobDescription = () => {
             </div>
           )}
 
-          {skillMatch.hasSkills && (
-            <div className="my-6 p-4 rounded-xl border border-purple-200/80 bg-gradient-to-r from-purple-50/70 via-pink-50/40 to-white shadow-2xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Skill Fit & Skill Gap Intelligent Analysis */}
+          {user && skillMatch.hasSkills ? (
+            <div className="my-6 p-5 rounded-2xl border border-purple-200/90 bg-gradient-to-br from-purple-50/70 via-pink-50/40 to-white shadow-2xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-purple-100/70">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-sm">
                     <Zap size={20} className="fill-current" />
@@ -354,12 +371,27 @@ const JobDescription = () => {
                   <div>
                     <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
                       Profile Skill Match:{" "}
-                      <span className="text-purple-700">
+                      <span className="text-purple-700 font-extrabold">
                         {skillMatch.matchPercentage}% Compatible
                       </span>
+                      <Badge
+                        className={`text-[10px] font-bold px-2 py-0.5 border ${
+                          skillMatch.matchPercentage >= 70
+                            ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                            : skillMatch.matchPercentage >= 40
+                            ? "bg-amber-100 text-amber-800 border-amber-300"
+                            : "bg-slate-100 text-slate-800 border-slate-300"
+                        }`}
+                      >
+                        {skillMatch.matchPercentage >= 70
+                          ? "Strong Fit"
+                          : skillMatch.matchPercentage >= 40
+                          ? "Moderate Fit"
+                          : "Growth Opportunity"}
+                      </Badge>
                     </h4>
                     <p className="text-xs text-gray-500">
-                      Evaluated against the skills listed in your profile
+                      Evaluated against the skills verified on your candidate profile
                     </p>
                   </div>
                 </div>
@@ -371,21 +403,96 @@ const JobDescription = () => {
                 </div>
               </div>
 
-              {skillMatch.matchedSkills.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-purple-100/80 flex flex-wrap items-center gap-1.5 text-xs">
-                  <span className="text-gray-500 font-medium mr-1">Skills you match:</span>
-                  {skillMatch.matchedSkills.map((s, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200"
-                    >
-                      ✓ {s}
+              {/* Matched Skills */}
+              {skillMatch.matchedSkills?.length > 0 && (
+                <div className="mt-3.5">
+                  <p className="text-xs font-bold text-emerald-800 mb-1.5 flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-emerald-600" />
+                    Matching Skills ({skillMatch.matchedSkills.length})
+                  </p>
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                    {skillMatch.matchedSkills.map((s, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-0.5 rounded-md bg-emerald-100/80 text-emerald-800 font-semibold border border-emerald-200"
+                      >
+                        ✓ {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Skill Gaps */}
+              {skillMatch.missingSkills?.length > 0 && (
+                <div className="mt-3.5 pt-3 border-t border-purple-100/60">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <p className="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                      <AlertTriangle size={13} className="text-amber-600" />
+                      Identified Skill Gaps ({skillMatch.missingSkills.length})
+                    </p>
+                    <span className="text-[11px] text-gray-500 hidden sm:inline">
+                      Tip: Brush up on these to maximize your shortlist chances
                     </span>
-                  ))}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                    {skillMatch.missingSkills.map((s, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-0.5 rounded-md bg-amber-50 text-amber-800 font-medium border border-amber-200"
+                      >
+                        • {s}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-          )}
+          ) : user && !skillMatch.hasSkills ? (
+            <div className="my-6 p-4 rounded-2xl border border-purple-100 bg-purple-50/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                  <Sparkles size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-purple-950">
+                    Add skills to unlock role compatibility & gap insights
+                  </h4>
+                  <p className="text-xs text-purple-700/80 mt-0.5">
+                    Your profile has no listed skills. Update your profile to see instant fit scores.
+                  </p>
+                </div>
+              </div>
+              <Link
+                to="/profile"
+                className="text-xs font-semibold px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow-2xs text-center shrink-0 transition"
+              >
+                Add Skills to Profile
+              </Link>
+            </div>
+          ) : !user ? (
+            <div className="my-6 p-4 rounded-2xl border border-gray-200 bg-gray-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gray-200 text-gray-700 flex items-center justify-center shrink-0">
+                  <Sparkles size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-gray-900">
+                    Sign in to view personalized Skill Fit & Skill Gap recommendations
+                  </h4>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Compare your verified credentials directly with this role&apos;s requirements.
+                  </p>
+                </div>
+              </div>
+              <Link
+                to="/login"
+                className="text-xs font-semibold px-3.5 py-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-xl shadow-2xs text-center shrink-0 transition"
+              >
+                Sign In
+              </Link>
+            </div>
+          ) : null}
 
           <div className="my-6">
             <h2 className="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
@@ -431,36 +538,34 @@ const JobDescription = () => {
 
           {takeHome.valid && (
             <div className="my-6 p-5 rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-50/50 via-teal-50/20 to-white shadow-2xs">
-              <div className="flex items-center gap-2.5 mb-3.5">
-                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
-                  <Calculator size={18} />
+              <div className="flex items-center justify-between gap-2 mb-3.5">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                    <Calculator size={18} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-900">
+                      Estimated Monthly Take-Home Breakdown
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                      Real-world approximate in-hand pay based on Indian tax norms
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-gray-900">
-                    Estimated Monthly Take-Home Breakdown
-                  </h4>
-                  <p className="text-xs text-gray-500">
-                    Real-world approximate in-hand pay based on Indian tax norms
-                  </p>
-                </div>
+                {takeHome.inHandPercentage && (
+                  <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 text-xs font-bold hidden sm:inline-flex">
+                    ~{takeHome.inHandPercentage}% Take-Home
+                  </Badge>
+                )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="bg-white p-3.5 rounded-xl border border-gray-100 shadow-2xs text-center">
                   <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">
-                    Annual Package (CTC)
+                    Annual CTC
                   </p>
                   <p className="text-base font-bold text-gray-900 mt-1">
                     {takeHome.formattedAnnual}
-                  </p>
-                </div>
-
-                <div className="bg-white p-3.5 rounded-xl border border-emerald-300 shadow-2xs text-center ring-2 ring-emerald-400/20">
-                  <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">
-                    Est. In-Hand Monthly Pay
-                  </p>
-                  <p className="text-lg font-extrabold text-emerald-600 mt-0.5">
-                    {takeHome.formattedInHand}
                   </p>
                 </div>
 
@@ -470,6 +575,24 @@ const JobDescription = () => {
                   </p>
                   <p className="text-base font-bold text-gray-800 mt-1">
                     {takeHome.formattedGross}
+                  </p>
+                </div>
+
+                <div className="bg-white p-3.5 rounded-xl border border-amber-100 bg-amber-50/20 shadow-2xs text-center">
+                  <p className="text-[11px] font-semibold text-amber-700 uppercase tracking-wide">
+                    Est. Deductions (Taxes & PF)
+                  </p>
+                  <p className="text-base font-bold text-amber-800 mt-1">
+                    {takeHome.formattedDeductions || "-"}
+                  </p>
+                </div>
+
+                <div className="bg-white p-3.5 rounded-xl border border-emerald-300 shadow-2xs text-center ring-2 ring-emerald-400/20">
+                  <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">
+                    Est. In-Hand / Month
+                  </p>
+                  <p className="text-lg font-extrabold text-emerald-600 mt-0.5">
+                    {takeHome.formattedInHand}
                   </p>
                 </div>
               </div>
@@ -536,6 +659,18 @@ const JobDescription = () => {
 
         </div>
       </div>
+
+      {/* Application Readiness Modal */}
+      <ApplicationReadinessModal
+        open={readinessModalOpen}
+        setOpen={setReadinessModalOpen}
+        job={singleJob}
+        user={user}
+        skillMatch={skillMatch}
+        onConfirmApply={handleConfirmApply}
+        isSubmitting={isSubmitting}
+        isApplied={isApplied}
+      />
     </div>
   );
 };

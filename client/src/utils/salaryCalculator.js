@@ -31,14 +31,20 @@ export const calculateMonthlyTakeHome = (rawSalary) => {
   }
 
   const estimatedInHand = Math.round(monthlyGross * (1 - taxRate));
+  const monthlyDeductions = monthlyGross - estimatedInHand;
+  const inHandPercentage = Math.round((estimatedInHand / monthlyGross) * 100);
 
   return {
     valid: true,
     annualCtc,
     monthlyGross,
     estimatedInHand,
+    monthlyDeductions,
+    taxRatePercentage: Math.round(taxRate * 100),
+    inHandPercentage,
     formattedAnnual: `₹${(annualCtc / 100000).toFixed(annualCtc % 100000 === 0 ? 0 : 1)} LPA`,
     formattedInHand: `~₹${estimatedInHand.toLocaleString("en-IN")}/mo`,
     formattedGross: `₹${monthlyGross.toLocaleString("en-IN")}/mo`,
+    formattedDeductions: `~₹${monthlyDeductions.toLocaleString("en-IN")}/mo`,
   };
 };
