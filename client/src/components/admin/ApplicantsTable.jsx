@@ -43,6 +43,11 @@ const STATUS_CONFIG = {
     style: "bg-blue-50 text-blue-700 border-blue-200",
     icon: <Clock size={12} className="text-blue-600" />,
   },
+  accepted: {
+    label: "Accepted / Shortlisted",
+    style: "bg-purple-50 text-purple-700 border-purple-200",
+    icon: <CheckCircle2 size={12} className="text-purple-600" />,
+  },
   under_review: {
     label: "Under Review",
     style: "bg-amber-50 text-amber-700 border-amber-200",
@@ -88,6 +93,10 @@ const NEXT_TRANSITIONS = {
   ],
   pending: [
     { key: "under_review", label: "🔍 Move to Under Review" },
+    { key: "rejected", label: "❌ Reject Application" },
+  ],
+  accepted: [
+    { key: "hired", label: "🎉 Mark as Hired" },
     { key: "rejected", label: "❌ Reject Application" },
   ],
   under_review: [

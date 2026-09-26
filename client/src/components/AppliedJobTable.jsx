@@ -28,6 +28,12 @@ const PIPELINE_META = {
     stage: "Stage 1 of 5 • Application Received",
     icon: <Clock size={13} className="text-blue-600" />,
   },
+  accepted: {
+    style: "bg-purple-50 text-purple-700 border-purple-200",
+    label: "Accepted / Shortlisted",
+    stage: "Historical Stage • Accepted / Shortlisted",
+    icon: <CheckCircle2 size={13} className="text-purple-600" />,
+  },
   under_review: {
     style: "bg-amber-50 text-amber-700 border-amber-200",
     label: "Under Review",
