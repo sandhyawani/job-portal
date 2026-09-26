@@ -6,6 +6,7 @@ import { User } from "../models/user.model.js";
 export const ALLOWED_TRANSITIONS = {
   applied: ["under_review", "rejected", "withdrawn"],
   pending: ["under_review", "rejected", "withdrawn"], // Legacy alias
+  accepted: ["hired", "rejected"], // Legacy alias for shortlisted/accepted candidates
   under_review: ["shortlisted", "rejected"],
   shortlisted: ["interview", "rejected"],
   interview: ["offer", "rejected"],

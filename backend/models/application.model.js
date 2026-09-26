@@ -24,6 +24,7 @@ const applicationSchema = new mongoose.Schema(
         "hired",
         "rejected",
         "withdrawn",
+        "accepted", // Preserved for legacy production records
       ],
       default: "applied",
     },
