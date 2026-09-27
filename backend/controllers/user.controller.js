@@ -130,7 +130,10 @@ export const login = async (req, res) => {
 
     const sanitized = sanitizeUser(user);
 
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProduction =
+      process.env.NODE_ENV === "production" ||
+      process.env.RENDER === "true" ||
+      Boolean(process.env.RENDER);
 
     return res
       .status(200)
@@ -154,7 +157,10 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProduction =
+      process.env.NODE_ENV === "production" ||
+      process.env.RENDER === "true" ||
+      Boolean(process.env.RENDER);
     return res
       .status(200)
       .cookie("token", "", {

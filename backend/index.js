@@ -22,21 +22,55 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173,http://127.0.0.1:5173").split(",").map((origin) => origin.trim()).filter(Boolean);
+const defaultAllowedOrigins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "https://job-portal-flax-omega.vercel.app",
+];
+
+const envOrigins = (process.env.CORS_ORIGINS || "")
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/$/, ""))
+    .filter(Boolean);
+
+const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-            return;
+        // Allow requests with no origin (e.g., mobile apps, curl, server-to-server)
+        if (!origin) {
+            return callback(null, true);
         }
-        callback(new Error("Not allowed by CORS"));
+
+        const cleanOrigin = origin.trim().replace(/\/$/, "");
+
+        // Allow explicitly listed origins
+        if (allowedOrigins.includes(cleanOrigin)) {
+            return callback(null, true);
+        }
+
+        // Allow any Vercel deployment (preview URLs or production)
+        if (/^https:\/\/.*\.vercel\.app$/.test(cleanOrigin)) {
+            return callback(null, true);
+        }
+
+        // Allow Render domains
+        if (/^https:\/\/.*\.onrender\.com$/.test(cleanOrigin)) {
+            return callback(null, true);
+        }
+
+        return callback(null, false);
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    optionsSuccessStatus: 200,
 };
 
 app.set("trust proxy", 1);
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Health check endpoint for uptime monitoring & deployment platforms
 app.get("/health", (req, res) => {
