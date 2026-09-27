@@ -2,20 +2,21 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Edit2, MoreHorizontal } from "lucide-react";
+import { Edit2, MoreHorizontal, ExternalLink, Globe } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import TrustBadge from "../TrustBadge";
+import { Button } from "../ui/button";
 
 const CompaniesTable = () => {
-  const { companies, searchCompanyByText } = useSelector(
+  const { companies = [], searchCompanyByText = "" } = useSelector(
     (store) => store.company
   );
 
@@ -25,92 +26,101 @@ const CompaniesTable = () => {
   useEffect(() => {
     const result = companies.filter((company) => {
       if (!searchCompanyByText) return true;
-      return company?.name
-        ?.toLowerCase()
-        .includes(searchCompanyByText.toLowerCase());
+      const term = searchCompanyByText.toLowerCase();
+      return (
+        company?.name?.toLowerCase().includes(term) ||
+        company?.location?.toLowerCase().includes(term)
+      );
     });
 
     setFilteredCompanies(result);
   }, [companies, searchCompanyByText]);
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm bg-white">
-      <Table>
-        <TableCaption className="text-gray-500 italic p-4">
-          Registered companies
-        </TableCaption>
-
-        <TableHeader className="bg-gray-50">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-2xs bg-white">
+      <Table className="w-full text-left text-xs">
+        <TableHeader className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
           <TableRow>
-            <TableHead className="font-semibold text-gray-700">Logo</TableHead>
-            <TableHead className="font-semibold text-gray-700">Name</TableHead>
-            <TableHead className="font-semibold text-gray-700">Date</TableHead>
-            <TableHead className="text-right font-semibold text-gray-700">
-              Action
-            </TableHead>
+            <TableHead className="p-3.5">Logo</TableHead>
+            <TableHead className="p-3.5">Company Name</TableHead>
+            <TableHead className="p-3.5">Location</TableHead>
+            <TableHead className="p-3.5">Trust Verification</TableHead>
+            <TableHead className="p-3.5">Registered Date</TableHead>
+            <TableHead className="p-3.5 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
 
-        <TableBody>
+        <TableBody className="divide-y divide-slate-100">
           {filteredCompanies.length > 0 ? (
             filteredCompanies.map((company) => (
               <TableRow
                 key={company._id}
-                className="hover:bg-gray-50 transition-colors"
+                className="hover:bg-slate-50/60 transition-colors"
               >
-                <TableCell>
-                  <Avatar className="h-10 w-10 ring-2 ring-gray-200">
-                    <AvatarImage src={company.logo} alt={company.name} />
-                    <AvatarFallback className="bg-pink-100 text-pink-700 font-bold">
-                      {company.name?.charAt(0)?.toUpperCase() || "C"}
-                    </AvatarFallback>
+                <TableCell className="p-3.5">
+                  <Avatar className="h-9 w-9 rounded-xl border object-cover">
+                    <AvatarImage src={company.logo || "/logo.png"} alt={company.name} />
                   </Avatar>
                 </TableCell>
 
-                <TableCell className="font-medium text-gray-900">
-                  {company.name}
+                <TableCell className="p-3.5 font-bold text-slate-900">
+                  <Link
+                    to={`/company/${company._id}`}
+                    className="hover:text-indigo-600 transition"
+                  >
+                    {company.name}
+                  </Link>
                 </TableCell>
 
-                <TableCell className="text-gray-600">
-                  {company.createdAt.split("T")[0]}
+                <TableCell className="p-3.5 text-slate-500">
+                  {company.location || "India"}
                 </TableCell>
 
-                <TableCell className="text-right">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <button className="p-2 rounded-full hover:bg-gray-100 transition">
-                        <MoreHorizontal className="w-5 h-5 text-gray-500" />
-                      </button>
-                    </PopoverTrigger>
+                <TableCell className="p-3.5">
+                  <div className="flex items-center gap-2">
+                    <TrustBadge trustLevel={company.trustLevel} />
+                    {company.trustScore > 0 && (
+                      <span className="text-[11px] font-bold text-amber-600">
+                        {company.trustScore}/100
+                      </span>
+                    )}
+                  </div>
+                </TableCell>
 
-                    <PopoverContent
-                      align="end"
-                      sideOffset={5}
-                      className="w-36 p-1 shadow-xl border rounded-xl bg-white"
-                    >
-                      <div
-                        onClick={() =>
-                          navigate(`/admin/companies/${company._id}`)
-                        }
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 cursor-pointer transition"
+                <TableCell className="p-3.5 text-slate-500">
+                  {company.createdAt?.split("T")[0]}
+                </TableCell>
+
+                <TableCell className="p-3.5 text-right">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <Link to={`/admin/companies/${company._id}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2.5 text-xs font-semibold text-indigo-600"
                       >
-                        <Edit2 className="w-4 h-4 text-purple-600" />
-                        <span className="text-sm font-medium text-gray-700">
-                          Edit
-                        </span>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
+                        Edit Profile
+                      </Button>
+                    </Link>
+
+                    <Link to={`/company/${company._id}`}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2 text-slate-400 hover:text-slate-700"
+                        title="View Public Profile"
+                      >
+                        <ExternalLink size={14} />
+                      </Button>
+                    </Link>
+                  </div>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={4}
-                className="text-center py-6 text-gray-500"
-              >
-                No companies found
+              <TableCell colSpan={6} className="text-center py-10 text-slate-400 text-xs">
+                No companies registered yet.
               </TableCell>
             </TableRow>
           )}

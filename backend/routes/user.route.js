@@ -1,16 +1,33 @@
 import express from "express";
-import { getSavedJobs, login, logout, register, toggleSaveJob, updateProfile } from "../controllers/user.controller.js";
+import {
+  login,
+  logout,
+  register,
+  getProfile,
+  updateProfile,
+  toggleSaveJob,
+  getSavedJobs,
+  getNotifications,
+  markNotificationRead,
+} from "../controllers/user.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
-import { anyUpload, singleUpload } from "../middlewares/mutler.js";
- 
+import { singleUpload } from "../middlewares/mutler.js";
+
 const router = express.Router();
 
-router.route("/register").post(singleUpload,register);
-router.route("/login").post(login);
-router.route("/logout").get(logout);
-router.route("/profile/update").post(isAuthenticated, anyUpload, updateProfile);
-router.route("/save-job/:id").post(isAuthenticated, toggleSaveJob);
-router.route("/saved-jobs").get(isAuthenticated, getSavedJobs);
+router.post("/register", singleUpload, register);
+router.post("/login", login);
+router.get("/logout", logout);
+router.get("/profile", isAuthenticated, getProfile);
+router.post("/profile/update", isAuthenticated, singleUpload, updateProfile);
+
+// Saved jobs
+router.post("/save/:id", isAuthenticated, toggleSaveJob);
+router.post("/save-job/:id", isAuthenticated, toggleSaveJob);
+router.get("/saved-jobs", isAuthenticated, getSavedJobs);
+
+// Notifications
+router.get("/notifications", isAuthenticated, getNotifications);
+router.put("/notifications/:id/read", isAuthenticated, markNotificationRead);
 
 export default router;
-

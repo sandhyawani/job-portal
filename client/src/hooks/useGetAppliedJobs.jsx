@@ -17,13 +17,14 @@ const useGetAppliedJobs = (onFetchComplete) => {
         console.log("Applied Jobs API Response:", res.data);
 
         if (res.data.success) {
+          // ✅ Corrected here
           dispatch(setAllAppliedJobs(res.data.applications));
           if (onFetchComplete) onFetchComplete(res.data.applications);
         } else {
-          console.error("Failed to fetch applied jobs.");
+          console.error("❌ Failed to fetch applied jobs.");
         }
       } catch (err) {
-        console.error("Fetch applied jobs error:", err.message);
+        console.error("❌ Fetch Applied Jobs Error:", err.message);
       }
     };
 

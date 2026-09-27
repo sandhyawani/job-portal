@@ -1,124 +1,81 @@
-import React, { useEffect } from 'react';
-import Navbar from './shared/Navbar';
-import Job from './Job';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSearchedQuery } from '@/redux/jobSlice';
-import useGetAllJobs from '@/hooks/useGetAllJobs';
-import { Search } from 'lucide-react';
+import React, { useState } from "react";
+import Navbar from "./shared/Navbar";
+import MobileBottomNav from "./shared/MobileBottomNav";
+import Job from "./Job";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilters } from "@/redux/jobSlice";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
+import { Search, Briefcase } from "lucide-react";
+import { Button } from "./ui/button";
 
 const Browse = () => {
-    // Fetch all jobs on page load
-    useGetAllJobs();
+  useGetAllJobs();
+  const { allJobs = [], filters } = useSelector((store) => store.job);
+  const dispatch = useDispatch();
+  const [keywordInput, setKeywordInput] = useState(filters.keyword || "");
 
-    const { allJobs, searchedQuery } = useSelector((store) => store.job);
-    const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    e.preventDefault();
+    dispatch(setFilters({ keyword: keywordInput.trim() }));
+  };
 
-    // Clear search query when leaving the page
-    useEffect(() => {
-        return () => {
-            dispatch(setSearchedQuery(''));
-        };
-    }, [dispatch]);
+  return (
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
+      <Navbar />
 
-    // Filter jobs client-side based on searchedQuery matching title, description, location, or requirements
-    const filterJobs = (allJobs || []).filter((job) => {
-        if (!searchedQuery) return true;
-        const query = searchedQuery.toLowerCase().trim();
-        const titleMatch = job?.title?.toLowerCase().includes(query);
-        const descMatch = job?.description?.toLowerCase().includes(query);
-        const locMatch = job?.location?.toLowerCase().includes(query);
-        const reqMatch = Array.isArray(job?.requirements)
-            ? job.requirements.some((r) => r?.toLowerCase().includes(query))
-            : job?.requirements?.toLowerCase().includes(query);
-        return titleMatch || descMatch || locMatch || reqMatch;
-    });
+      <main className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Browse Open Positions
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Explore {allJobs.length} active opportunities from top companies
+            </p>
+          </div>
 
-    return (
-        <div className="min-h-screen bg-slate-50/70 pb-16">
-            {/* Navbar */}
-            <Navbar />
-
-            {/* Main content */}
-            <main className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
-                        {searchedQuery ? (
-                            <span>
-                                Results for &ldquo;<span className="text-pink-600">{searchedQuery}</span>&rdquo;
-                            </span>
-                        ) : (
-                            "Explore All Openings"
-                        )}
-                        <span className="ml-2 text-sm font-normal text-gray-500">
-                            ({filterJobs.length} {filterJobs.length === 1 ? "opening" : "openings"})
-                        </span>
-                    </h1>
-
-                    {searchedQuery && (
-                        <button
-                            onClick={() => dispatch(setSearchedQuery(""))}
-                            className="flex items-center gap-1.5 text-xs font-semibold text-pink-700 bg-pink-100 hover:bg-pink-200 px-3 py-1.5 rounded-full transition-colors"
-                        >
-                            <span>Filtered: &ldquo;{searchedQuery}&rdquo;</span>
-                            <span className="font-bold text-sm leading-none">&times;</span>
-                        </button>
-                    )}
-                </div>
-
-                {/* Jobs list */}
-                {!allJobs || allJobs.length === 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[1, 2, 3, 4, 5, 6].map((n) => (
-                            <div
-                                key={n}
-                                className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm animate-pulse space-y-4"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-xl" />
-                                    <div className="flex-1 space-y-2">
-                                        <div className="h-4 bg-gray-200 rounded w-3/4" />
-                                        <div className="h-3 bg-gray-100 rounded w-1/2" />
-                                    </div>
-                                </div>
-                                <div className="space-y-2 pt-2">
-                                    <div className="h-4 bg-gray-200 rounded w-5/6" />
-                                    <div className="h-3 bg-gray-100 rounded w-full" />
-                                    <div className="h-3 bg-gray-100 rounded w-4/5" />
-                                </div>
-                                <div className="flex gap-2 pt-2">
-                                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
-                                    <div className="h-6 w-20 bg-gray-200 rounded-full" />
-                                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : filterJobs.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center text-center py-20 px-4 bg-white rounded-3xl border border-gray-100 shadow-sm my-6">
-                        <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-600 mb-4 shadow-2xs">
-                            <Search size={26} />
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-800">No matching jobs found</h3>
-                        <p className="text-gray-500 mt-1 max-w-sm text-sm">
-                            We couldn&apos;t find any openings matching &ldquo;{searchedQuery}&rdquo;. Try another keyword or clear the filter.
-                        </p>
-                        <button
-                            onClick={() => dispatch(setSearchedQuery(""))}
-                            className="mt-5 px-5 py-2.5 bg-pink-600 hover:bg-pink-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all hover:scale-105"
-                        >
-                            Reset Filter & View All Jobs
-                        </button>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filterJobs.map((job) => (
-                            <Job key={job._id} job={job} />
-                        ))}
-                    </div>
-                )}
-            </main>
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-2xl border border-slate-200 shadow-2xs sm:w-80"
+          >
+            <Search size={16} className="text-slate-400 shrink-0" />
+            <input
+              type="text"
+              placeholder="Search by title, skill, or role..."
+              value={keywordInput}
+              onChange={(e) => setKeywordInput(e.target.value)}
+              className="w-full text-xs text-slate-900 bg-transparent outline-none"
+            />
+            <Button
+              type="submit"
+              size="sm"
+              className="rounded-xl text-xs font-semibold bg-indigo-600 text-white h-7 px-3"
+            >
+              Search
+            </Button>
+          </form>
         </div>
-    );
+
+        {allJobs.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {allJobs.map((job) => (
+              <Job key={job._id} job={job} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center text-slate-400">
+            <Briefcase size={36} className="mx-auto mb-2 text-slate-300" />
+            <h3 className="text-base font-bold text-slate-800">No jobs found</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              Try searching with different keywords or location.
+            </p>
+          </div>
+        )}
+      </main>
+
+      <MobileBottomNav />
+    </div>
+  );
 };
 
 export default Browse;

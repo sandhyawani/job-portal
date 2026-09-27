@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import { Company } from "../models/company.model.js";
-import { User } from "../models/user.model.js";
+import { Job } from "../models/job.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
 import { calculateTrust } from "../services/trust.service.js";
 
-// Register company (recruiter only)
+// Register company (Recruiter)
 export const registerCompany = async (req, res) => {
   try {
     const name = (req.body.name || req.body.companyName || "").trim();
@@ -17,20 +17,11 @@ export const registerCompany = async (req, res) => {
       });
     }
 
-    // Role check: Only recruiters can register companies
-    const user = await User.findById(req.id);
-    if (!user || user.role !== "recruiter") {
-      return res.status(403).json({
-        success: false,
-        message: "Forbidden. Only recruiters can register companies.",
-      });
-    }
-
-    const existing = await Company.findOne({ name });
+    const existing = await Company.findOne({ name: { $regex: `^${name}$`, $options: "i" } });
     if (existing) {
       return res.status(400).json({
         success: false,
-        message: "Company already exists with this name",
+        message: "A company with this name already exists",
       });
     }
 
@@ -51,29 +42,43 @@ export const registerCompany = async (req, res) => {
       company,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Register company error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error registering company",
     });
   }
 };
 
-//get all companies
+// Get recruiter's companies
 export const getCompanies = async (req, res) => {
   try {
-    const companies = await Company.find({ userId: req.id });
-    return res.status(200).json({ success: true, companies });
+    const companies = await Company.find({ userId: req.id }).sort({ createdAt: -1 });
+    return res.status(200).json({ success: true, companies: companies || [] });
   } catch (error) {
-    console.error(error);
+    console.error("Get companies error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error fetching companies",
     });
   }
 };
 
-//get company by id
+// Get public companies list (for homepage / directory)
+export const getPublicCompanies = async (req, res) => {
+  try {
+    const companies = await Company.find({})
+      .select("name logo location website trustScore trustLevel description")
+      .sort({ trustScore: -1, createdAt: -1 })
+      .limit(20);
+    return res.status(200).json({ success: true, companies: companies || [] });
+  } catch (error) {
+    console.error("Get public companies error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// Get company by ID (with active open positions)
 export const getCompanyById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -85,7 +90,9 @@ export const getCompanyById = async (req, res) => {
       });
     }
 
-    const company = await Company.findById(id);
+    const company = await Company.findById(id).select(
+      "name description website location logo email registrationNumber trustScore trustLevel createdAt"
+    );
 
     if (!company) {
       return res.status(404).json({
@@ -94,17 +101,27 @@ export const getCompanyById = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ success: true, company });
+    // Fetch active jobs for this company
+    const openJobs = await Job.find({
+      company: id,
+      status: { $ne: "closed" },
+    }).select("title location jobType workMode salary experienceLevel requirements createdAt");
+
+    return res.status(200).json({
+      success: true,
+      company,
+      openJobs: openJobs || [],
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Get company by ID error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error fetching company",
     });
   }
 };
 
-//update company
+// Update company (Owner recruiter only)
 export const updateCompany = async (req, res) => {
   try {
     const { id } = req.params;
@@ -139,7 +156,7 @@ export const updateCompany = async (req, res) => {
 
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
-        company[field] = req.body[field];
+        company[field] = req.body[field].trim();
       }
     });
 
@@ -161,10 +178,10 @@ export const updateCompany = async (req, res) => {
       company,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Update company error:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server error updating company",
     });
   }
 };

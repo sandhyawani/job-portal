@@ -42,6 +42,6 @@ const hasValidDomain = (email) => {
 
 const isValidGST = (gst) => {
   const gstRegex =
-    /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{3}$/;
+    /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{3}$/; // 15 character no 2 random nos 10 number contain your pan and then 3 random alphabets
   return gstRegex.test(gst);
 };

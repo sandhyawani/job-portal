@@ -1,167 +1,470 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './shared/Navbar';
-import FilterCard from './FilterCard';
-import Job from './Job';
-import { useSelector, useDispatch } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
-import { setSearchedQuery } from '@/redux/jobSlice';
-import useGetAllJobs from '@/hooks/useGetAllJobs';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import Navbar from "./shared/Navbar";
+import MobileBottomNav from "./shared/MobileBottomNav";
+import FilterCard from "./FilterCard";
+import Job from "./Job";
+import { useSelector, useDispatch } from "react-redux";
+import { setFilters, setPagination, resetFilters } from "@/redux/jobSlice";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
+import useGetSavedJobs from "@/hooks/useGetSavedJobs";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import {
+  Search,
+  MapPin,
+  SlidersHorizontal,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Briefcase,
+  RotateCcw,
+} from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 const Jobs = () => {
-  useGetAllJobs();
-  const { allJobs, searchedQuery } = useSelector((store) => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs || []);
-  const [showMobileFilter, setShowMobileFilter] = useState(false);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { allJobs = [], filters, pagination, loading } = useSelector(
+    (store) => store.job
+  );
 
+  // Load saved jobs for candidate bookmark indicators
+  useGetSavedJobs();
+
+  // Load jobs based on Redux filters
+  useGetAllJobs();
+
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(searchParams.get("keyword") || filters.keyword || "");
+  const [locationInput, setLocationInput] = useState(
+    searchParams.get("location") || (filters.location !== "All" ? filters.location : "") || ""
+  );
+
+  // Sync from URL params on initial mount
   useEffect(() => {
-    const jobsList = allJobs || [];
-    if (searchedQuery) {
-      const query = searchedQuery.toLowerCase().trim();
-      const filteredJobs = jobsList.filter((job) => {
-        const titleMatch = job.title?.toLowerCase().includes(query);
-        const descMatch = job.description?.toLowerCase().includes(query);
-        const locMatch = job.location?.toLowerCase().includes(query);
-        const typeMatch = job.jobType?.toLowerCase().includes(query);
-        const reqMatch = Array.isArray(job?.requirements)
-          ? job.requirements.some((r) => r?.toLowerCase().includes(query))
-          : job?.requirements?.toLowerCase().includes(query);
-        return titleMatch || descMatch || locMatch || typeMatch || reqMatch;
-      });
-      setFilterJobs(filteredJobs);
-    } else {
-      setFilterJobs(jobsList);
+    const urlKeyword = searchParams.get("keyword");
+    const urlLocation = searchParams.get("location");
+    const urlWorkMode = searchParams.get("workMode");
+    const urlJobType = searchParams.get("jobType");
+    const urlExperience = searchParams.get("experience");
+    const urlSort = searchParams.get("sort");
+    const urlPage = parseInt(searchParams.get("page") || "1", 10);
+
+    const initialFilters = {};
+    if (urlKeyword !== null) {
+      initialFilters.keyword = urlKeyword;
+      setSearchInput(urlKeyword);
     }
-  }, [allJobs, searchedQuery]);
+    if (urlLocation !== null) {
+      initialFilters.location = urlLocation || "All";
+      setLocationInput(urlLocation || "");
+    }
+    if (urlWorkMode !== null) initialFilters.workMode = urlWorkMode;
+    if (urlJobType !== null) initialFilters.jobType = urlJobType;
+    if (urlExperience !== null) initialFilters.experience = urlExperience;
+    if (urlSort !== null) initialFilters.sort = urlSort;
+
+    if (Object.keys(initialFilters).length > 0) {
+      dispatch(setFilters(initialFilters));
+    }
+    if (urlPage && urlPage !== pagination?.currentPage) {
+      dispatch(setPagination({ currentPage: urlPage }));
+    }
+  }, []);
+
+  // Sync to URL params whenever filters or page change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (filters.keyword) params.set("keyword", filters.keyword);
+    if (filters.location && filters.location !== "All") params.set("location", filters.location);
+    if (filters.workMode && filters.workMode !== "All") params.set("workMode", filters.workMode);
+    if (filters.jobType && filters.jobType !== "All") params.set("jobType", filters.jobType);
+    if (filters.experience && filters.experience !== "All") params.set("experience", filters.experience);
+    if (filters.sort && filters.sort !== "newest") params.set("sort", filters.sort);
+    if (pagination?.currentPage > 1) params.set("page", String(pagination.currentPage));
+
+    setSearchParams(params, { replace: true });
+  }, [filters, pagination?.currentPage, setSearchParams]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      setFilters({
+        keyword: searchInput.trim(),
+        location: locationInput.trim() || "All",
+      })
+    );
+    dispatch(setPagination({ currentPage: 1 }));
+  };
+
+  const handleSortChange = (e) => {
+    dispatch(setFilters({ sort: e.target.value }));
+    dispatch(setPagination({ currentPage: 1 }));
+  };
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPagination({ currentPage: newPage }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const clearFilter = (key, defaultValue = "All") => {
+    dispatch(setFilters({ [key]: defaultValue }));
+    if (key === "keyword") setSearchInput("");
+    if (key === "location") setLocationInput("");
+  };
+
+  const handleResetAll = () => {
+    dispatch(resetFilters());
+    setSearchInput("");
+    setLocationInput("");
+    setSearchParams(new URLSearchParams(), { replace: true });
+  };
+
+  const hasActiveFilters =
+    Boolean(filters.keyword) ||
+    (filters.location && filters.location !== "All") ||
+    (filters.workMode && filters.workMode !== "All") ||
+    (filters.jobType && filters.jobType !== "All") ||
+    (filters.experience && filters.experience !== "All") ||
+    Boolean(filters.salaryMin) ||
+    Boolean(filters.salaryMax) ||
+    (filters.datePosted && filters.datePosted !== "all");
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-12">
       <Navbar />
-      <div className="max-w-7xl mx-auto pt-24 px-4 flex flex-col lg:flex-row gap-6">
-        {/* Mobile Filter Toggle */}
-        <div className="lg:hidden w-full">
-          <button
-            type="button"
-            onClick={() => setShowMobileFilter(!showMobileFilter)}
-            className="w-full flex items-center justify-between px-5 py-3.5 bg-white rounded-2xl shadow-sm border border-gray-200 text-gray-800 font-semibold"
-          >
-            <span className="flex items-center gap-2">
-              <SlidersHorizontal size={18} className="text-pink-500" />
-              Filter Jobs
-            </span>
-            {showMobileFilter ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-          </button>
-          {showMobileFilter && (
-            <div className="mt-3">
-              <FilterCard />
-            </div>
-          )}
-        </div>
 
-        {/* Desktop Sidebar */}
-        <div className="w-64 shrink-0 hidden lg:block">
-          <div className="sticky top-28">
-            <FilterCard />
-          </div>
-        </div>
-
-        {/* Job List */}
-        <div className="flex-1 flex flex-col min-h-[calc(100vh-5rem)]">
-          {/* Header bar with count & active filter chip */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-5 px-1">
-            <h1 className="text-xl font-bold text-gray-800">
-              {searchedQuery ? (
-                <span>
-                  Results for &ldquo;<span className="text-pink-600">{searchedQuery}</span>&rdquo;
-                </span>
-              ) : (
-                "All Available Jobs"
-              )}
-              <span className="ml-2 text-sm font-normal text-gray-500">
-                ({filterJobs.length} {filterJobs.length === 1 ? "opening" : "openings"})
-              </span>
-            </h1>
-
-            {searchedQuery && (
-              <button
-                onClick={() => dispatch(setSearchedQuery(""))}
-                className="flex items-center gap-1.5 text-xs font-semibold text-pink-700 bg-pink-100 hover:bg-pink-200 px-3 py-1.5 rounded-full transition-colors"
-                title="Clear current filter"
-              >
-                <span>Filtered: &ldquo;{searchedQuery}&rdquo;</span>
-                <span className="font-bold text-sm leading-none">&times;</span>
-              </button>
-            )}
-          </div>
-
-          {!allJobs || allJobs.length === 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <div
-                  key={n}
-                  className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm animate-pulse space-y-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-200 rounded-xl" />
-                    <div className="flex-1 space-y-2">
-                      <div className="h-4 bg-gray-200 rounded w-3/4" />
-                      <div className="h-3 bg-gray-100 rounded w-1/2" />
-                    </div>
-                  </div>
-                  <div className="space-y-2 pt-2">
-                    <div className="h-4 bg-gray-200 rounded w-5/6" />
-                    <div className="h-3 bg-gray-100 rounded w-full" />
-                    <div className="h-3 bg-gray-100 rounded w-4/5" />
-                  </div>
-                  <div className="flex gap-2 pt-2">
-                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
-                    <div className="h-6 w-20 bg-gray-200 rounded-full" />
-                    <div className="h-6 w-16 bg-gray-200 rounded-full" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filterJobs.length <= 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 text-center py-16 px-4 bg-white rounded-2xl border border-gray-200/80 shadow-2xs">
-              <div className="w-14 h-14 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-3">
-                <SlidersHorizontal size={24} />
-              </div>
-              <h3 className="text-lg font-bold text-gray-800">No jobs found</h3>
-              <p className="text-xs text-gray-500 mt-1 max-w-sm">
-                Try changing your search or removing some filters to discover open roles.
+      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+        {/* Top Header & Search Bar */}
+        <div className="mb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Discover Jobs
+              </h1>
+              <p className="text-sm text-slate-500 mt-1">
+                Explore real, verified opportunities matching your career goals.
               </p>
-              {searchedQuery && (
-                <button
-                  onClick={() => dispatch(setSearchedQuery(""))}
-                  className="mt-4 px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white text-xs font-semibold rounded-xl shadow-2xs transition"
+            </div>
+
+            {/* Sort & Mobile Filter Toggle */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setMobileFilterOpen(true)}
+                className="lg:hidden flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50"
+              >
+                <SlidersHorizontal size={14} />
+                Filters
+                {hasActiveFilters && (
+                  <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
+                )}
+              </button>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 font-medium hidden sm:inline">
+                  Sort by:
+                </span>
+                <select
+                  value={filters.sort || "newest"}
+                  onChange={handleSortChange}
+                  className="text-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                 >
-                  Clear Filters
+                  <option value="newest">Newest First</option>
+                  <option value="relevance">Relevance</option>
+                  <option value="salary_desc">Salary: High to Low</option>
+                  <option value="salary_asc">Salary: Low to High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Dual Search Bar: Keyword & Location */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex flex-col sm:flex-row items-center gap-2 bg-white p-2 rounded-2xl border border-slate-200 shadow-2xs"
+          >
+            {/* Title / Skill / Company */}
+            <div className="flex items-center flex-1 w-full px-3 gap-2 py-1">
+              <Search size={18} className="text-slate-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="Job title, skills (Python, React...), company"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="w-full text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 bg-transparent border-none outline-none"
+              />
+              {searchInput && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchInput("");
+                    clearFilter("keyword", "");
+                  }}
+                  className="text-slate-400 hover:text-slate-600 p-1"
+                >
+                  <X size={14} />
                 </button>
               )}
             </div>
-          ) : (
-            <div className="flex-1 overflow-y-auto pb-6 pr-2">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 h-full">
-                <AnimatePresence>
-                  {filterJobs.map((job, index) => (
-                    <motion.div
-                      key={job?._id}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -50 }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      className="hover:scale-[1.02] transition-transform"
-                    >
-                      <Job job={job} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
+
+            <div className="hidden sm:block h-6 w-px bg-slate-200"></div>
+
+            {/* Location */}
+            <div className="flex items-center sm:w-60 w-full px-3 gap-2 py-1">
+              <MapPin size={17} className="text-slate-400 shrink-0" />
+              <input
+                type="text"
+                placeholder="City or 'Remote'"
+                value={locationInput}
+                onChange={(e) => setLocationInput(e.target.value)}
+                className="w-full text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 bg-transparent border-none outline-none"
+              />
+              {locationInput && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLocationInput("");
+                    clearFilter("location", "All");
+                  }}
+                  className="text-slate-400 hover:text-slate-600 p-1"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full sm:w-auto rounded-xl px-6 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold h-10 shadow-xs transition"
+            >
+              Search Jobs
+            </Button>
+          </form>
+
+          {/* Active Filter Chips */}
+          {hasActiveFilters && (
+            <div className="flex flex-wrap items-center gap-2 mt-3 pt-2">
+              <span className="text-xs font-medium text-slate-500">Active:</span>
+
+              {filters.keyword && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  Keyword: {filters.keyword}
+                  <button
+                    onClick={() => clearFilter("keyword", "")}
+                    className="hover:text-indigo-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              {filters.location && filters.location !== "All" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  Location: {filters.location}
+                  <button
+                    onClick={() => clearFilter("location", "All")}
+                    className="hover:text-slate-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              {filters.workMode && filters.workMode !== "All" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  Mode: {filters.workMode}
+                  <button
+                    onClick={() => clearFilter("workMode", "All")}
+                    className="hover:text-slate-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              {filters.experience && filters.experience !== "All" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  Exp: {filters.experience}
+                  <button
+                    onClick={() => clearFilter("experience", "All")}
+                    className="hover:text-slate-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              {filters.jobType && filters.jobType !== "All" && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  Type: {filters.jobType}
+                  <button
+                    onClick={() => clearFilter("jobType", "All")}
+                    className="hover:text-slate-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              {(filters.salaryMin || filters.salaryMax) && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  ₹{filters.salaryMin || "0"} - ₹{filters.salaryMax || "Any"} LPA
+                  <button
+                    onClick={() => {
+                      clearFilter("salaryMin", "");
+                      clearFilter("salaryMax", "");
+                    }}
+                    className="hover:text-slate-900"
+                  >
+                    <X size={12} />
+                  </button>
+                </span>
+              )}
+
+              <button
+                onClick={handleResetAll}
+                className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold ml-1 cursor-pointer flex items-center gap-1"
+              >
+                <RotateCcw size={12} /> Clear all
+              </button>
             </div>
           )}
         </div>
-      </div>
+
+        {/* Content Layout: Sidebar + Grid */}
+        <div className="flex gap-6 items-start">
+          {/* Desktop Filter Sidebar */}
+          <aside className="w-72 hidden lg:block shrink-0 sticky top-24">
+            <FilterCard />
+          </aside>
+
+          {/* Job Results */}
+          <section className="flex-1 min-w-0">
+            {/* Results count header */}
+            <div className="flex items-center justify-between text-xs text-slate-500 font-medium mb-4">
+              <span>
+                Showing {allJobs.length} of {pagination.totalJobs || allJobs.length} jobs
+              </span>
+              {pagination.totalPages > 1 && (
+                <span>
+                  Page {pagination.currentPage} of {pagination.totalPages}
+                </span>
+              )}
+            </div>
+
+            {/* Loading skeletons */}
+            {loading ? (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-64 rounded-2xl bg-white border border-slate-200 p-5 animate-pulse flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+                      <div className="h-6 bg-slate-200 rounded w-3/4"></div>
+                      <div className="h-4 bg-slate-100 rounded w-1/2"></div>
+                    </div>
+                    <div className="h-8 bg-slate-100 rounded w-full"></div>
+                  </div>
+                ))}
+              </div>
+            ) : allJobs.length === 0 ? (
+              /* Meaningful Empty State */
+              <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 mb-4">
+                  <Briefcase size={28} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">
+                  No matching jobs found
+                </h3>
+                <p className="text-sm text-slate-500 max-w-md mt-1 mb-6">
+                  We couldn't find any opportunities matching your active criteria. Try
+                  expanding your search or resetting filters.
+                </p>
+                <Button
+                  onClick={() => {
+                    dispatch(resetFilters());
+                    setSearchInput("");
+                  }}
+                  variant="outline"
+                  className="rounded-xl border-slate-200 text-xs font-semibold gap-2"
+                >
+                  <RotateCcw size={14} /> Reset all filters
+                </Button>
+              </div>
+            ) : (
+              /* Job Cards Grid */
+              <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                {allJobs.map((job) => (
+                  <Job key={job._id} job={job} />
+                ))}
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {pagination.totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8 pb-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={pagination.currentPage <= 1}
+                  onClick={() => handlePageChange(pagination.currentPage - 1)}
+                  className="rounded-xl border-slate-200 text-xs font-medium gap-1"
+                >
+                  <ChevronLeft size={14} /> Previous
+                </Button>
+
+                {[...Array(pagination.totalPages)].map((_, i) => {
+                  const pageNum = i + 1;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`w-8 h-8 rounded-xl text-xs font-semibold transition ${
+                        pagination.currentPage === pageNum
+                          ? "bg-indigo-600 text-white shadow-xs"
+                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={pagination.currentPage >= pagination.totalPages}
+                  onClick={() => handlePageChange(pagination.currentPage + 1)}
+                  className="rounded-xl border-slate-200 text-xs font-medium gap-1"
+                >
+                  Next <ChevronRight size={14} />
+                </Button>
+              </div>
+            )}
+          </section>
+        </div>
+      </main>
+
+      {/* Mobile Filters Dialog / Drawer */}
+      <Dialog open={mobileFilterOpen} onOpenChange={setMobileFilterOpen}>
+        <DialogContent className="sm:max-w-md max-h-[85vh] overflow-y-auto p-0 rounded-2xl bg-white border border-slate-200">
+          <DialogHeader className="p-4 border-b border-slate-100 bg-slate-50/50 sticky top-0 z-10 backdrop-blur-md">
+            <DialogTitle className="text-base font-bold text-slate-900">
+              Filter Opportunities
+            </DialogTitle>
+          </DialogHeader>
+          <div className="p-4">
+            <FilterCard
+              onApplyMobileFilter={() => setMobileFilterOpen(false)}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <MobileBottomNav />
     </div>
   );
 };

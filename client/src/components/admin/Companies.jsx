@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
+import MobileBottomNav from "../shared/MobileBottomNav";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import CompaniesTable from "./CompaniesTable";
@@ -7,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 import { useDispatch } from "react-redux";
 import { setSearchCompanyByText } from "@/redux/companySlice";
+import { Building2, Plus, Search } from "lucide-react";
 
 const Companies = () => {
   useGetAllCompanies();
@@ -20,53 +22,47 @@ const Companies = () => {
   }, [input, dispatch]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-12">
-        {/* Header section */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
-              Manage Companies
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold mb-2">
+              <Building2 size={14} /> Organization Management
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Manage Registered Companies
             </h1>
-            <p className="text-gray-500 mt-1">
-              View, search, and manage registered companies
+            <p className="text-xs text-slate-500 mt-1">
+              Verify company profiles, configure trust credentials, and manage brand settings.
             </p>
           </div>
 
           <Button
             onClick={() => navigate("/admin/companies/create")}
-            className="w-full sm:w-auto rounded-xl px-6 py-3 font-semibold text-white shadow-lg 
-                       bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
-                       hover:shadow-xl hover:scale-105 transition-all duration-300"
+            className="rounded-xl px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
           >
-            + New Company
+            <Plus size={16} /> Register Company
           </Button>
         </div>
 
-        {/* Search filter */}
-        <div className="bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-lg mb-10 border border-gray-100">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <Input
-              className="w-full md:w-96 rounded-xl border-gray-300 focus:ring-2 focus:ring-indigo-400"
-              placeholder="Search company by name"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-
-            <p className="text-sm text-gray-500 italic">
-              {input ? `Filtering by "${input}"` : "Showing all companies"}
-            </p>
-          </div>
+        {/* Search bar */}
+        <div className="flex items-center gap-2 max-w-md mb-6 p-2 rounded-2xl border border-slate-200 bg-white">
+          <Search size={16} className="text-slate-400 shrink-0 ml-1" />
+          <input
+            type="text"
+            placeholder="Search company by name..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full text-xs text-slate-900 bg-transparent outline-none"
+          />
         </div>
 
-        {/* Companies table */}
-        <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-3 sm:p-6 border border-gray-100">
-          <CompaniesTable />
-        </div>
-      </div>
+        <CompaniesTable />
+      </main>
+
+      <MobileBottomNav />
     </div>
   );
 };

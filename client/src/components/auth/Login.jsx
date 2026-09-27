@@ -39,7 +39,11 @@ const Login = () => {
       })
       if (res.data.success) {
         dispatch(setUser(res.data.user))
-        navigate('/')
+        if (res.data.user?.role === 'recruiter') {
+          navigate('/admin/dashboard')
+        } else {
+          navigate('/dashboard')
+        }
         toast.success(res.data.message)
       }
     } catch (error) {
@@ -52,7 +56,11 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/')
+      if (user.role === 'recruiter') {
+        navigate('/admin/dashboard')
+      } else {
+        navigate('/')
+      }
     }
   }, [user, navigate])
 
@@ -125,22 +133,22 @@ const Login = () => {
 
             {/* Button */}
             {loading ? (
-              <Button className="w-full h-11" disabled>
+              <Button className="w-full h-11 rounded-xl bg-indigo-600 text-white font-semibold" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
               </Button>
             ) : (
               <Button
                 type="submit"
-                className="w-full h-11 bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-xs transition"
               >
-                Login
+                Sign In
               </Button>
             )}
 
-            <p className="text-sm text-center mt-4">
-              Don&apos;t have an account?{' '}
-              <Link to="/signup" className="text-blue-600 hover:underline">
-                Signup
+            <p className="text-xs text-center text-slate-500 mt-4">
+              Don&apos;t have an account?{" "}
+              <Link to="/signup" className="text-indigo-600 font-semibold hover:underline">
+                Sign up
               </Link>
             </p>
           </div>

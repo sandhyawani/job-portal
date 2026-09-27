@@ -1,189 +1,123 @@
-﻿# JobPortal - Full-Stack Hiring Platform
+# JobPortal - Career & Hiring Workspace
 
-A production-grade, full-stack job portal built on the **MERN stack** (MongoDB, Express, React, Node.js) with a fully enforced backend application pipeline, real take-home salary estimation, skill alignment scoring, company trust signals, and audit-trailed status history.
-
----
-
-## Live Application
-
-**Frontend (Vercel):** [https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)
-
-**Backend API (Render):** [https://job-portal-fy3b.onrender.com](https://job-portal-fy3b.onrender.com)
-
-> Note: The backend is hosted on Render's free tier. The first request may take ~30 seconds to wake the server.
+A full-stack, production-grade job search and recruitment platform connecting job seekers with hiring teams. Features dedicated workspaces for candidates (discovery, matching, application tracking, saved jobs triage) and recruiters (job posting, applicant pipeline management, interview scheduling).
 
 ---
 
 ## Key Features
 
-### For Candidates (Job Seekers)
-- Register and log in with role-based authentication (JWT + Cookies).
-- Upload profile photo and resume via Cloudinary.
-- Add skills and bio to your profile.
-- Browse all jobs or search by title, skill, or location.
-- View real-time **In-Hand Take-Home Salary Estimates** (Indian New Tax Regime) before applying.
-- See a **Skill Alignment Score** for every job listing based on your profile skills.
-- Apply to jobs with a single click (duplicate protection enforced at backend).
-- Track full application history with a live **Application Timeline** — stage, date, and recruiter comment for every status change.
-- Save jobs and manage a personal saved jobs list.
+### For Candidates
+- **Job Discovery & Multi-Criteria Filtering**: Filter by role, skill, company, location, work mode (Remote/Hybrid/On-site), job type, experience, salary, and date posted. URL search parameter syncing preserves filter state across page navigation.
+- **Match Breakdown**: Transparent skill match evaluation comparing candidate profile skills against job requirements.
+- **Pre-Submission Review & Confirmation**: Pre-submission profile and resume preview modal to prevent blind applications, followed by immediate post-submission confirmation and tracking link.
+- **Real-Time Application Tracker**: 6-stage lifecycle progression (`Applied` → `Under Review` → `Shortlisted` → `Interview` → `Offer` → `Hired`) with rejection recovery recommendations.
+- **Triaged Saved Jobs**: Organize bookmarked positions into `All Saved`, `To Apply`, and `Applied`.
+- **External Applications Tracker**: Track job applications submitted on LinkedIn, Indeed, Naukri, or company sites in one unified dashboard.
+- **Interview Preparation**: Built-in practice modules for core technical and behavioural interview rounds.
 
 ### For Recruiters
-- Register and manage company profiles (logo, website, description).
-- Post, edit, and manage job listings.
-- View all applicants per job posting.
-- Move applicants through an **enforced hiring pipeline**:
-
-```
-Applied → Under Review → Shortlisted → Interview → Offer → Hired
-```
-
-  Terminal states: `Rejected`, `Withdrawn`.
-- Illegal transitions (e.g. jumping directly to Hired) are rejected at the API level.
-- Every status change is written to `statusHistory` with actor, timestamp, and optional comment.
-
-### Security and Data Integrity
-- Cross-recruiter authorization: Recruiter A cannot view or modify Recruiter B's data.
-- Candidates cannot modify application status.
-- Duplicate applications blocked at the database level.
-- Invalid ObjectId requests handled safely (400, not 500).
-- Unauthenticated requests receive 401 Unauthorized.
-- **15 / 15 automated security and pipeline tests passing.**
-
-### Company Trust Signals
-- Companies are rated **High / Medium / Low** based on observable data points.
-- Trust badge displayed on every job card and job detail page.
-- Honest disclaimer that recruiter identity is not independently third-party verified.
+- **Actionable Dashboard**: Centralized triage queues for "Candidates Needing Review" and "Scheduled Candidate Interviews".
+- **Hiring Pipeline**: Multi-stage applicant management with recruiter notes, interview scheduling, and automated candidate notifications.
+- **Company Profile Management**: Company branding, logo uploads, and public company profiles.
+- **Role-Based Security**: Strict access control preventing unauthorized recruiters from viewing or altering candidate data. Password hashes are excluded from all applicant payloads.
 
 ---
 
 ## Tech Stack
 
-### Frontend
-| Category | Technology |
-|---|---|
-| Framework | React 18, Vite |
-| Routing | React Router v6 |
-| State | Redux Toolkit, Redux Persist |
-| Styling | Tailwind CSS v4 |
-| UI Primitives | Radix UI, Lucide React, Embla Carousel |
-| Notifications | Sonner |
-
-### Backend
-| Category | Technology |
-|---|---|
-| Runtime | Node.js (ES Modules) |
-| Framework | Express.js |
-| Database | MongoDB via Mongoose |
-| Auth | JWT + cookie-parser |
-| File Uploads | Multer + Cloudinary |
-| Security | Bcrypt.js, CORS |
+- **Frontend**: React 18, Vite, Tailwind CSS, Redux Toolkit, React Router v6, Lucide React, Sonner
+- **Backend**: Node.js, Express.js, MongoDB (Mongoose), JWT, Bcrypt, Multer, Cloudinary
+- **Security**: Cookie-based HTTP-only authentication, CORS origin filtering, Trust Proxy, centralized error handling
 
 ---
 
 ## Project Structure
 
-```
-job-portal/
+```text
 ├── backend/
-│   ├── controllers/        # Business logic (user, company, job, application)
-│   ├── middlewares/        # Auth guards and role checks
-│   ├── models/             # Mongoose schemas (User, Company, Job, Application)
-│   ├── routes/             # Express route definitions
-│   ├── tests/              # Automated security and pipeline test suite
-│   ├── utils/              # DB connection, Cloudinary config
-│   └── index.js            # App entry point
-└── client/
-    └── src/
-        ├── components/
-        │   ├── admin/      # Recruiter-only screens
-        │   ├── auth/       # Login, Signup
-        │   ├── shared/     # Navbar, Footer
-        │   └── ui/         # Radix UI primitives
-        ├── hooks/          # Custom data-fetching hooks
-        ├── redux/          # Store, slices
-        └── utils/          # Constants, salaryCalculator, skillMatcher
+│   ├── controllers/      # Route controllers (user, job, company, application)
+│   ├── middlewares/      # Authentication & file upload middlewares
+│   ├── models/           # Mongoose schemas (User, Job, Company, Application, Notification)
+│   ├── routes/           # Express API route declarations
+│   ├── utils/            # Database connection & helpers
+│   ├── index.js          # Server entrypoint
+│   └── package.json
+│
+├── client/
+│   ├── public/           # Static assets & brand favicon
+│   ├── src/
+│   │   ├── components/   # React components (candidate workspace, recruiter dashboard, UI)
+│   │   ├── hooks/        # Custom React hooks for data fetching
+│   │   ├── redux/        # Redux slices (auth, job, company, application)
+│   │   ├── utils/        # Constants and job matcher logic
+│   │   ├── App.jsx       # Route definitions
+│   │   └── main.jsx      # React entrypoint with Error Boundary
+│   ├── index.html        # HTML root
+│   ├── vite.config.js    # Vite configuration
+│   └── package.json
+│
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## Local Setup
+## Getting Started
 
 ### Prerequisites
-- Node.js v18+
-- MongoDB (local or Atlas)
-- Cloudinary account
+- Node.js (v18+)
+- MongoDB Atlas or local MongoDB instance
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/sandhyawani/job-portal.git
-cd job-portal
+git clone <repository-url>
+cd "Job Portal sandhya"
 ```
 
-### 2. Configure the backend
-Create `backend/.env` with:
+### 2. Configure Backend
+```bash
+cd backend
+npm install
+```
+Create a `.env` file in the `backend/` folder based on `.env.example`:
 ```env
 PORT=8000
-MONGO_URI=your_mongodb_connection_uri
+NODE_ENV=development
+MONGO_URI=your_mongodb_connection_string
 SECRET_KEY=your_jwt_secret_key
 CLOUD_NAME=your_cloudinary_cloud_name
 API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 ```
-
-### 3. Start the backend
+Start the backend server:
 ```bash
-cd backend
-npm install
-npm run dev
+npm start
+# Server runs on http://localhost:8000
 ```
-Backend runs at `http://localhost:8000`.
 
-### 4. Start the frontend
+### 3. Configure Frontend
+```bash
+cd ../client
+npm install
+```
+Optionally create `.env` in `client/` if using a custom backend URL:
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
+Start the development server:
+```bash
+npm run dev
+# App opens at http://localhost:5173
+```
+
+### 4. Build for Production
 ```bash
 cd client
-npm install
-npm run dev
-```
-Frontend runs at `http://localhost:5173`.
-
----
-
-## API Reference
-
-| Resource | Method | Endpoint | Description | Auth |
-|---|---|---|---|---|
-| Users | POST | /api/v1/user/register | Register as student or recruiter | No |
-| | POST | /api/v1/user/login | Login and receive JWT cookie | No |
-| | GET | /api/v1/user/logout | Log out and clear cookie | Yes |
-| | POST | /api/v1/user/profile/update | Update profile and resume | Yes |
-| Companies | POST | /api/v1/company/register | Register a new company | Recruiter |
-| | GET | /api/v1/company/get | List companies owned by recruiter | Recruiter |
-| | PUT | /api/v1/company/update/:id | Update company profile | Recruiter |
-| Jobs | POST | /api/v1/job/post | Post a new job | Recruiter |
-| | GET | /api/v1/job/get | List all active jobs | No |
-| | GET | /api/v1/job/get/:id | Get single job detail | Yes |
-| | GET | /api/v1/job/getadminjobs | List recruiter's own jobs | Recruiter |
-| Applications | POST | /api/v1/application/apply/:id | Apply for a job | Student |
-| | GET | /api/v1/application/get | Get all applications by student | Student |
-| | GET | /api/v1/application/:id/applicants | Get applicants for a job | Recruiter |
-| | POST | /api/v1/application/status/:id/update | Advance pipeline status | Recruiter |
-
----
-
-## Testing
-
-```bash
-cd backend
-npm test
-```
-
-Expected output:
-```
-TEST SUMMARY: 15 / 15 PASSED
+npm run build
 ```
 
 ---
 
 ## License
-
-This project is open-source under the [ISC License](LICENSE).
+MIT

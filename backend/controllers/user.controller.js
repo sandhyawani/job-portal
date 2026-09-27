@@ -1,11 +1,34 @@
-
-import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { Job } from "../models/job.model.js";
+import { Notification } from "../models/notification.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+
+// Helper to sanitize user object
+const sanitizeUser = (userDoc) => {
+  const user = userDoc.toObject ? userDoc.toObject() : { ...userDoc };
+  delete user.password;
+  return user;
+};
+
+// Calculate profile completion score and breakdown
+export const calculateProfileScore = (user) => {
+  if (!user) return { score: 0, items: [] };
+
+  const checks = [
+    { label: "Basic details (Name, Email, Phone)", completed: Boolean(user.fullname && user.email && user.phoneNumber), weight: 15 },
+    { label: "Professional Bio", completed: Boolean(user.profile?.bio && user.profile.bio.trim().length > 10), weight: 15 },
+    { label: "Skills (at least 3)", completed: Boolean(user.profile?.skills && user.profile.skills.length >= 3), weight: 20 },
+    { label: "Resume uploaded", completed: Boolean(user.profile?.resume), weight: 20 },
+    { label: "Experience & Education", completed: Boolean(user.profile?.experience || user.profile?.education), weight: 15 },
+    { label: "Links (GitHub / Portfolio)", completed: Boolean(user.profile?.github || user.profile?.portfolio), weight: 15 },
+  ];
+
+  const totalScore = checks.reduce((acc, curr) => acc + (curr.completed ? curr.weight : 0), 0);
+  return { score: totalScore, checks };
+};
 
 export const register = async (req, res) => {
   try {
@@ -13,12 +36,19 @@ export const register = async (req, res) => {
 
     if (!fullname || !email || !phoneNumber || !password || !role) {
       return res.status(400).json({
-        message: "Something is missing",
+        message: "All fields are required.",
         success: false,
       });
     }
 
-    const userExists = await User.findOne({ email });
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long.",
+        success: false,
+      });
+    }
+
+    const userExists = await User.findOne({ email: email.toLowerCase().trim() });
     if (userExists) {
       return res.status(400).json({
         message: "User already exists with this email.",
@@ -26,7 +56,7 @@ export const register = async (req, res) => {
       });
     }
 
-    //profile photo upload
+    // Profile photo upload
     let profilePhoto = "";
     if (req.file) {
       const fileUri = getDataUri(req.file);
@@ -36,24 +66,26 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await User.create({
-      fullname,
-      email,
-      phoneNumber,
+    const newUser = await User.create({
+      fullname: fullname.trim(),
+      email: email.toLowerCase().trim(),
+      phoneNumber: Number(phoneNumber),
       password: hashedPassword,
       role,
       profile: {
-        profilePhoto, 
+        profilePhoto,
+        skills: [],
       },
     });
 
     return res.status(201).json({
       message: "Account created successfully.",
+      user: sanitizeUser(newUser),
       success: true,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Register error:", error);
+    res.status(500).json({ success: false, message: "Server error during registration" });
   }
 };
 
@@ -63,12 +95,12 @@ export const login = async (req, res) => {
 
     if (!email || !password || !role) {
       return res.status(400).json({
-        message: "Something is missing",
+        message: "All fields are required.",
         success: false,
       });
     }
 
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
       return res.status(400).json({
         message: "Incorrect email or password.",
@@ -96,61 +128,60 @@ export const login = async (req, res) => {
       expiresIn: "1d",
     });
 
-    user = {
-      _id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      role: user.role,
-      profile: user.profile,
-      savedJobs: user.savedJobs || [],
-    };
+    const sanitized = sanitizeUser(user);
+
+    const isProduction = process.env.NODE_ENV === "production";
 
     return res
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
-        httpOnly: true, 
-       secure: true,
-sameSite: "none",
-
+        httpOnly: true,
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,
       })
       .json({
         message: `Welcome back ${user.fullname}`,
-        user,
+        user: sanitized,
+        token,
         success: true,
       });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Server error during login" });
   }
 };
 
 export const logout = async (req, res) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
     return res
       .status(200)
       .cookie("token", "", {
         maxAge: 0,
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        sameSite: isProduction ? "none" : "lax",
+        secure: isProduction,
       })
       .json({
         message: "Logged out successfully.",
         success: true,
       });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Logout error:", error);
+    res.status(500).json({ success: false, message: "Server error during logout" });
   }
 };
 
-export const updateProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
-    const { fullname, email, phoneNumber, bio, skills } = req.body || {};
     const userId = req.id;
-    let user = await User.findById(userId);
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate({
+        path: "savedJobs",
+        populate: { path: "company" },
+      });
 
     if (!user) {
       return res.status(404).json({
@@ -159,55 +190,119 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    let skillsArray = [];
-    if (skills) {
-      if (Array.isArray(skills)) {
-        skillsArray = skills.map((s) => s.trim());
-      } else {
-        skillsArray = skills.split(",").map((s) => s.trim());
-      }
+    const completion = calculateProfileScore(user);
+
+    return res.status(200).json({
+      success: true,
+      user,
+      profileCompletion: completion,
+    });
+  } catch (error) {
+    console.error("Get profile error:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch profile" });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const {
+      fullname,
+      email,
+      phoneNumber,
+      bio,
+      skills,
+      experience,
+      education,
+      location,
+      github,
+      portfolio,
+      expectedSalary,
+      preferredJobType,
+      preferredWorkMode,
+      projects,
+    } = req.body || {};
+
+    const userId = req.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+        success: false,
+      });
     }
 
-    // Support files from req.files (array) or req.file (single)
-    const uploadedFiles = req.files && req.files.length > 0 ? req.files : (req.file ? [req.file] : []);
-    for (const file of uploadedFiles) {
-      const fileUri = getDataUri(file);
-      const isPhoto = file.fieldname === "profilePhoto" || file.mimetype.startsWith("image/");
+    // Process skills
+    if (skills !== undefined) {
+      let skillsArray = [];
+      if (Array.isArray(skills)) {
+        skillsArray = skills.map((s) => String(s).trim()).filter(Boolean);
+      } else if (typeof skills === "string") {
+        skillsArray = skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+      user.profile.skills = skillsArray;
+    }
+
+    // Handle file upload (photo or resume based on mimetype)
+    if (req.file) {
+      const fileUri = getDataUri(req.file);
+      const isPdfOrDoc =
+        req.file.mimetype === "application/pdf" ||
+        req.file.mimetype.includes("word") ||
+        req.file.mimetype.includes("document");
+
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-        resource_type: isPhoto ? "image" : "auto",
+        resource_type: isPdfOrDoc ? "raw" : "auto",
       });
 
-      if (isPhoto) {
-        user.profile.profilePhoto = cloudResponse.secure_url;
-      } else {
+      if (isPdfOrDoc) {
         user.profile.resume = cloudResponse.secure_url;
-        user.profile.resumeOriginalName = file.originalname;
+        user.profile.resumeOriginalName = req.file.originalname;
+      } else {
+        user.profile.profilePhoto = cloudResponse.secure_url;
       }
     }
 
-    if (fullname) user.fullname = fullname;
-    if (email) user.email = email;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
-    if (bio) user.profile.bio = bio;
-    if (skillsArray.length > 0) user.profile.skills = skillsArray;
+    if (fullname) user.fullname = fullname.trim();
+    if (email) user.email = email.toLowerCase().trim();
+    if (phoneNumber) user.phoneNumber = Number(phoneNumber);
+    if (bio !== undefined) user.profile.bio = bio;
+    if (experience !== undefined) user.profile.experience = experience;
+    if (education !== undefined) user.profile.education = education;
+    if (location !== undefined) user.profile.location = location;
+    if (github !== undefined) user.profile.github = github;
+    if (portfolio !== undefined) user.profile.portfolio = portfolio;
+    if (expectedSalary !== undefined) user.profile.expectedSalary = Number(expectedSalary) || 0;
+    if (preferredJobType !== undefined) user.profile.preferredJobType = preferredJobType;
+    if (preferredWorkMode !== undefined) user.profile.preferredWorkMode = preferredWorkMode;
+
+    if (projects) {
+      try {
+        const parsed = typeof projects === "string" ? JSON.parse(projects) : projects;
+        if (Array.isArray(parsed)) {
+          user.profile.projects = parsed;
+        }
+      } catch {
+        // If not JSON, ignore project parse error
+      }
+    }
 
     await user.save();
 
+    const sanitized = sanitizeUser(user);
+    const completion = calculateProfileScore(sanitized);
+
     return res.status(200).json({
       message: "Profile updated successfully.",
-      user: {
-        _id: user._id,
-        fullname: user.fullname,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        role: user.role,
-        profile: user.profile,
-        savedJobs: user.savedJobs || [],
-      },
+      user: sanitized,
+      profileCompletion: completion,
       success: true,
     });
   } catch (error) {
-    console.log("Update profile error:", error);
+    console.error("Update profile error:", error);
     res.status(500).json({
       success: false,
       message: "Something went wrong while updating profile",
@@ -215,67 +310,48 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// ====================
+// Saved jobs
+// ====================
 export const toggleSaveJob = async (req, res) => {
   try {
     const userId = req.id;
     const jobId = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
-      return res.status(400).json({
-        message: "Invalid Job ID format.",
-        success: false,
-      });
-    }
-
     const job = await Job.findById(jobId);
     if (!job) {
-      return res.status(404).json({
-        message: "Job not found.",
-        success: false,
-      });
+      return res.status(404).json({ success: false, message: "Job not found." });
     }
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
+      return res.status(404).json({ success: false, message: "User not found." });
     }
 
-    if (!user.savedJobs) {
-      user.savedJobs = [];
-    }
+    const index = user.savedJobs.findIndex((id) => id.toString() === jobId);
+    let isSaved = false;
 
-    const isAlreadySaved = user.savedJobs.some(
-      (id) => id.toString() === jobId.toString()
-    );
-
-    let message = "";
-    if (isAlreadySaved) {
-      user.savedJobs = user.savedJobs.filter(
-        (id) => id.toString() !== jobId.toString()
-      );
-      message = "Job removed from saved list.";
+    if (index > -1) {
+      // Unsave
+      user.savedJobs.splice(index, 1);
+      isSaved = false;
     } else {
+      // Save
       user.savedJobs.push(jobId);
-      message = "Job saved successfully.";
+      isSaved = true;
     }
 
     await user.save();
 
     return res.status(200).json({
-      message,
-      savedJobs: user.savedJobs,
-      isSaved: !isAlreadySaved,
       success: true,
+      isSaved,
+      savedJobs: user.savedJobs,
+      message: isSaved ? "Job saved to your pipeline." : "Job removed from saved jobs.",
     });
   } catch (error) {
-    console.error("Save job error:", error);
-    return res.status(500).json({
-      message: "Server error while saving job.",
-      success: false,
-    });
+    console.error("Toggle save job error:", error);
+    return res.status(500).json({ success: false, message: "Failed to update saved job" });
   }
 };
 
@@ -284,27 +360,60 @@ export const getSavedJobs = async (req, res) => {
     const userId = req.id;
     const user = await User.findById(userId).populate({
       path: "savedJobs",
-      populate: {
-        path: "company",
-      },
+      populate: { path: "company" },
     });
 
     if (!user) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
+      return res.status(404).json({ success: false, message: "User not found." });
     }
 
     return res.status(200).json({
-      savedJobs: user.savedJobs || [],
       success: true,
+      savedJobs: user.savedJobs || [],
     });
   } catch (error) {
     console.error("Get saved jobs error:", error);
-    return res.status(500).json({
-      message: "Server error while fetching saved jobs.",
-      success: false,
+    return res.status(500).json({ success: false, message: "Failed to fetch saved jobs" });
+  }
+};
+
+// ==========================
+// Notifications
+// ==========================
+export const getNotifications = async (req, res) => {
+  try {
+    const userId = req.id;
+    let notifications = await Notification.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .limit(30);
+
+    const unreadCount = await Notification.countDocuments({ user: userId, isRead: false });
+
+    return res.status(200).json({
+      success: true,
+      notifications,
+      unreadCount,
     });
+  } catch (error) {
+    console.error("Get notifications error:", error);
+    return res.status(500).json({ success: false, message: "Failed to fetch notifications" });
+  }
+};
+
+export const markNotificationRead = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { id } = req.params;
+
+    if (id === "all") {
+      await Notification.updateMany({ user: userId, isRead: false }, { isRead: true });
+    } else {
+      await Notification.findOneAndUpdate({ _id: id, user: userId }, { isRead: true });
+    }
+
+    return res.status(200).json({ success: true, message: "Notification marked as read." });
+  } catch (error) {
+    console.error("Mark notification read error:", error);
+    return res.status(500).json({ success: false, message: "Failed to update notification" });
   }
 };

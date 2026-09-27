@@ -29,24 +29,27 @@ const CategoryCarousel = () => {
   };
 
   return (
-    <div className="relative w-full pt-8 pb-4 bg-gradient-to-b from-white via-pink-50/30 to-white">
-      <h2 className="text-center text-2xl sm:text-3xl font-bold mb-5">
-        Explore <span className="text-pink-500">Categories</span>
-      </h2>
+    <div className="relative w-full py-10 bg-slate-50 border-y border-slate-200/80">
+      <div className="text-center mb-6">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+          Explore by <span className="text-indigo-600">Specialization</span>
+        </h2>
+        <p className="text-xs text-slate-500 mt-0.5">
+          Select a domain to filter open opportunities
+        </p>
+      </div>
 
-      <Carousel className="w-full max-w-xl md:max-w-4xl mx-auto px-10 sm:px-14">
-        <CarouselContent className="flex items-center">
+      <Carousel className="w-full max-w-4xl mx-auto px-4">
+        <CarouselContent className="flex items-center -ml-2">
           {category.map((cat, index) => (
             <CarouselItem
               key={index}
-              className="basis-full sm:basis-1/2 lg:basis-1/3 flex justify-center"
+              className="pl-2 basis-auto flex justify-center"
             >
               <Button
+                variant="outline"
                 onClick={() => searchJobHandler(cat)}
-                className="rounded-full px-5 py-2.5 text-sm sm:text-base font-medium 
-                  bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 
-                  hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600
-                  shadow-md shadow-pink-500/20 text-white transition-all duration-300 transform hover:scale-105"
+                className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50/50 shadow-2xs transition"
               >
                 {cat}
               </Button>
@@ -54,8 +57,8 @@ const CategoryCarousel = () => {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="absolute left-1 sm:-left-6 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg shadow-md hover:scale-105 transition-all rounded-full" />
-        <CarouselNext className="absolute right-1 sm:-right-6 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg shadow-md hover:scale-105 transition-all rounded-full" />
+        <CarouselPrevious className="hidden sm:flex -left-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 shadow-xs" />
+        <CarouselNext className="hidden sm:flex -right-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-slate-50 shadow-xs" />
       </Carousel>
     </div>
   );

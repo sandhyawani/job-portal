@@ -28,9 +28,25 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    workMode: {
+        type: String,
+        enum: ['Remote', 'Hybrid', 'On-site'],
+        default: 'On-site'
+    },
     position: {
         type: Number,
         required: true
+    },
+    responsibilities: [{
+        type: String
+    }],
+    benefits: [{
+        type: String
+    }],
+    status: {
+        type: String,
+        enum: ['active', 'closed'],
+        default: 'active'
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,

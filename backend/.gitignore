@@ -2,17 +2,4 @@ node_modules/
 .env
 .env.*
 !.env.example
-logs
 *.log
-fix.js
-*.fix.js
-test.js
-*.test.js
-*.spec.js
-test/
-tests/
-!tests/
-__tests__/
-tmp/
-temp/
-scratch/

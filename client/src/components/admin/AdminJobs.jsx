@@ -1,98 +1,67 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
+import MobileBottomNav from "../shared/MobileBottomNav";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import AdminJobsTable from "./AdminJobsTable";
 import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
 import { setSearchJobByText } from "@/redux/jobSlice";
-import { Briefcase, Users, Building2, Plus } from "lucide-react";
+import { Briefcase, Plus, Search } from "lucide-react";
 
 const AdminJobs = () => {
-  // Fetch all jobs created by admin
   useGetAllAdminJobs();
-
-  const { allAdminJobs } = useSelector((store) => store.job);
-  const totalJobs = allAdminJobs?.length || 0;
-  const totalApplicants = allAdminJobs?.reduce((acc, job) => acc + (job.applications?.length || 0), 0) || 0;
-  const totalCompanies = new Set(allAdminJobs?.map((j) => j?.company?._id || j?.company?.name).filter(Boolean)).size;
-
-  // Search input state
   const [input, setInput] = useState("");
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Sync search text with Redux store
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [input, dispatch]);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
       <Navbar />
 
-      {/* page content */}
-      <div className="relative z-10 max-w-6xl mx-auto pt-24 sm:pt-28 pb-16 px-4 sm:px-6">
-        
-        {/* Metric summary cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-wider font-semibold text-gray-500">Total Jobs Posted</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">{totalJobs}</h3>
+      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold mb-2">
+              <Briefcase size={14} /> Recruiter Operations
             </div>
-            <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-              <Briefcase className="w-6 h-6" />
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Manage Job Postings
+            </h1>
+            <p className="text-xs text-slate-500 mt-1">
+              Search roles, manage candidate application pipelines, and update job details.
+            </p>
           </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-wider font-semibold text-gray-500">Total Applications</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">{totalApplicants}</h3>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <Users className="w-6 h-6" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-wider font-semibold text-gray-500">Registered Companies</p>
-              <h3 className="text-2xl font-bold text-gray-900 mt-1">{totalCompanies}</h3>
-            </div>
-            <div className="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center">
-              <Building2 className="w-6 h-6" />
-            </div>
-          </div>
-        </div>
-
-        {/* Search and create job actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
-          <Input
-            className="w-full sm:w-80 rounded-xl shadow-sm border-gray-200 focus:ring-2 focus:ring-indigo-500 transition"
-            placeholder="Filter by name or role"
-            onChange={(e) => setInput(e.target.value)}
-          />
 
           <Button
             onClick={() => navigate("/admin/jobs/create")}
-            className="w-full sm:w-auto rounded-xl px-6 py-2.5 font-semibold text-white shadow-md 
-                       bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
-                       hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center gap-1.5"
+            className="rounded-xl px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
           >
-            <Plus className="w-4 h-4" />
-            Post New Job
+            <Plus size={16} /> Post New Job
           </Button>
         </div>
 
-        {/* Jobs list */}
-        <div className="bg-white/80 backdrop-blur-lg shadow-md rounded-2xl p-4 sm:p-6 border border-gray-100">
-          <AdminJobsTable />
+        {/* Search bar */}
+        <div className="flex items-center gap-2 max-w-md mb-6 p-2 rounded-2xl border border-slate-200 bg-white">
+          <Search size={16} className="text-slate-400 shrink-0 ml-1" />
+          <input
+            type="text"
+            placeholder="Search by job title, company, or location..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="w-full text-xs text-slate-900 bg-transparent outline-none"
+          />
         </div>
-      </div>
+
+        <AdminJobsTable />
+      </main>
+
+      <MobileBottomNav />
     </div>
   );
 };

@@ -1,92 +1,153 @@
-import axios from "axios";
-axios.defaults.withCredentials = true;
-
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
-import Navbar from './components/shared/Navbar'
-import Login from './components/auth/Login'
-import Signup from './components/auth/Signup'
-import Home from './components/Home'
-import Jobs from './components/Jobs'
-import Browse from './components/Browse'
-import Profile from './components/Profile'
-import JobDescription from './components/JobDescription'
-import Companies from './components/admin/Companies'
-import CompanyCreate from './components/admin/CompanyCreate'
-import CompanySetup from './components/admin/CompanySetup'
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import Login from "./components/auth/Login";
+import Signup from "./components/auth/Signup";
+import Home from "./components/Home";
+import Jobs from "./components/Jobs";
+import Browse from "./components/Browse";
+import Profile from "./components/Profile";
+import JobDescription from "./components/JobDescription";
+import Pipeline from "./components/candidate/Pipeline";
+import ApplicationTracker from "./components/candidate/ApplicationTracker";
+import CandidateDashboard from "./components/candidate/CandidateDashboard";
+import InterviewPrep from "./components/candidate/InterviewPrep";
+import CompanyDetail from "./components/company/CompanyDetail";
+import Companies from "./components/admin/Companies";
+import CompanyCreate from "./components/admin/CompanyCreate";
+import CompanySetup from "./components/admin/CompanySetup";
 import AdminJobs from "./components/admin/AdminJobs";
-import PostJob from './components/admin/PostJob'
-import Applicants from './components/admin/Applicants'
-import ProtectedRoute from './components/admin/ProtectedRoute'
+import PostJob from "./components/admin/PostJob";
+import Applicants from "./components/admin/Applicants";
+import RecruiterDashboard from "./components/admin/RecruiterDashboard";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
 
 const appRouter = createBrowserRouter([
   {
-    path: '/',
-    element: <Home />
+    path: "/",
+    element: <Home />,
   },
   {
-    path: '/login',
-    element: <Login />
+    path: "/login",
+    element: <Login />,
   },
   {
-    path: '/signup',
-    element: <Signup />
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/jobs",
-    element: <Jobs />
+    element: <Jobs />,
   },
   {
     path: "/description/:id",
-    element: <JobDescription />
+    element: <JobDescription />,
   },
   {
     path: "/browse",
-    element: <Browse />
+    element: <Browse />,
   },
   {
     path: "/profile",
-    element: <Profile />
+    element: <Profile />,
+  },
+  // Candidate routes
+  {
+    path: "/pipeline",
+    element: <Pipeline />,
   },
   {
-    path:"/admin/companies",
-    element: <ProtectedRoute><Companies/></ProtectedRoute>
+    path: "/saved",
+    element: <Pipeline />,
   },
   {
-    path:"/admin/companies/create",
-    element: <ProtectedRoute><CompanyCreate/></ProtectedRoute> 
+    path: "/applications",
+    element: <ApplicationTracker />,
   },
   {
-    path:"/admin/companies/:id",
-    element:<ProtectedRoute><CompanySetup/></ProtectedRoute> 
+    path: "/dashboard",
+    element: <CandidateDashboard />,
   },
   {
-    path:"/admin/jobs",
-    element:<ProtectedRoute><AdminJobs/></ProtectedRoute> 
+    path: "/interview-prep",
+    element: <InterviewPrep />,
+  },
+  // Public company profile
+  {
+    path: "/company/:id",
+    element: <CompanyDetail />,
+  },
+  // Recruiter routes
+  {
+    path: "/admin/dashboard",
+    element: (
+      <ProtectedRoute>
+        <RecruiterDashboard />
+      </ProtectedRoute>
+    ),
   },
   {
-    path:"/admin/jobs/create",
-    element:<ProtectedRoute><PostJob/></ProtectedRoute> 
+    path: "/admin/companies",
+    element: (
+      <ProtectedRoute>
+        <Companies />
+      </ProtectedRoute>
+    ),
   },
   {
-    path:"/admin/jobs/:id/applicants",
-    element:<ProtectedRoute><Applicants/></ProtectedRoute> 
+    path: "/admin/companies/create",
+    element: (
+      <ProtectedRoute>
+        <CompanyCreate />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/companies/:id",
+    element: (
+      <ProtectedRoute>
+        <CompanySetup />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs",
+    element: (
+      <ProtectedRoute>
+        <AdminJobs />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs/create",
+    element: (
+      <ProtectedRoute>
+        <PostJob />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/jobs/:id/applicants",
+    element: (
+      <ProtectedRoute>
+        <Applicants />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/admin/jobs/:id/edit",
-    element: <ProtectedRoute><PostJob /></ProtectedRoute>
+    element: (
+      <ProtectedRoute>
+        <PostJob />
+      </ProtectedRoute>
+    ),
   },
-  {
-    path: "*",
-    element: <Navigate to="/" replace />
-  }
-])
-function App() {
+]);
 
+function App() {
   return (
     <div>
       <RouterProvider router={appRouter} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

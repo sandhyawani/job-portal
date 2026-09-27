@@ -1,96 +1,80 @@
 import mongoose from "mongoose";
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
-import { User } from "../models/user.model.js";
+import { Notification } from "../models/notification.model.js";
+import { ExternalApplication } from "../models/externalApplication.model.js";
 
-export const ALLOWED_TRANSITIONS = {
-  applied: ["under_review", "rejected", "withdrawn"],
-  pending: ["under_review", "rejected", "withdrawn"], // Legacy alias
-  accepted: ["hired", "rejected"], // Legacy alias for shortlisted/accepted candidates
-  under_review: ["shortlisted", "rejected"],
-  shortlisted: ["interview", "rejected"],
-  interview: ["offer", "rejected"],
-  offer: ["hired", "rejected"],
-  hired: [],
-  rejected: [],
-  withdrawn: [],
-};
+const VALID_STATUSES = [
+  "pending",
+  "review",
+  "shortlisted",
+  "accepted",
+  "interview",
+  "offer",
+  "hired",
+  "rejected",
+];
 
+// Apply for a job (Candidate only)
 export const applyJob = async (req, res) => {
   try {
     const userId = req.id;
     const jobId = req.params.id || req.body.job;
 
-    if (!jobId) {
+    if (!jobId || !mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({
-        message: "Job id is required.",
+        message: "Valid Job ID is required.",
         success: false,
       });
     }
 
-    // Validate ObjectId
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
-      return res.status(400).json({
-        message: "Invalid Job ID format.",
-        success: false,
-      });
-    }
-
-    // Role check: Only candidates can apply for jobs
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found.",
-        success: false,
-      });
-    }
-    if (user.role === "recruiter") {
-      return res.status(403).json({
-        message: "Recruiters cannot apply for jobs. Please use a candidate account.",
-        success: false,
-      });
-    }
-
-    // Check if job exists
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({
-        message: "Job not found",
-        success: false,
-      });
-    }
-
-    // Prevent recruiter from applying to their own job
-    if (job.created_by.toString() === userId.toString()) {
-      return res.status(400).json({
-        message: "You cannot apply to your own job posting.",
-        success: false,
-      });
-    }
-
-    // Check if user already applied (prevent duplicate applications)
+    // Check if user already applied
     const existingApplication = await Application.findOne({
       job: jobId,
       applicant: userId,
     });
     if (existingApplication) {
       return res.status(400).json({
-        message: "You have already applied for this job",
+        message: "You have already applied for this job.",
         success: false,
       });
     }
 
-    // Create new application with default status 'applied' and initial statusHistory audit trail
+    // Check if job exists
+    const job = await Job.findById(jobId).populate("company", "name");
+    if (!job) {
+      return res.status(404).json({
+        message: "Job not found.",
+        success: false,
+      });
+    }
+
+    if (job.status === "closed") {
+      return res.status(400).json({
+        message: "This job position is now closed.",
+        success: false,
+      });
+    }
+
+    // Prevent creator from applying to their own job
+    if (job.created_by.toString() === userId) {
+      return res.status(400).json({
+        message: "Recruiters cannot apply to their own posted jobs.",
+        success: false,
+      });
+    }
+
+    // Create new application with initial history
     const newApplication = await Application.create({
       job: jobId,
       applicant: userId,
-      status: "applied",
+      status: "pending",
       statusHistory: [
         {
-          status: "applied",
+          status: "pending",
           changedAt: new Date(),
-          changedBy: userId,
           comment: "Application submitted by candidate",
+          changedBy: userId,
         },
       ],
     });
@@ -98,23 +82,27 @@ export const applyJob = async (req, res) => {
     job.applications.push(newApplication._id);
     await job.save();
 
+    // Create notification for candidate
+    await Notification.create({
+      user: userId,
+      title: "Application Submitted",
+      message: `Your application for "${job.title}" at ${job.company?.name || "Company"} was successfully submitted.`,
+      type: "application",
+      link: "/applications",
+    });
+
     return res.status(201).json({
       message: "Job applied successfully.",
-      success: true,
       application: newApplication,
+      success: true,
     });
   } catch (error) {
-    if (error.code === 11000) {
-      return res.status(400).json({
-        message: "You have already applied for this job",
-        success: false,
-      });
-    }
     console.error("Error in applyJob:", error);
     return res.status(500).json({ message: "Server error", success: false });
   }
 };
 
+// Get applied jobs for current candidate (Candidate only)
 export const getAppliedJobs = async (req, res) => {
   try {
     const userId = req.id;
@@ -122,15 +110,11 @@ export const getAppliedJobs = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "job",
-        options: { sort: { createdAt: -1 } },
+        select: "title description salary location jobType workMode experienceLevel requirements createdAt",
         populate: {
           path: "company",
-          options: { sort: { createdAt: -1 } },
+          select: "name logo location trustScore trustLevel website",
         },
-      })
-      .populate({
-        path: "statusHistory.changedBy",
-        select: "fullname role",
       });
 
     return res.status(200).json({
@@ -143,11 +127,11 @@ export const getAppliedJobs = async (req, res) => {
   }
 };
 
-// Only the recruiter who posted the job can view applicants
+// Get applicants for a job (Recruiter owner only)
 export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const recruiterId = req.id;
+    const userId = req.id;
 
     if (!mongoose.Types.ObjectId.isValid(jobId)) {
       return res.status(400).json({
@@ -156,21 +140,14 @@ export const getApplicants = async (req, res) => {
       });
     }
 
-    const caller = await User.findById(recruiterId);
-    if (!caller || caller.role !== "recruiter") {
-      return res.status(403).json({
-        message: "Forbidden. Only recruiters can view applicants.",
-        success: false,
-      });
-    }
-
     const job = await Job.findById(jobId).populate({
       path: "applications",
       options: { sort: { createdAt: -1 } },
-      populate: [
-        { path: "applicant" },
-        { path: "statusHistory.changedBy", select: "fullname email role" },
-      ],
+      populate: {
+        path: "applicant",
+        // SECURITY: Explicitly select candidate fields. NEVER return password or password hash!
+        select: "fullname email phoneNumber profile createdAt",
+      },
     });
 
     if (!job) {
@@ -180,10 +157,10 @@ export const getApplicants = async (req, res) => {
       });
     }
 
-    // Ownership check: Recruiter must own this job
-    if (job.created_by.toString() !== recruiterId.toString()) {
+    // SECURITY: Recruiter authorization check
+    if (job.created_by.toString() !== userId) {
       return res.status(403).json({
-        message: "Unauthorized. You can only view applicants for your own job postings.",
+        message: "You are not authorized to view applicants for this job.",
         success: false,
       });
     }
@@ -198,10 +175,10 @@ export const getApplicants = async (req, res) => {
   }
 };
 
-// Only the recruiter who posted the job can update candidate application status through valid transitions
+// Update applicant status (Recruiter only with state machine validation)
 export const updateStatus = async (req, res) => {
   try {
-    const { status, comment } = req.body;
+    const { status, notes, interviewDate } = req.body;
     const applicationId = req.params.id;
     const recruiterId = req.id;
 
@@ -212,11 +189,10 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    // Role check: Only recruiters can update application status
-    const caller = await User.findById(recruiterId);
-    if (!caller || caller.role !== "recruiter") {
-      return res.status(403).json({
-        message: "Forbidden. Only recruiters can update application statuses.",
+    const normalizedStatus = status.toLowerCase().trim();
+    if (!VALID_STATUSES.includes(normalizedStatus)) {
+      return res.status(400).json({
+        message: `Invalid status. Must be one of: ${VALID_STATUSES.join(", ")}`,
         success: false,
       });
     }
@@ -228,16 +204,13 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    const normalizedStatus = status.toLowerCase().trim();
-    const allKnownStatuses = Object.keys(ALLOWED_TRANSITIONS);
-    if (!allKnownStatuses.includes(normalizedStatus)) {
-      return res.status(400).json({
-        message: `Invalid status '${status}'. Allowed statuses: ${allKnownStatuses.join(", ")}`,
-        success: false,
+    const application = await Application.findById(applicationId)
+      .populate("job", "title created_by company")
+      .populate({
+        path: "job",
+        populate: { path: "company", select: "name" },
       });
-    }
 
-    const application = await Application.findById(applicationId).populate("job");
     if (!application) {
       return res.status(404).json({
         message: "Application not found.",
@@ -245,48 +218,67 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    // Ownership check: Recruiter must own the job associated with this application
-    if (!application.job || application.job.created_by.toString() !== recruiterId.toString()) {
+    // Authorization: only the recruiter who posted the job can update candidate status
+    if (application.job.created_by.toString() !== recruiterId) {
       return res.status(403).json({
-        message: "Unauthorized. You can only update application statuses for jobs you posted.",
+        message: "You are not authorized to update applicants for this job.",
         success: false,
       });
     }
 
-    // Transition validation
-    const currentStatus = application.status || "applied";
-    const allowedNextStatuses = ALLOWED_TRANSITIONS[currentStatus] || [];
-
-    if (!allowedNextStatuses.includes(normalizedStatus)) {
-      return res.status(400).json({
-        message: `Transition from '${currentStatus}' to '${normalizedStatus}' is not allowed. Valid next stages: ${
-          allowedNextStatuses.length > 0 ? allowedNextStatuses.join(", ") : "none (terminal stage)"
-        }.`,
-        success: false,
-      });
-    }
-
-    // Record transition in status and statusHistory audit trail
     application.status = normalizedStatus;
+    if (notes !== undefined) application.notes = notes;
+    if (interviewDate) application.interviewDate = new Date(interviewDate);
+
+    // Record status history
     application.statusHistory.push({
       status: normalizedStatus,
       changedAt: new Date(),
+      comment: notes || `Status updated to ${normalizedStatus}`,
       changedBy: recruiterId,
-      comment: typeof comment === "string" ? comment.trim() : "",
     });
 
     await application.save();
 
+    // Create candidate notification
+    const jobTitle = application.job?.title || "your application";
+    const companyName = application.job?.company?.name || "the hiring team";
+    let notifTitle = `Application Status: ${normalizedStatus.toUpperCase()}`;
+    let notifMsg = `Your application for "${jobTitle}" at ${companyName} has moved to ${normalizedStatus}.`;
+
+    if (normalizedStatus === "shortlisted" || normalizedStatus === "accepted") {
+      notifTitle = "Application Shortlisted";
+      notifMsg = `You have been shortlisted for "${jobTitle}" at ${companyName}.`;
+    } else if (normalizedStatus === "interview") {
+      notifTitle = "Interview Scheduled";
+      notifMsg = interviewDate
+        ? `Interview scheduled for "${jobTitle}" on ${new Date(interviewDate).toLocaleDateString()}. Notes: ${notes || "None"}`
+        : `You have been invited for an interview for "${jobTitle}" at ${companyName}.`;
+    } else if (normalizedStatus === "offer") {
+      notifTitle = "Job Offer Extended";
+      notifMsg = `You have received an offer for "${jobTitle}" at ${companyName}.`;
+    }
+
+    await Notification.create({
+      user: application.applicant,
+      title: notifTitle,
+      message: notifMsg,
+      type: "application",
+      link: "/applications",
+    });
+
     return res.status(200).json({
       message: `Status updated to ${normalizedStatus} successfully.`,
-      success: true,
       application,
+      success: true,
     });
   } catch (error) {
     console.error("Error in updateStatus:", error);
     return res.status(500).json({ message: "Server error", success: false });
   }
 };
+
+// Check if current user has applied to a job
 export const hasApplied = async (req, res) => {
   try {
     const userId = req.id;
@@ -300,13 +292,14 @@ export const hasApplied = async (req, res) => {
       });
     }
 
-    const exists = await Application.exists({
+    const application = await Application.findOne({
       job: jobId,
       applicant: userId,
     });
 
     return res.status(200).json({
-      applied: Boolean(exists),
+      applied: Boolean(application),
+      status: application?.status || null,
       success: true,
     });
   } catch (error) {
@@ -314,6 +307,138 @@ export const hasApplied = async (req, res) => {
     return res.status(500).json({
       applied: false,
       success: false,
+    });
+  }
+};
+
+// ============================================
+// External application tracker
+// ============================================
+
+export const getExternalApplications = async (req, res) => {
+  try {
+    const userId = req.id;
+    const externalApps = await ExternalApplication.find({ user: userId }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json({
+      success: true,
+      applications: externalApps || [],
+    });
+  } catch (error) {
+    console.error("Get external apps error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch external applications",
+    });
+  }
+};
+
+export const createExternalApplication = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { company, role, source, appliedDate, status, jobUrl, salary, location, notes } =
+      req.body;
+
+    if (!company || !role) {
+      return res.status(400).json({
+        success: false,
+        message: "Company and Role are required.",
+      });
+    }
+
+    const externalApp = await ExternalApplication.create({
+      user: userId,
+      company: company.trim(),
+      role: role.trim(),
+      source: source || "LinkedIn",
+      appliedDate: appliedDate ? new Date(appliedDate) : new Date(),
+      status: status || "applied",
+      jobUrl: jobUrl || "",
+      salary: salary || "",
+      location: location || "",
+      notes: notes || "",
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "External application added to your pipeline.",
+      application: externalApp,
+    });
+  } catch (error) {
+    console.error("Create external app error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create external application",
+    });
+  }
+};
+
+export const updateExternalApplication = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { id } = req.params;
+
+    const externalApp = await ExternalApplication.findOne({ _id: id, user: userId });
+    if (!externalApp) {
+      return res.status(404).json({
+        success: false,
+        message: "External application not found.",
+      });
+    }
+
+    const { company, role, source, appliedDate, status, jobUrl, salary, location, notes } =
+      req.body;
+
+    if (company) externalApp.company = company.trim();
+    if (role) externalApp.role = role.trim();
+    if (source) externalApp.source = source;
+    if (appliedDate) externalApp.appliedDate = new Date(appliedDate);
+    if (status) externalApp.status = status;
+    if (jobUrl !== undefined) externalApp.jobUrl = jobUrl;
+    if (salary !== undefined) externalApp.salary = salary;
+    if (location !== undefined) externalApp.location = location;
+    if (notes !== undefined) externalApp.notes = notes;
+
+    await externalApp.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "External application updated.",
+      application: externalApp,
+    });
+  } catch (error) {
+    console.error("Update external app error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update external application",
+    });
+  }
+};
+
+export const deleteExternalApplication = async (req, res) => {
+  try {
+    const userId = req.id;
+    const { id } = req.params;
+
+    const result = await ExternalApplication.findOneAndDelete({ _id: id, user: userId });
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "External application not found.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "External application removed.",
+    });
+  } catch (error) {
+    console.error("Delete external app error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete external application",
     });
   }
 };

@@ -75,12 +75,12 @@ const Signup = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       <Navbar />
-      <div className="pt-24 pb-12 flex items-center justify-center max-w-7xl mx-auto px-4">
+      <div className="flex items-center justify-center max-w-7xl mx-auto mt-10">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-md border border-gray-200 rounded-2xl p-8 shadow-lg bg-white"
+          className="w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-sm bg-white"
         >
           <h1 className="font-bold text-2xl mb-6 text-center">Sign Up</h1>
 
@@ -180,22 +180,22 @@ const Signup = () => {
 
           {/* Submit Button */}
           {loading ? (
-            <Button className="w-full my-6 flex items-center justify-center" disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+            <Button className="w-full my-6 flex items-center justify-center rounded-xl bg-indigo-600 text-white font-semibold" disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
             </Button>
           ) : (
             <Button
               type="submit"
-              className="w-full my-6 h-11 bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full my-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl shadow-xs transition"
             >
-              Signup
+              Create Account
             </Button>
           )}
 
-          <p className="text-sm text-center mt-4">
+          <p className="text-xs text-center text-slate-500 mt-4">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline">
-              Login
+            <Link to="/login" className="text-indigo-600 font-semibold hover:underline">
+              Sign in
             </Link>
           </p>
         </form>

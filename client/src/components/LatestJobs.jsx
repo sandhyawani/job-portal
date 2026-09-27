@@ -1,69 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import LatestJobCards from "./LatestJobCards";
-import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
-import { setAllJobs } from "@/redux/jobSlice";
+import React from "react";
+import { useSelector } from "react-redux";
+import Job from "./Job";
+import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const LatestJobs = () => {
-  const dispatch = useDispatch();
-  const { allJobs } = useSelector((store) => store.job);
-  const [loading, setLoading] = useState(true);
+  const { allJobs = [], loading } = useSelector((store) => store.job);
 
-  useEffect(() => {
-    const fetchJobs = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get`, { withCredentials: true });
-        console.log("API Response:", res.data); 
-        if (res.data.success) {
-          dispatch(setAllJobs(res.data.jobs));
-        }
-      } catch (error) {
-        console.log("Error fetching jobs:", error);
-      }
-      setLoading(false);
-    };
-    fetchJobs();
-  }, [dispatch]);
-
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div
-            key={i}
-            className="p-5 rounded-2xl border border-gray-100 bg-white shadow-2xs animate-pulse flex flex-col justify-between h-48"
-          >
-            <div>
-              <div className="flex items-center justify-between gap-4 mb-2">
-                <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                <div className="h-4 bg-gray-100 rounded w-20"></div>
-              </div>
-              <div className="h-3 bg-gray-100 rounded w-1/4 mb-4"></div>
-              <div className="h-5 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div className="h-3 bg-gray-100 rounded w-full mb-1"></div>
-              <div className="h-3 bg-gray-100 rounded w-4/5"></div>
-            </div>
-            <div className="flex gap-2 pt-3 border-t border-gray-50">
-              <div className="h-5 bg-gray-100 rounded-md w-16"></div>
-              <div className="h-5 bg-gray-100 rounded-md w-16"></div>
-              <div className="h-5 bg-gray-100 rounded-md w-20"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+  // Take the first 6 latest jobs
+  const displayJobs = allJobs.slice(0, 6);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {allJobs.length > 0 ? (
-        allJobs.map((job) => <LatestJobCards key={job._id} job={job} />)
+    <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+        <div>
+          <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">
+            <Sparkles size={13} />
+            <span>Latest Openings</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Recently Posted Opportunities
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Verified opportunities from companies actively hiring now
+          </p>
+        </div>
+
+        <Link
+          to="/jobs"
+          className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition self-start sm:self-auto"
+        >
+          View all {allJobs.length} jobs <ArrowRight size={14} />
+        </Link>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="h-60 rounded-2xl bg-white border border-slate-200 p-5 animate-pulse"
+            />
+          ))}
+        </div>
+      ) : displayJobs.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {displayJobs.map((job) => (
+            <Job key={job._id} job={job} />
+          ))}
+        </div>
       ) : (
-        <p className="text-center text-gray-500">No Job Available</p>
+        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-400 text-xs">
+          No jobs currently available.
+        </div>
       )}
-    </div>
+    </section>
   );
 };
 

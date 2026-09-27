@@ -1,69 +1,114 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Briefcase, ShieldCheck } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-
-        {/* Brand Info */}
+    <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 pt-12 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {/* Brand */}
         <div>
-          <h2 className="text-2xl font-bold text-pink-400">Job<span className="text-white">Portal</span></h2>
-          <p className="mt-3 text-gray-400 text-sm leading-relaxed">
-            Empowering you with premium tools and resources to learn, grow, and succeed.
+          <Link to="/" className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-base">
+              J
+            </div>
+            <span className="text-lg font-bold text-white tracking-tight">
+              Job<span className="text-indigo-400">Portal</span>
+            </span>
+          </Link>
+          <p className="text-slate-400 leading-relaxed text-xs">
+            Your complete job-search workspace. Discover opportunities, analyze match alignment, and manage your full application lifecycle.
           </p>
-        </div>
-
-        {/* Quick Links */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-          <ul className="space-y-2 text-gray-300 text-sm">
-            <li><Link to="/" className="hover:text-pink-400 transition">Home</Link></li>
-            <li><Link to="/jobs" className="hover:text-pink-400 transition">Explore Jobs</Link></li>
-            <li><Link to="/browse" className="hover:text-pink-400 transition">Browse Categories</Link></li>
-            <li><Link to="/signup" className="hover:text-pink-400 transition">Get Started</Link></li>
-          </ul>
-        </div>
-
-        {/* Support */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Support</h3>
-          <ul className="space-y-2 text-gray-300 text-sm">
-            <li><a href="#help" className="hover:text-pink-400 transition">FAQs</a></li>
-            <li><a href="#help" className="hover:text-pink-400 transition">Privacy Policy</a></li>
-            <li><a href="#help" className="hover:text-pink-400 transition">Terms & Conditions</a></li>
-            <li><a href="#help" className="hover:text-pink-400 transition">Help Center</a></li>
-          </ul>
-        </div>
-
-        {/* Social Media */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer"
-              className="p-2 rounded-full bg-gray-700 hover:bg-pink-500 transition">
-              <FaFacebookF size={16} />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer"
-              className="p-2 rounded-full bg-gray-700 hover:bg-pink-500 transition">
-              <FaTwitter size={16} />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer"
-              className="p-2 rounded-full bg-gray-700 hover:bg-pink-500 transition">
-              <FaInstagram size={16} />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer"
-              className="p-2 rounded-full bg-gray-700 hover:bg-pink-500 transition">
-              <FaLinkedinIn size={16} />
-            </a>
+          <div className="flex items-center gap-1.5 mt-3 text-indigo-400 font-semibold text-[11px]">
+            <ShieldCheck size={14} /> Verified Company Profiles
           </div>
+        </div>
+
+        {/* Candidate Navigation */}
+        <div>
+          <h4 className="text-white font-bold uppercase tracking-wider text-[11px] mb-3">
+            Candidate Workspace
+          </h4>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/jobs" className="hover:text-white transition">
+                Search Jobs
+              </Link>
+            </li>
+            <li>
+              <Link to="/pipeline" className="hover:text-white transition">
+                Personal Pipeline
+              </Link>
+            </li>
+            <li>
+              <Link to="/applications" className="hover:text-white transition">
+                Application Tracker
+              </Link>
+            </li>
+            <li>
+              <Link to="/interview-prep" className="hover:text-white transition">
+                Interview Preparation
+              </Link>
+            </li>
+            <li>
+              <Link to="/profile" className="hover:text-white transition">
+                Profile & Resume
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Recruiter Workspace */}
+        <div>
+          <h4 className="text-white font-bold uppercase tracking-wider text-[11px] mb-3">
+            Recruiter Workspace
+          </h4>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/admin/dashboard" className="hover:text-white transition">
+                Hiring Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/jobs/create" className="hover:text-white transition">
+                Post an Opening
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/jobs" className="hover:text-white transition">
+                Manage Jobs
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/companies" className="hover:text-white transition">
+                Manage Companies
+              </Link>
+            </li>
+            <li>
+              <Link to="/admin/companies/create" className="hover:text-white transition">
+                Register New Company
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Trust & Safety */}
+        <div>
+          <h4 className="text-white font-bold uppercase tracking-wider text-[11px] mb-3">
+            Platform & Safety
+          </h4>
+          <p className="text-slate-400 leading-relaxed mb-3">
+            All posted jobs originate from real database listings with verified trust score ratings. No simulated candidates or fake statistics.
+          </p>
+          <span className="text-[11px] text-slate-500 block">
+            Node.js · React · MongoDB · Express
+          </span>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
-        © {new Date().getFullYear()} Job portal. All rights reserved.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-10 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+        <span>© {new Date().getFullYear()} JobPortal Workspace. All rights reserved.</span>
+        <span>Empowering careers and transparent hiring.</span>
       </div>
     </footer>
   );

@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
+import MobileBottomNav from "../shared/MobileBottomNav";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import axios from "axios";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
-import { useNavigate, useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { Loader2, ArrowLeft, Briefcase, Plus } from "lucide-react";
 import { useSelector } from "react-redux";
+import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 
 const PostJob = () => {
   const { id } = useParams();
   const isEditMode = Boolean(id);
-
   const navigate = useNavigate();
-  const { companies } = useSelector((store) => store.company);
+
+  useGetAllCompanies();
+  const { companies = [] } = useSelector((store) => store.company);
 
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
@@ -32,35 +27,45 @@ const PostJob = () => {
     requirements: "",
     salary: "",
     location: "",
-    jobType: "",
-    experience: "",
-    position: 0,
+    jobType: "Full-time",
+    workMode: "On-site",
+    experience: "1-3 years",
+    position: 1,
+    responsibilities: "",
+    benefits: "",
     companyId: "",
   });
 
   // Load job details when editing
   useEffect(() => {
-    if (!isEditMode) return;
+    if (!isEditMode) {
+      if (companies.length > 0 && !input.companyId) {
+        setInput((prev) => ({ ...prev, companyId: companies[0]._id }));
+      }
+      return;
+    }
 
     const fetchJob = async () => {
       try {
-        const res = await axios.get(
-          `${JOB_API_END_POINT}/get/${id}`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${JOB_API_END_POINT}/get/${id}`, {
+          withCredentials: true,
+        });
 
         if (res.data.success) {
           const job = res.data.job;
           setInput({
-            title: job.title,
-            description: job.description,
-            requirements: job.requirements.join(", "),
-            salary: job.salary,
-            location: job.location,
-            jobType: job.jobType,
-            experience: job.experienceLevel,
-            position: job.position,
-            companyId: job.company._id,
+            title: job.title || "",
+            description: job.description || "",
+            requirements: (job.requirements || []).join(", "),
+            salary: job.salary || "",
+            location: job.location || "",
+            jobType: job.jobType || "Full-time",
+            workMode: job.workMode || "On-site",
+            experience: job.experienceLevel || "1-3 years",
+            position: job.position || 1,
+            responsibilities: (job.responsibilities || []).join("\n"),
+            benefits: (job.benefits || []).join(", "),
+            companyId: job.company?._id || "",
           });
         }
       } catch {
@@ -69,18 +74,24 @@ const PostJob = () => {
     };
 
     fetchJob();
-  }, [id, isEditMode]);
+  }, [id, isEditMode, companies]);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const selectChangeHandler = (value) => {
-    setInput({ ...input, companyId: value });
-  };
-
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!input.title.trim() || !input.description.trim() || !input.companyId) {
+      toast.error("Please fill in all required fields including selecting a company.");
+      return;
+    }
+
+    if (Number(input.salary) <= 0) {
+      toast.error("Salary must be a positive number.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -108,109 +119,258 @@ const PostJob = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
       <Navbar />
 
-      <div className="pt-24 sm:pt-28 pb-16 flex justify-center px-4">
+      <main className="pt-24 pb-12 max-w-3xl mx-auto px-4 sm:px-6">
+        <Link
+          to="/admin/jobs"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 mb-4 transition"
+        >
+          <ArrowLeft size={14} /> Back to Posted Jobs
+        </Link>
+
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-4 sm:p-8"
+          className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs"
         >
-          {/* Page title */}
-          <h1 className="text-3xl font-extrabold text-center text-pink-500 mb-8">
-            {isEditMode ? "Update Job" : "Post New Job"}
-          </h1>
+          <div className="border-b border-slate-100 pb-4 mb-6">
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              {isEditMode ? "Edit Job Posting" : "Publish New Job Opening"}
+            </h1>
+            <p className="text-xs text-slate-500 mt-1">
+              Provide accurate job details, requirements, and compensation to attract the best candidates.
+            </p>
+          </div>
 
-          {/* Job form */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              ["title", "Title"],
-              ["description", "Description"],
-              ["requirements", "Requirements"],
-              ["salary", "Salary"],
-              ["location", "Location"],
-              ["jobType", "Job Type"],
-              ["experience", "Experience Level"],
-            ].map(([name, label]) => (
-              <div key={name}>
-                <Label>{label}</Label>
-                <Input
-                  name={name}
-                  value={input[name]}
-                  onChange={changeEventHandler}
-                  className="mt-2"
-                />
-              </div>
-            ))}
-
+          <div className="space-y-4 text-xs">
+            {/* Title */}
             <div>
-              <Label>No of Positions</Label>
+              <Label className="text-xs font-semibold text-slate-700">Job Title *</Label>
               <Input
-                type="number"
-                name="position"
-                value={input.position}
+                name="title"
+                required
+                placeholder="e.g. Senior Full Stack Developer"
+                value={input.title}
                 onChange={changeEventHandler}
-                className="mt-2"
+                className="mt-1 text-xs rounded-xl"
               />
             </div>
 
-            {/* Company selection create mode only*/}
-            {!isEditMode && companies.length > 0 && (
-              <div className="md:col-span-2">
-                <Label>Select Company</Label>
-                <Select onValueChange={selectChangeHandler}>
-                  <SelectTrigger className="mt-2 rounded-lg">
-                    <SelectValue placeholder="Select a company" />
-                  </SelectTrigger>
-
-                  <SelectContent
-                    position="popper"
-                    sideOffset={6}
-                    className="z-[9999] bg-white rounded-xl shadow-xl"
-                  >
-                    <SelectGroup>
-                      {companies.map((company) => (
-                        <SelectItem
-                          key={company._id}
-                          value={company._id}
-                        >
-                          {company.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+            {/* Select Company (if multiple or create mode) */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <Label className="text-xs font-semibold text-slate-700">Hiring Company *</Label>
+                <Link
+                  to="/admin/companies/create"
+                  className="text-xs font-semibold text-indigo-600 hover:underline"
+                >
+                  + Create Company
+                </Link>
               </div>
-            )}
+
+              {companies.length === 0 ? (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+                  You need to register a company before posting jobs.{" "}
+                  <Link to="/admin/companies/create" className="font-bold underline">
+                    Register company now
+                  </Link>
+                </div>
+              ) : (
+                <select
+                  name="companyId"
+                  value={input.companyId}
+                  onChange={changeEventHandler}
+                  className="w-full text-xs rounded-xl border border-slate-200 p-2.5 bg-white"
+                  required
+                >
+                  <option value="">Select a company</option>
+                  {companies.map((c) => (
+                    <option key={c._id} value={c._id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            {/* Job Description */}
+            <div>
+              <Label className="text-xs font-semibold text-slate-700">
+                Job Overview & Summary *
+              </Label>
+              <textarea
+                name="description"
+                required
+                rows={4}
+                placeholder="Describe the role, day-to-day impact, and what success looks like..."
+                value={input.description}
+                onChange={changeEventHandler}
+                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500/20"
+              />
+            </div>
+
+            {/* Responsibilities */}
+            <div>
+              <Label className="text-xs font-semibold text-slate-700">
+                Key Responsibilities (one per line)
+              </Label>
+              <textarea
+                name="responsibilities"
+                rows={3}
+                placeholder="Architect scalable REST APIs&#10;Collaborate with product designers&#10;Conduct code reviews"
+                value={input.responsibilities}
+                onChange={changeEventHandler}
+                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500/20"
+              />
+            </div>
+
+            {/* Requirements / Skills */}
+            <div>
+              <Label className="text-xs font-semibold text-slate-700">
+                Required Skills & Qualifications (comma-separated) *
+              </Label>
+              <Input
+                name="requirements"
+                required
+                placeholder="Python, Django, PostgreSQL, Docker, AWS"
+                value={input.requirements}
+                onChange={changeEventHandler}
+                className="mt-1 text-xs rounded-xl"
+              />
+            </div>
+
+            {/* Salary & Open Positions */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Annual Salary (₹ LPA) *
+                </Label>
+                <Input
+                  name="salary"
+                  type="number"
+                  required
+                  placeholder="e.g. 12"
+                  value={input.salary}
+                  onChange={changeEventHandler}
+                  className="mt-1 text-xs rounded-xl"
+                />
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">
+                  Open Positions
+                </Label>
+                <Input
+                  name="position"
+                  type="number"
+                  min="1"
+                  value={input.position}
+                  onChange={changeEventHandler}
+                  className="mt-1 text-xs rounded-xl"
+                />
+              </div>
+            </div>
+
+            {/* Location & Work Mode */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Location *</Label>
+                <Input
+                  name="location"
+                  required
+                  placeholder="e.g. Pune, India or Remote"
+                  value={input.location}
+                  onChange={changeEventHandler}
+                  className="mt-1 text-xs rounded-xl"
+                />
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Work Mode</Label>
+                <select
+                  name="workMode"
+                  value={input.workMode}
+                  onChange={changeEventHandler}
+                  className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2 bg-white"
+                >
+                  <option value="On-site">On-site</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Remote">Remote</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Job Type & Experience Level */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Job Type</Label>
+                <select
+                  name="jobType"
+                  value={input.jobType}
+                  onChange={changeEventHandler}
+                  className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2 bg-white"
+                >
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Contract">Contract</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-slate-700">Experience</Label>
+                <Input
+                  name="experience"
+                  placeholder="e.g. 1-3 years or Entry Level"
+                  value={input.experience}
+                  onChange={changeEventHandler}
+                  className="mt-1 text-xs rounded-xl"
+                />
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div>
+              <Label className="text-xs font-semibold text-slate-700">
+                Perks & Benefits (comma-separated)
+              </Label>
+              <Input
+                name="benefits"
+                placeholder="Health Insurance, Flexible Hours, Annual Bonus, Learning Allowance"
+                value={input.benefits}
+                onChange={changeEventHandler}
+                className="mt-1 text-xs rounded-xl"
+              />
+            </div>
           </div>
 
-          {/* Submit */}
-          <div className="flex justify-center mt-12">
+          <div className="flex justify-end gap-3 mt-8 pt-4 border-t border-slate-100">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/admin/jobs")}
+              className="text-xs rounded-xl px-5"
+            >
+              Cancel
+            </Button>
             <Button
               type="submit"
-              disabled={loading}
-              className="
-                w-full sm:w-auto px-8 sm:px-12 py-3 font-semibold rounded-xl
-                text-white shadow-xl transition-all duration-300
-                bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600
-                hover:shadow-2xl hover:scale-105
-                disabled:opacity-60 disabled:cursor-not-allowed
-              "
+              disabled={loading || companies.length === 0}
+              className="rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-8"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Please wait
-                </span>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...
+                </>
               ) : isEditMode ? (
                 "Update Job"
               ) : (
-                "Post Job"
+                "Publish Job"
               )}
             </Button>
           </div>
         </form>
-      </div>
+      </main>
+
+      <MobileBottomNav />
     </div>
   );
 };

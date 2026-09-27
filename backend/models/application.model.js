@@ -1,59 +1,35 @@
 import mongoose from "mongoose";
 
-const applicationSchema = new mongoose.Schema(
-  {
-    job: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Job",
-      required: true,
+const applicationSchema = new mongoose.Schema({
+    job:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Job',
+        required:true
     },
-    applicant: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    applicant:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        required:true
     },
-    status: {
-      type: String,
-      enum: [
-        "pending",
-        "applied",
-        "under_review",
-        "shortlisted",
-        "interview",
-        "offer",
-        "hired",
-        "rejected",
-        "withdrawn",
-        "accepted", // Preserved for legacy production records
-      ],
-      default: "applied",
+    status:{
+        type:String,
+        enum:['pending', 'review', 'shortlisted', 'accepted', 'interview', 'offer', 'hired', 'rejected'],
+        default:'pending'
+    },
+    notes: {
+        type: String,
+        default: ""
+    },
+    interviewDate: {
+        type: Date
     },
     statusHistory: [
-      {
-        status: {
-          type: String,
-          required: true,
-        },
-        changedAt: {
-          type: Date,
-          default: Date.now,
-        },
-        changedBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
-        comment: {
-          type: String,
-          default: "",
-        },
-      },
-    ],
-  },
-  { timestamps: true }
-);
-
-// Compound unique index preventing duplicate applications for the same job by a single applicant
-applicationSchema.index({ applicant: 1, job: 1 }, { unique: true });
-
-export const Application = mongoose.model("Application", applicationSchema);
+        {
+            status: { type: String, required: true },
+            changedAt: { type: Date, default: Date.now },
+            comment: { type: String, default: "" },
+            changedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        }
+    ]
+},{timestamps:true});
+export const Application  = mongoose.model("Application", applicationSchema);

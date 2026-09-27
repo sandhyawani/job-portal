@@ -26,22 +26,37 @@ const userSchema = new mongoose.Schema({
         required:true
         
     },
-    profile:{
-        bio:{type:String},
-        skills:[{type:String}],
-        resume:{type:String}, // URL to resume file
-        resumeOriginalName:{type:String},
-        company:{type:mongoose.Schema.Types.ObjectId, ref:'Company'}, 
-        profilePhoto:{
-            type:String,
-            default:""
-        }
+    profile: {
+        bio: { type: String, default: "" },
+        skills: [{ type: String }],
+        resume: { type: String, default: "" }, // URL to resume file
+        resumeOriginalName: { type: String, default: "" },
+        company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' }, 
+        profilePhoto: {
+            type: String,
+            default: ""
+        },
+        experience: { type: String, default: "" },
+        education: { type: String, default: "" },
+        location: { type: String, default: "" },
+        github: { type: String, default: "" },
+        portfolio: { type: String, default: "" },
+        expectedSalary: { type: Number, default: 0 },
+        preferredJobType: { type: String, default: "" },
+        preferredWorkMode: { type: String, default: "" },
+        projects: [
+            {
+                title: { type: String, default: "" },
+                description: { type: String, default: "" },
+                link: { type: String, default: "" },
+            }
+        ]
     },
     savedJobs: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Job'
+            ref: 'Job',
         }
-    ]
-},{timestamps:true}); 
+    ],
+}, { timestamps: true }); 
 export const User = mongoose.model('User', userSchema);

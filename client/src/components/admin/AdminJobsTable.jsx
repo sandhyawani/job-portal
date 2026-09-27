@@ -2,116 +2,143 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Edit2, Eye, MoreHorizontal, Users } from "lucide-react";
+import { Edit2, Eye, MoreHorizontal, Users, MapPin } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
 
 const AdminJobsTable = () => {
-  // Redux state
-  const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
-
-  // Filtered jobs for display
+  const { allAdminJobs = [], searchJobByText = "" } = useSelector(
+    (store) => store.job
+  );
   const [filteredJobs, setFilteredJobs] = useState(allAdminJobs);
-
   const navigate = useNavigate();
 
-  // Apply search filter on jobs list
   useEffect(() => {
     const result = allAdminJobs.filter((job) => {
       if (!searchJobByText) return true;
+      const term = searchJobByText.toLowerCase();
       return (
-        job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
-        job?.company?.name
-          ?.toLowerCase()
-          .includes(searchJobByText.toLowerCase())
+        job?.title?.toLowerCase().includes(term) ||
+        job?.company?.name?.toLowerCase().includes(term) ||
+        job?.location?.toLowerCase().includes(term)
       );
     });
     setFilteredJobs(result);
   }, [allAdminJobs, searchJobByText]);
 
   return (
-    <div className="overflow-x-auto w-full">
-      <Table>
-        <TableCaption>Recently posted jobs</TableCaption>
-
-        <TableHeader>
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xs">
+      <Table className="w-full text-left text-xs">
+        <TableHeader className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
           <TableRow>
-            <TableHead>Company Name</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Applicants</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="p-3.5">Company</TableHead>
+            <TableHead className="p-3.5">Job Title</TableHead>
+            <TableHead className="p-3.5">Location</TableHead>
+            <TableHead className="p-3.5">Salary</TableHead>
+            <TableHead className="p-3.5">Applicants</TableHead>
+            <TableHead className="p-3.5">Date Posted</TableHead>
+            <TableHead className="p-3.5 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
 
-        <TableBody>
-          {filteredJobs?.length === 0 ? (
+        <TableBody className="divide-y divide-slate-100">
+          {filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => {
+              const applicantCount = job.applications?.length || 0;
+              return (
+                <TableRow key={job._id} className="hover:bg-slate-50/60 transition">
+                  <TableCell className="p-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={job?.company?.logo || "/logo.png"}
+                        alt={job?.company?.name}
+                        className="w-8 h-8 rounded-lg border object-cover shrink-0"
+                      />
+                      <span className="font-bold text-slate-900 truncate max-w-[140px]">
+                        {job?.company?.name || "Company"}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="p-3.5 font-bold text-slate-900">
+                    {job?.title}
+                  </TableCell>
+
+                  <TableCell className="p-3.5 text-slate-500">
+                    {job?.location}
+                  </TableCell>
+
+                  <TableCell className="p-3.5 font-semibold text-slate-700">
+                    ₹{job?.salary} LPA
+                  </TableCell>
+
+                  <TableCell className="p-3.5">
+                    <Link
+                      to={`/admin/jobs/${job._id}/applicants`}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition"
+                    >
+                      <Users size={12} />
+                      {applicantCount} {applicantCount === 1 ? "applicant" : "applicants"}
+                    </Link>
+                  </TableCell>
+
+                  <TableCell className="p-3.5 text-slate-500">
+                    {job?.createdAt?.split("T")[0]}
+                  </TableCell>
+
+                  <TableCell className="p-3.5 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <Link to={`/admin/jobs/${job._id}/applicants`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-2.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+                        >
+                          Candidates
+                        </Button>
+                      </Link>
+
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+                            <MoreHorizontal size={16} />
+                          </button>
+                        </PopoverTrigger>
+
+                        <PopoverContent align="end" className="w-36 p-1 rounded-xl bg-white border border-slate-200 shadow-lg text-xs">
+                          <button
+                            onClick={() => navigate(`/admin/jobs/${job._id}/edit`)}
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                          >
+                            <Edit2 size={13} /> Edit Job
+                          </button>
+                          <button
+                            onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                          >
+                            <Eye size={13} /> View Applicants
+                          </button>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+              <TableCell colSpan={7} className="text-center py-10 text-slate-400">
                 No jobs found matching your search.
               </TableCell>
             </TableRow>
-          ) : (
-            filteredJobs?.map((job, index) => (
-              <TableRow key={job._id || index} className="hover:bg-gray-50/70 transition">
-                <TableCell className="font-medium text-gray-800">{job?.company?.name || "N/A"}</TableCell>
-                <TableCell className="font-semibold text-gray-900">{job?.title}</TableCell>
-                <TableCell>
-                  <button
-                    onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-100 transition"
-                    title="View candidate applications"
-                  >
-                    <Users className="w-3.5 h-3.5" />
-                    <span>{job?.applications?.length || 0}</span>
-                  </button>
-                </TableCell>
-                <TableCell className="text-gray-500 text-sm">{job?.createdAt?.split("T")[0]}</TableCell>
-
-              <TableCell className="text-right">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <button className="p-2 rounded-full hover:bg-gray-100 transition">
-                      <MoreHorizontal className="w-5 h-5 text-gray-500" />
-                    </button>
-                  </PopoverTrigger>
-
-                  <PopoverContent
-                    align="end"
-                    className="w-36 bg-white rounded-xl shadow-lg border border-gray-200 p-3 flex flex-col gap-2"
-                  >
-                    <button
-                      onClick={() =>
-                        navigate(`/admin/jobs/${job._id}/edit`)
-                      }
-                      className="flex items-center gap-2 px-2 py-1 hover:bg-indigo-50 rounded-lg transition"
-                    >
-                      <Edit2 className="w-4 h-4 text-indigo-600" />
-                      <span className="text-gray-700">Edit</span>
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        navigate(`/admin/jobs/${job._id}/applicants`)
-                      }
-                      className="flex items-center gap-2 px-2 py-1 hover:bg-indigo-50 rounded-lg transition"
-                    >
-                      <Eye className="w-4 h-4 text-indigo-600" />
-                      <span className="text-gray-700">Applicants</span>
-                    </button>
-                  </PopoverContent>
-                </Popover>
-              </TableCell>
-            </TableRow>
-          ))
-        )}
+          )}
         </TableBody>
       </Table>
     </div>
