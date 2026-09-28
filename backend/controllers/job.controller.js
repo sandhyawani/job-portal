@@ -26,7 +26,9 @@ export const postJob = async (req, res) => {
       !title ||
       !description ||
       !requirements ||
-      !salary ||
+      salary === undefined ||
+      salary === null ||
+      salary === "" ||
       !location ||
       !jobType ||
       !experience ||
@@ -38,7 +40,7 @@ export const postJob = async (req, res) => {
       });
     }
 
-    if (Number(salary) <= 0) {
+    if (isNaN(Number(salary)) || Number(salary) <= 0) {
       return res.status(400).json({
         success: false,
         message: "Salary must be greater than zero.",
@@ -53,8 +55,15 @@ export const postJob = async (req, res) => {
     }
 
     // Verify company exists and user has ownership
-    const company = await Company.findOne({ _id: companyId, userId });
+    const company = await Company.findById(companyId);
     if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found.",
+      });
+    }
+
+    if (company.userId.toString() !== userId) {
       return res.status(403).json({
         success: false,
         message: "You can only post jobs for companies you own/manage.",
@@ -174,10 +183,7 @@ export const getAllJobs = async (req, res) => {
     // Work mode filter (Remote, Hybrid, On-site)
     if (workMode && workMode.trim() && workMode !== "All") {
       andConditions.push({
-        $or: [
-          { workMode: { $regex: `^${workMode.trim()}$`, $options: "i" } },
-          { location: { $regex: workMode.trim(), $options: "i" } },
-        ],
+        workMode: { $regex: `^${workMode.trim()}$`, $options: "i" },
       });
     }
 
@@ -230,12 +236,12 @@ export const getAllJobs = async (req, res) => {
 
     // Sorting
     let sortOptions = { createdAt: -1 };
+    const isRelevanceSort = sort === "relevance" && Boolean(keyword && keyword.trim());
+
     if (sort === "salary_desc") {
       sortOptions = { salary: -1, createdAt: -1 };
     } else if (sort === "salary_asc") {
       sortOptions = { salary: 1, createdAt: -1 };
-    } else if (sort === "relevance" && keyword) {
-      sortOptions = { createdAt: -1 };
     } else {
       sortOptions = { createdAt: -1 };
     }
@@ -245,7 +251,7 @@ export const getAllJobs = async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
 
     const totalJobs = await Job.countDocuments(query);
-    const jobs = await Job.find(query)
+    let jobs = await Job.find(query)
       .populate({
         path: "company",
         select: "name logo location trustScore trustLevel website description",
@@ -254,13 +260,42 @@ export const getAllJobs = async (req, res) => {
         path: "created_by",
         select: "fullname email",
       })
-      .sort(sortOptions)
-      .skip(skip)
-      .limit(limitNum);
+      .sort(sortOptions);
+
+    if (isRelevanceSort) {
+      const kw = keyword.toLowerCase().trim();
+      const terms = kw.split(/\s+/).filter(Boolean);
+
+      const scoreJob = (j) => {
+        let score = 0;
+        const title = (j.title || "").toLowerCase();
+        const desc = (j.description || "").toLowerCase();
+        const comp = (j.company?.name || "").toLowerCase();
+        const reqs = (j.requirements || []).map((r) => String(r).toLowerCase());
+
+        if (title === kw) score += 50;
+        else if (title.includes(kw)) score += 25;
+
+        terms.forEach((t) => {
+          if (title.includes(t)) score += 10;
+          if (reqs.some((r) => r.includes(t))) score += 8;
+          if (comp.includes(t)) score += 5;
+          if (desc.includes(t)) score += 2;
+        });
+        return score;
+      };
+
+      jobs.sort((a, b) => {
+        const scoreDiff = scoreJob(b) - scoreJob(a);
+        return scoreDiff !== 0 ? scoreDiff : new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    }
+
+    const paginatedJobs = jobs.slice(skip, skip + limitNum);
 
     return res.status(200).json({
       success: true,
-      jobs,
+      jobs: paginatedJobs,
       totalJobs,
       currentPage: pageNum,
       totalPages: Math.ceil(totalJobs / limitNum) || 1,
@@ -303,22 +338,64 @@ export const getJobById = async (req, res) => {
       });
     }
 
-    // Find 3-4 similar jobs based on title keywords or requirements
-    const firstWord = job.title.split(" ")[0];
-    const similarJobs = await Job.find({
+    // Meaningful similar jobs matching across requirements, jobType, workMode, and title
+    const STOP_WORDS = new Set([
+      "the", "and", "for", "with", "a", "an", "in", "to", "of", "at", "by", "from",
+      "senior", "junior", "lead", "staff", "associate", "developer", "engineer", "manager"
+    ]);
+
+    const titleTokens = job.title
+      .toLowerCase()
+      .split(/[\s,./\\-]+/)
+      .map((w) => w.trim())
+      .filter((w) => w.length >= 3 && !STOP_WORDS.has(w));
+
+    const orClauses = [
+      { jobType: job.jobType },
+      { workMode: job.workMode },
+    ];
+    if (job.company) {
+      orClauses.push({ company: job.company._id || job.company });
+    }
+    if (job.requirements && job.requirements.length > 0) {
+      orClauses.push({ requirements: { $in: job.requirements } });
+    }
+    if (titleTokens.length > 0) {
+      orClauses.push({ title: { $regex: titleTokens.join("|"), $options: "i" } });
+    }
+
+    const candidateJobs = await Job.find({
       _id: { $ne: job._id },
       status: { $ne: "closed" },
-      $or: [
-        { title: { $regex: firstWord, $options: "i" } },
-        { jobType: job.jobType },
-        { requirements: { $in: job.requirements } },
-      ],
+      $or: orClauses,
     })
       .populate({
         path: "company",
         select: "name logo location trustScore trustLevel",
       })
-      .limit(4);
+      .limit(20);
+
+    const targetReqs = (job.requirements || []).map((r) => r.toLowerCase().trim());
+    const scoredCandidates = candidateJobs.map((c) => {
+      let score = 0;
+      const cReqs = (c.requirements || []).map((r) => r.toLowerCase().trim());
+      targetReqs.forEach((req) => {
+        if (cReqs.some((cr) => cr.includes(req) || req.includes(cr))) score += 4;
+      });
+      const cTitle = (c.title || "").toLowerCase();
+      titleTokens.forEach((tok) => {
+        if (cTitle.includes(tok)) score += 5;
+      });
+      if (c.workMode === job.workMode) score += 2;
+      if (c.jobType === job.jobType) score += 2;
+      if (c.location && job.location && c.location.toLowerCase().includes(job.location.toLowerCase())) {
+        score += 2;
+      }
+      return { job: c, score };
+    });
+
+    scoredCandidates.sort((a, b) => b.score - a.score || new Date(b.job.createdAt) - new Date(a.job.createdAt));
+    const similarJobs = scoredCandidates.slice(0, 4).map((item) => item.job);
 
     return res.status(200).json({
       success: true,

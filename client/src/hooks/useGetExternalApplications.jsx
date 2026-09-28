@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { APPLICATION_API_END_POINT } from "@/utils/constant";
+import { applicationApi } from "@/api/applicationApi";
 import { setExternalApplications } from "@/redux/applicationSlice";
 
 const useGetExternalApplications = () => {
@@ -12,9 +11,7 @@ const useGetExternalApplications = () => {
     if (!user || user.role !== "student") return;
 
     try {
-      const res = await axios.get(`${APPLICATION_API_END_POINT}/external`, {
-        withCredentials: true,
-      });
+      const res = await applicationApi.getExternalApplications();
       if (res.data.success) {
         dispatch(setExternalApplications(res.data.applications));
       }

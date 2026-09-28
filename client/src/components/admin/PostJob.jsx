@@ -4,8 +4,7 @@ import MobileBottomNav from "../shared/MobileBottomNav";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
+import jobApi from "@/api/jobApi";
 import { toast } from "sonner";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Loader2, ArrowLeft, Briefcase, Plus } from "lucide-react";
@@ -36,20 +35,20 @@ const PostJob = () => {
     companyId: "",
   });
 
+  // Default company selection for new job
+  useEffect(() => {
+    if (!isEditMode && companies.length > 0) {
+      setInput((prev) => (prev.companyId ? prev : { ...prev, companyId: companies[0]._id }));
+    }
+  }, [isEditMode, companies]);
+
   // Load job details when editing
   useEffect(() => {
-    if (!isEditMode) {
-      if (companies.length > 0 && !input.companyId) {
-        setInput((prev) => ({ ...prev, companyId: companies[0]._id }));
-      }
-      return;
-    }
+    if (!isEditMode) return;
 
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get/${id}`, {
-          withCredentials: true,
-        });
+        const res = await jobApi.getJobById(id);
 
         if (res.data.success) {
           const job = res.data.job;
@@ -74,7 +73,7 @@ const PostJob = () => {
     };
 
     fetchJob();
-  }, [id, isEditMode, companies]);
+  }, [id, isEditMode]);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -96,16 +95,9 @@ const PostJob = () => {
     try {
       setLoading(true);
 
-      const url = isEditMode
-        ? `${JOB_API_END_POINT}/update/${id}`
-        : `${JOB_API_END_POINT}/post`;
-
-      const method = isEditMode ? "put" : "post";
-
-      const res = await axios[method](url, input, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
+      const res = isEditMode
+        ? await jobApi.updateJob(id, input)
+        : await jobApi.postJob(input);
 
       if (res.data.success) {
         toast.success(res.data.message);

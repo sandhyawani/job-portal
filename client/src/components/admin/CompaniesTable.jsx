@@ -11,7 +11,7 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Edit2, MoreHorizontal, ExternalLink, Globe } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import TrustBadge from "../TrustBadge";
 import { Button } from "../ui/button";
 
@@ -21,7 +21,6 @@ const CompaniesTable = () => {
   );
 
   const [filteredCompanies, setFilteredCompanies] = useState(companies);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const result = companies.filter((company) => {

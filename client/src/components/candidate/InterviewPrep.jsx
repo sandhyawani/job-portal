@@ -205,6 +205,9 @@ const InterviewPrep = () => {
               {roleParam && (
                 <div className="mt-3 inline-block px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">
                   Tailored for: <span className="text-indigo-600">{roleParam}</span>
+                  {skillsParam && (
+                    <span className="text-slate-500 font-normal"> · Skills: {skillsParam}</span>
+                  )}
                 </div>
               )}
             </div>

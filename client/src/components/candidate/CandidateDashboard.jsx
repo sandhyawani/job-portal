@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import MobileBottomNav from "../shared/MobileBottomNav";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import useGetSavedJobs from "@/hooks/useGetSavedJobs";
@@ -30,7 +30,6 @@ import UpdateProfileDialog from "../UpdateProfileDialog";
 
 const CandidateDashboard = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const { user } = useSelector((store) => store.auth);
   const { allJobs = [], savedJobs = [] } = useSelector((store) => store.job);

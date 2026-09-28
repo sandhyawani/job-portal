@@ -5,8 +5,7 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { USER_API_END_POINT } from "@/utils/constant";
+import userApi from "@/api/userApi";
 import { toggleSavedJobInState } from "@/redux/jobSlice";
 import { toast } from "sonner";
 import { calculateJobMatch } from "@/utils/jobMatcher";
@@ -46,11 +45,7 @@ const Job = ({ job }) => {
       // Optimistic update
       dispatch(toggleSavedJobInState(job._id));
 
-      const res = await axios.post(
-        `${USER_API_END_POINT}/save/${job._id}`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await userApi.toggleSaveJob(job._id);
 
       if (res.data.success) {
         toast.success(res.data.message);

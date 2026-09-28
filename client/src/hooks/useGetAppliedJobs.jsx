@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 import { setAllAppliedJobs } from "../redux/jobSlice";
-import { APPLICATION_API_END_POINT } from "../utils/constant";
+import { applicationApi } from "@/api/applicationApi";
 
 const useGetAppliedJobs = (onFetchComplete) => {
   const dispatch = useDispatch();
@@ -10,21 +9,14 @@ const useGetAppliedJobs = (onFetchComplete) => {
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
-        const res = await axios.get(`${APPLICATION_API_END_POINT}/get`, {
-          withCredentials: true,
-        });
-
-        console.log("Applied Jobs API Response:", res.data);
+        const res = await applicationApi.getAppliedJobs();
 
         if (res.data.success) {
-          // ✅ Corrected here
           dispatch(setAllAppliedJobs(res.data.applications));
           if (onFetchComplete) onFetchComplete(res.data.applications);
-        } else {
-          console.error("❌ Failed to fetch applied jobs.");
         }
       } catch (err) {
-        console.error("❌ Fetch Applied Jobs Error:", err.message);
+        console.error("Fetch Applied Jobs Error:", err.message);
       }
     };
 

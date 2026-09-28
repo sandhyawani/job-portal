@@ -3,6 +3,79 @@
  * Profile and job requirements matching.
  */
 
+export const SKILL_ALIASES = {
+  js: "javascript",
+  javascript: "javascript",
+  ts: "typescript",
+  typescript: "typescript",
+  react: "react",
+  reactjs: "react",
+  "react.js": "react",
+  node: "node",
+  nodejs: "node",
+  "node.js": "node",
+  mongo: "mongodb",
+  mongodb: "mongodb",
+  "mongo.db": "mongodb",
+  express: "express",
+  expressjs: "express",
+  "express.js": "express",
+  py: "python",
+  python: "python",
+  python3: "python",
+  java: "java",
+  cpp: "c++",
+  "c++": "c++",
+  csharp: "c#",
+  "c#": "c#",
+  golang: "go",
+  go: "go",
+  postgres: "postgresql",
+  postgresql: "postgresql",
+  sql: "sql",
+  mysql: "mysql",
+  aws: "aws",
+  docker: "docker",
+  k8s: "kubernetes",
+  kubernetes: "kubernetes",
+  html: "html",
+  html5: "html",
+  css: "css",
+  css3: "css",
+  tailwind: "tailwind",
+  tailwindcss: "tailwind",
+  redux: "redux",
+  git: "git",
+  github: "git",
+  graphql: "graphql",
+  rest: "rest api",
+  "rest api": "rest api",
+};
+
+export const normalizeSkill = (skill) => {
+  if (!skill) return "";
+  const cleaned = String(skill).toLowerCase().trim();
+  return SKILL_ALIASES[cleaned] || cleaned;
+};
+
+export const extractSkillsFromText = (text) => {
+  if (!text) return [];
+  const rawTokens = String(text)
+    .toLowerCase()
+    .split(/[,/;\n()]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const recognized = new Set();
+  rawTokens.forEach((token) => {
+    recognized.add(normalizeSkill(token));
+    const words = token.split(/\s+/).map((w) => w.trim()).filter(Boolean);
+    words.forEach((w) => recognized.add(normalizeSkill(w)));
+  });
+
+  return recognized;
+};
+
 export const calculateJobMatch = (job, user) => {
   if (!job || !user || user.role !== "student") {
     return {
@@ -20,40 +93,41 @@ export const calculateJobMatch = (job, user) => {
   }
 
   const profile = user.profile || {};
-  const userSkills = (profile.skills || []).map((s) => s.toLowerCase().trim()).filter(Boolean);
+  const userRawSkills = (profile.skills || []).map((s) => String(s).trim()).filter(Boolean);
+  const normalizedUserSkills = new Map();
+  userRawSkills.forEach((s) => {
+    normalizedUserSkills.set(normalizeSkill(s), s);
+  });
+
   const userLocation = (profile.location || "").toLowerCase().trim();
   const userExperience = (profile.experience || "").toLowerCase().trim();
   const userPreferredJobType = (profile.preferredJobType || "").toLowerCase().trim();
   const userExpectedSalary = Number(profile.expectedSalary) || 0;
 
   // 1. SKILLS MATCHING (Max 40 points)
-  const jobRequirements = (job.requirements || []).map((r) => r.toLowerCase().trim());
-  const jobTitle = (job.title || "").toLowerCase();
-
+  const jobRequirements = (job.requirements || []).map((r) => String(r).trim()).filter(Boolean);
   const matchedSkills = [];
   const missingSkills = [];
 
-  // Check each requirement against user skills
+  // Match each requirement using token/exact equality, avoiding naive substring collisions (e.g. java vs javascript)
   jobRequirements.forEach((req) => {
-    // Check if any user skill is included in requirement or vice-versa
-    const match = userSkills.find(
-      (skill) => req.includes(skill) || skill.includes(req)
-    );
-    if (match) {
-      if (!matchedSkills.includes(match)) matchedSkills.push(match);
-    } else {
-      // Format requirement string for display
+    const tokens = extractSkillsFromText(req);
+    let isMatched = false;
+
+    for (const [normUserSkill, displayUserSkill] of normalizedUserSkills.entries()) {
+      if (tokens.has(normUserSkill)) {
+        isMatched = true;
+        if (!matchedSkills.includes(displayUserSkill)) {
+          matchedSkills.push(displayUserSkill);
+        }
+      }
+    }
+
+    if (!isMatched) {
       const shortReq = req.split(/[,.]/)[0].trim().slice(0, 30);
       if (shortReq && !missingSkills.includes(shortReq)) {
         missingSkills.push(shortReq);
       }
-    }
-  });
-
-  // Also check if any user skill appears directly in job title or description
-  userSkills.forEach((skill) => {
-    if (jobTitle.includes(skill) && !matchedSkills.includes(skill)) {
-      matchedSkills.push(skill);
     }
   });
 

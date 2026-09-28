@@ -9,22 +9,26 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true,
+        lowercase: true,
+        index: true,
     },
     phoneNumber: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        trim: true,
     },
-    password:{
-        type:String,
-        required:true,
+    password: {
+        type: String,
+        required: true,
+        select: false,
     },
-    role:{
-        type:String,
-        enum:['student','recruiter'],
-        
-        required:true
-        
+    role: {
+        type: String,
+        enum: ['student', 'recruiter', 'admin'],
+        required: true,
+        default: 'student',
     },
     profile: {
         bio: { type: String, default: "" },

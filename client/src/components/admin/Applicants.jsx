@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Navbar from "../shared/Navbar";
 import MobileBottomNav from "../shared/MobileBottomNav";
 import ApplicantsTable from "./ApplicantsTable";
-import axios from "axios";
-import { APPLICATION_API_END_POINT } from "@/utils/constant";
+import applicationApi from "@/api/applicationApi";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllApplicants } from "@/redux/applicationSlice";
 import {
   Users,
   Search,
-  Filter,
   ArrowLeft,
-  Briefcase,
-  CheckCircle2,
-  Calendar,
-  Award,
 } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -28,24 +22,21 @@ const Applicants = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
-  const fetchApplicants = async () => {
+  const fetchApplicants = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${APPLICATION_API_END_POINT}/${id}/applicants`,
-        { withCredentials: true }
-      );
+      const res = await applicationApi.getApplicants(id);
       dispatch(setAllApplicants(res.data.job));
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchApplicants();
-  }, [id, dispatch]);
+  }, [fetchApplicants]);
 
   const applicationsList = applicants?.applications || [];
 
@@ -81,9 +72,6 @@ const Applicants = () => {
     (a) => a.status === "shortlisted" || a.status === "accepted"
   ).length;
   const interviewCount = applicationsList.filter((a) => a.status === "interview").length;
-  const offerCount = applicationsList.filter(
-    (a) => a.status === "offer" || a.status === "hired"
-  ).length;
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
@@ -232,10 +220,16 @@ const Applicants = () => {
         </div>
 
         {/* Applicants Table */}
-        <ApplicantsTable
-          applications={filteredApplicants}
-          onStatusUpdate={fetchApplicants}
-        />
+        {loading && !applicants ? (
+          <div className="py-12 flex items-center justify-center">
+            <div className="w-7 h-7 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <ApplicantsTable
+            applications={filteredApplicants}
+            onStatusUpdate={fetchApplicants}
+          />
+        )}
       </main>
 
       <MobileBottomNav />

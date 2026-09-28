@@ -11,8 +11,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { USER_API_END_POINT } from "../utils/constant";
+import authApi from "@/api/authApi";
 import { toast } from "sonner";
 import { setUser } from "../redux/authSlice";
 
@@ -88,14 +87,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        `${USER_API_END_POINT}/profile/update`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        }
-      );
+      const res = await authApi.updateProfile(formData);
 
       if (res.data.success) {
         dispatch(setUser(res.data.user));

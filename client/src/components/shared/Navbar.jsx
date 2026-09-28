@@ -20,8 +20,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { USER_API_END_POINT } from "@/utils/constant";
+import authApi from "@/api/authApi";
 import { setUser } from "@/redux/authSlice";
 import { toast } from "sonner";
 import useGetNotifications from "@/hooks/useGetNotifications";
@@ -37,9 +36,7 @@ const Navbar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
-        withCredentials: true,
-      });
+      const res = await authApi.logout();
       if (res.data.success) {
         dispatch(setUser(null));
         navigate("/");

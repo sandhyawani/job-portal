@@ -1,5 +1,5 @@
 import express from "express";
-import { isAuthenticated, optionalAuth } from "../middlewares/isAuthenticated.js";
+import { isAuthenticated, requireRole, optionalAuth } from "../middlewares/isAuthenticated.js";
 import {
   getAdminJobs,
   getAllJobs,
@@ -15,8 +15,8 @@ router.get("/get", optionalAuth, getAllJobs);
 router.get("/get/:id", optionalAuth, getJobById);
 
 // Protected recruiter routes
-router.post("/post", isAuthenticated, postJob);
-router.get("/getadminjobs", isAuthenticated, getAdminJobs);
-router.put("/update/:id", isAuthenticated, updateJob);
+router.post("/post", isAuthenticated, requireRole("recruiter"), postJob);
+router.get("/getadminjobs", isAuthenticated, requireRole("recruiter"), getAdminJobs);
+router.put("/update/:id", isAuthenticated, requireRole("recruiter"), updateJob);
 
 export default router;

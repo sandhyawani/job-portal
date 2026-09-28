@@ -47,28 +47,52 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute allowedRoles={["student", "recruiter"]}>
+        <Profile />
+      </ProtectedRoute>
+    ),
   },
-  // Candidate routes
+  // Candidate routes (Student only)
   {
     path: "/pipeline",
-    element: <Pipeline />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <Pipeline />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/saved",
-    element: <Pipeline />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <Pipeline />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/applications",
-    element: <ApplicationTracker />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <ApplicationTracker />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/dashboard",
-    element: <CandidateDashboard />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <CandidateDashboard />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/interview-prep",
-    element: <InterviewPrep />,
+    element: (
+      <ProtectedRoute allowedRoles={["student"]}>
+        <InterviewPrep />
+      </ProtectedRoute>
+    ),
   },
   // Public company profile
   {

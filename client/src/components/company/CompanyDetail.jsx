@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import MobileBottomNav from "../shared/MobileBottomNav";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
-import { COMPANY_API_END_POINT } from "@/utils/constant";
+import companyApi from "@/api/companyApi";
 import {
   Building2,
   MapPin,
@@ -33,9 +32,7 @@ const CompanyDetail = () => {
     const fetchCompany = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${COMPANY_API_END_POINT}/${id}`, {
-          withCredentials: true,
-        });
+        const res = await companyApi.getCompanyById(id);
         if (res.data.success) {
           setCompany(res.data.company);
           setOpenJobs(res.data.openJobs || []);

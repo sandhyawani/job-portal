@@ -30,6 +30,9 @@ export const calculateProfileScore = (user) => {
   return { score: totalScore, checks };
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^[0-9+\-\s()]{7,20}$/;
+
 export const register = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, password, role } = req.body;
@@ -41,6 +44,30 @@ export const register = async (req, res) => {
       });
     }
 
+    const trimmedFullname = fullname.trim();
+    if (trimmedFullname.length < 2) {
+      return res.status(400).json({
+        message: "Full name must be at least 2 characters.",
+        success: false,
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    if (!EMAIL_REGEX.test(cleanEmail)) {
+      return res.status(400).json({
+        message: "Please provide a valid email address.",
+        success: false,
+      });
+    }
+
+    const cleanPhone = String(phoneNumber).trim();
+    if (!PHONE_REGEX.test(cleanPhone)) {
+      return res.status(400).json({
+        message: "Please provide a valid phone number (7-20 digits).",
+        success: false,
+      });
+    }
+
     if (password.length < 6) {
       return res.status(400).json({
         message: "Password must be at least 6 characters long.",
@@ -48,7 +75,14 @@ export const register = async (req, res) => {
       });
     }
 
-    const userExists = await User.findOne({ email: email.toLowerCase().trim() });
+    if (!["student", "recruiter"].includes(role)) {
+      return res.status(400).json({
+        message: "Role must be either student or recruiter.",
+        success: false,
+      });
+    }
+
+    const userExists = await User.findOne({ email: cleanEmail });
     if (userExists) {
       return res.status(400).json({
         message: "User already exists with this email.",
@@ -67,9 +101,9 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      fullname: fullname.trim(),
-      email: email.toLowerCase().trim(),
-      phoneNumber: Number(phoneNumber),
+      fullname: trimmedFullname,
+      email: cleanEmail,
+      phoneNumber: cleanPhone,
       password: hashedPassword,
       role,
       profile: {
@@ -100,7 +134,8 @@ export const login = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail }).select("+password");
     if (!user) {
       return res.status(400).json({
         message: "Incorrect email or password.",
@@ -146,7 +181,6 @@ export const login = async (req, res) => {
       .json({
         message: `Welcome back ${user.fullname}`,
         user: sanitized,
-        token,
         success: true,
       });
   } catch (error) {
@@ -272,18 +306,50 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    if (fullname) user.fullname = fullname.trim();
-    if (email) user.email = email.toLowerCase().trim();
-    if (phoneNumber) user.phoneNumber = Number(phoneNumber);
-    if (bio !== undefined) user.profile.bio = bio;
-    if (experience !== undefined) user.profile.experience = experience;
-    if (education !== undefined) user.profile.education = education;
-    if (location !== undefined) user.profile.location = location;
-    if (github !== undefined) user.profile.github = github;
-    if (portfolio !== undefined) user.profile.portfolio = portfolio;
-    if (expectedSalary !== undefined) user.profile.expectedSalary = Number(expectedSalary) || 0;
-    if (preferredJobType !== undefined) user.profile.preferredJobType = preferredJobType;
-    if (preferredWorkMode !== undefined) user.profile.preferredWorkMode = preferredWorkMode;
+    if (fullname && fullname.trim().length >= 2) {
+      user.fullname = fullname.trim();
+    }
+
+    if (email) {
+      const cleanEmail = email.toLowerCase().trim();
+      if (!EMAIL_REGEX.test(cleanEmail)) {
+        return res.status(400).json({
+          message: "Please provide a valid email address.",
+          success: false,
+        });
+      }
+      if (cleanEmail !== user.email) {
+        const existingEmail = await User.findOne({ email: cleanEmail, _id: { $ne: userId } });
+        if (existingEmail) {
+          return res.status(400).json({
+            message: "This email address is already in use.",
+            success: false,
+          });
+        }
+        user.email = cleanEmail;
+      }
+    }
+
+    if (phoneNumber) {
+      const cleanPhone = String(phoneNumber).trim();
+      if (!PHONE_REGEX.test(cleanPhone)) {
+        return res.status(400).json({
+          message: "Please provide a valid phone number.",
+          success: false,
+        });
+      }
+      user.phoneNumber = cleanPhone;
+    }
+
+    if (bio !== undefined) user.profile.bio = String(bio).trim();
+    if (experience !== undefined) user.profile.experience = String(experience).trim();
+    if (education !== undefined) user.profile.education = String(education).trim();
+    if (location !== undefined) user.profile.location = String(location).trim();
+    if (github !== undefined) user.profile.github = String(github).trim();
+    if (portfolio !== undefined) user.profile.portfolio = String(portfolio).trim();
+    if (expectedSalary !== undefined) user.profile.expectedSalary = Math.max(0, Number(expectedSalary) || 0);
+    if (preferredJobType !== undefined) user.profile.preferredJobType = String(preferredJobType).trim();
+    if (preferredWorkMode !== undefined) user.profile.preferredWorkMode = String(preferredWorkMode).trim();
 
     if (projects) {
       try {

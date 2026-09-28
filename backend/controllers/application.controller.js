@@ -71,6 +71,7 @@ export const applyJob = async (req, res) => {
       status: "pending",
       statusHistory: [
         {
+          previousStatus: "",
           status: "pending",
           changedAt: new Date(),
           comment: "Application submitted by candidate",
@@ -97,6 +98,12 @@ export const applyJob = async (req, res) => {
       success: true,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "You have already applied for this job.",
+        success: false,
+      });
+    }
     console.error("Error in applyJob:", error);
     return res.status(500).json({ message: "Server error", success: false });
   }
@@ -175,6 +182,17 @@ export const getApplicants = async (req, res) => {
   }
 };
 
+// Application state machine transition rules
+const ALLOWED_TRANSITIONS = {
+  pending: ["review", "shortlisted", "rejected"],
+  review: ["shortlisted", "interview", "rejected"],
+  shortlisted: ["interview", "offer", "rejected"],
+  interview: ["offer", "shortlisted", "rejected"],
+  offer: ["hired", "rejected"],
+  hired: ["rejected"],
+  rejected: ["review", "pending"],
+};
+
 // Update applicant status (Recruiter only with state machine validation)
 export const updateStatus = async (req, res) => {
   try {
@@ -226,15 +244,29 @@ export const updateStatus = async (req, res) => {
       });
     }
 
+    const currentStatus = application.status || "pending";
+    const isStatusChanging = currentStatus !== normalizedStatus;
+
+    if (isStatusChanging) {
+      const allowed = ALLOWED_TRANSITIONS[currentStatus] || [];
+      if (!allowed.includes(normalizedStatus)) {
+        return res.status(400).json({
+          message: `Cannot transition application status from '${currentStatus}' to '${normalizedStatus}'.`,
+          success: false,
+        });
+      }
+    }
+
     application.status = normalizedStatus;
     if (notes !== undefined) application.notes = notes;
     if (interviewDate) application.interviewDate = new Date(interviewDate);
 
-    // Record status history
+    // Record status history with previousStatus and audit details
     application.statusHistory.push({
+      previousStatus: currentStatus,
       status: normalizedStatus,
       changedAt: new Date(),
-      comment: notes || `Status updated to ${normalizedStatus}`,
+      comment: notes || (isStatusChanging ? `Status updated from ${currentStatus} to ${normalizedStatus}` : "Application notes updated"),
       changedBy: recruiterId,
     });
 
@@ -380,11 +412,25 @@ export const updateExternalApplication = async (req, res) => {
     const userId = req.id;
     const { id } = req.params;
 
-    const externalApp = await ExternalApplication.findOne({ _id: id, user: userId });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid application ID.",
+      });
+    }
+
+    const externalApp = await ExternalApplication.findById(id);
     if (!externalApp) {
       return res.status(404).json({
         success: false,
         message: "External application not found.",
+      });
+    }
+
+    if (externalApp.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to update this application.",
       });
     }
 
@@ -422,13 +468,29 @@ export const deleteExternalApplication = async (req, res) => {
     const userId = req.id;
     const { id } = req.params;
 
-    const result = await ExternalApplication.findOneAndDelete({ _id: id, user: userId });
-    if (!result) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid application ID.",
+      });
+    }
+
+    const externalApp = await ExternalApplication.findById(id);
+    if (!externalApp) {
       return res.status(404).json({
         success: false,
         message: "External application not found.",
       });
     }
+
+    if (externalApp.user.toString() !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to delete this application.",
+      });
+    }
+
+    await ExternalApplication.findByIdAndDelete(id);
 
     return res.status(200).json({
       success: true,

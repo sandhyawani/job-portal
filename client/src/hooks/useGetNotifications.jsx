@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { USER_API_END_POINT } from "@/utils/constant";
+import authApi from "@/api/authApi";
 import { setNotifications, setUnreadCount } from "@/redux/authSlice";
 
 const useGetNotifications = () => {
@@ -12,9 +11,7 @@ const useGetNotifications = () => {
     if (!user) return;
 
     try {
-      const res = await axios.get(`${USER_API_END_POINT}/notifications`, {
-        withCredentials: true,
-      });
+      const res = await authApi.getNotifications();
       if (res.data.success) {
         dispatch(setNotifications(res.data.notifications));
         dispatch(setUnreadCount(res.data.unreadCount));
@@ -30,11 +27,7 @@ const useGetNotifications = () => {
 
   const markAsRead = async (id = "all") => {
     try {
-      const res = await axios.put(
-        `${USER_API_END_POINT}/notifications/${id}/read`,
-        {},
-        { withCredentials: true }
-      );
+      const res = await authApi.markNotificationRead(id);
       if (res.data.success) {
         fetchNotifications();
       }

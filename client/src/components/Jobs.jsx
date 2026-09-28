@@ -71,6 +71,7 @@ const Jobs = () => {
     if (urlPage && urlPage !== pagination?.currentPage) {
       dispatch(setPagination({ currentPage: urlPage }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sync to URL params whenever filters or page change

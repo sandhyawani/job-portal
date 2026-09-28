@@ -133,15 +133,19 @@ export const updateCompany = async (req, res) => {
       });
     }
 
-    const company = await Company.findOne({
-      _id: id,
-      userId: req.id,
-    });
+    const company = await Company.findById(id);
 
     if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+      });
+    }
+
+    if (company.userId.toString() !== req.id) {
       return res.status(403).json({
         success: false,
-        message: "Unauthorized or company not found",
+        message: "You are not authorized to update this company",
       });
     }
 

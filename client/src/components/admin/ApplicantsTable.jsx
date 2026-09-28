@@ -23,8 +23,7 @@ import {
   Clock,
 } from "lucide-react";
 import { toast } from "sonner";
-import { APPLICATION_API_END_POINT } from "@/utils/constant";
-import axios from "axios";
+import applicationApi from "@/api/applicationApi";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -66,15 +65,11 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
 
     try {
       setLoading(true);
-      const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/status/${statusModalApp._id}/update`,
-        {
-          status: targetStatus,
-          notes: recruiterNotes,
-          interviewDate: targetStatus === "interview" ? interviewDate : undefined,
-        },
-        { withCredentials: true }
-      );
+      const res = await applicationApi.updateStatus(statusModalApp._id, {
+        status: targetStatus,
+        notes: recruiterNotes,
+        interviewDate: targetStatus === "interview" ? interviewDate : undefined,
+      });
 
       if (res.data.success) {
         toast.success(res.data.message);

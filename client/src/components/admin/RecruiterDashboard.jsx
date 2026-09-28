@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "../shared/Navbar";
 import MobileBottomNav from "../shared/MobileBottomNav";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
 import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 import { Button } from "../ui/button";
@@ -20,15 +20,11 @@ import {
   ChevronRight,
   LayoutDashboard,
 } from "lucide-react";
-import axios from "axios";
-import { JOB_API_END_POINT } from "@/utils/constant";
 
 const RecruiterDashboard = () => {
-  const navigate = useNavigate();
   useGetAllAdminJobs();
   useGetAllCompanies();
 
-  const { user } = useSelector((store) => store.auth);
   const { allAdminJobs = [] } = useSelector((store) => store.job);
   const { companies = [] } = useSelector((store) => store.company);
 
