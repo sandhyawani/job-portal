@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm --prefix client run build",
+  "outputDirectory": "client/dist",
+  "installCommand": "npm --prefix client install --legacy-peer-deps",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}

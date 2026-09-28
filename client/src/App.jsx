@@ -59,6 +59,7 @@ const appRouter = createBrowserRouter([
         <Profile />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   // Candidate routes (Student only)
   {
@@ -68,6 +69,7 @@ const appRouter = createBrowserRouter([
         <Pipeline />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/saved",
@@ -76,6 +78,7 @@ const appRouter = createBrowserRouter([
         <Pipeline />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/applications",
@@ -84,6 +87,7 @@ const appRouter = createBrowserRouter([
         <ApplicationTracker />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/dashboard",
@@ -92,6 +96,7 @@ const appRouter = createBrowserRouter([
         <CandidateDashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/interview-prep",
@@ -100,11 +105,13 @@ const appRouter = createBrowserRouter([
         <InterviewPrep />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   // Public company profile
   {
     path: "/company/:id",
     element: <CompanyDetail />,
+    errorElement: <RouteErrorBoundary />,
   },
   // Recruiter routes
   {
@@ -114,6 +121,7 @@ const appRouter = createBrowserRouter([
         <RecruiterDashboard />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/companies",
@@ -122,6 +130,7 @@ const appRouter = createBrowserRouter([
         <Companies />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/companies/create",
@@ -130,6 +139,7 @@ const appRouter = createBrowserRouter([
         <CompanyCreate />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/companies/:id",
@@ -138,6 +148,7 @@ const appRouter = createBrowserRouter([
         <CompanySetup />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/jobs",
@@ -146,6 +157,7 @@ const appRouter = createBrowserRouter([
         <AdminJobs />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/jobs/create",
@@ -154,6 +166,7 @@ const appRouter = createBrowserRouter([
         <PostJob />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/jobs/:id/applicants",
@@ -162,6 +175,7 @@ const appRouter = createBrowserRouter([
         <Applicants />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/admin/jobs/:id/edit",
@@ -170,6 +184,7 @@ const appRouter = createBrowserRouter([
         <PostJob />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
   },
 ]);
 

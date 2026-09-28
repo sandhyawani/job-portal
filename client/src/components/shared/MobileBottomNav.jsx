@@ -43,10 +43,11 @@ const MobileBottomNav = () => {
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const current = location?.pathname || "";
+          const basePath = typeof tab?.path === "string" ? tab.path.split(/[?#]/)[0] : "";
           const isActive =
-            tab.path === "/"
+            basePath === "/"
               ? current === "/"
-              : typeof current === "string" && current.startsWith(tab.path);
+              : Boolean(basePath && typeof current === "string" && current.startsWith(basePath));
 
           return (
             <Link

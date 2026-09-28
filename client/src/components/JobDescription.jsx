@@ -164,9 +164,9 @@ const JobDescription = () => {
   const company = singleJob.company;
   const workMode =
     singleJob.workMode ||
-    (singleJob.location?.toLowerCase().includes("remote")
+    (typeof singleJob.location === "string" && singleJob.location.toLowerCase().includes("remote")
       ? "Remote"
-      : singleJob.location?.toLowerCase().includes("hybrid")
+      : typeof singleJob.location === "string" && singleJob.location.toLowerCase().includes("hybrid")
       ? "Hybrid"
       : "On-site");
 

@@ -114,7 +114,11 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
           <div className="flex items-center justify-between">
             <span className="text-slate-500">Posted</span>
             <span className="font-semibold text-slate-800">
-              {singleJob.createdAt?.split("T")[0]}
+              {typeof singleJob.createdAt === "string"
+                ? singleJob.createdAt.split("T")[0]
+                : singleJob.createdAt
+                ? new Date(singleJob.createdAt).toLocaleDateString()
+                : "Recently"}
             </span>
           </div>
         </div>
