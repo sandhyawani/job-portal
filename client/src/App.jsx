@@ -19,31 +19,38 @@ import PostJob from "./components/admin/PostJob";
 import Applicants from "./components/admin/Applicants";
 import RecruiterDashboard from "./components/admin/RecruiterDashboard";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
+import RouteErrorBoundary from "./components/RouteErrorBoundary";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/login",
     element: <Login />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/jobs",
     element: <Jobs />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/description/:id",
     element: <JobDescription />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/browse",
     element: <Browse />,
+    errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/profile",

@@ -42,10 +42,11 @@ const MobileBottomNav = () => {
       <div className="flex items-center justify-around">
         {tabs.map((tab) => {
           const Icon = tab.icon;
+          const current = location?.pathname || "";
           const isActive =
             tab.path === "/"
-              ? location.pathname === "/"
-              : location.pathname.startsWith(tab.path);
+              ? current === "/"
+              : typeof current === "string" && current.startsWith(tab.path);
 
           return (
             <Link

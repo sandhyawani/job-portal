@@ -18,8 +18,12 @@ import Job from "../Job";
 import { Button } from "../ui/button";
 
 const normalizeUrl = (url) => {
-  if (!url) return "#";
-  return url.startsWith("http") ? url : `https://${url}`;
+  if (!url || typeof url !== "string") return "#";
+  const trimmed = url.trim();
+  if (!trimmed) return "#";
+  return trimmed.startsWith("http://") || trimmed.startsWith("https://")
+    ? trimmed
+    : `https://${trimmed}`;
 };
 
 const CompanyDetail = () => {
@@ -102,7 +106,7 @@ const CompanyDetail = () => {
               </div>
             </div>
 
-            {company.website && (
+            {typeof company.website === "string" && company.website.trim().length > 0 && (
               <a
                 href={normalizeUrl(company.website)}
                 target="_blank"

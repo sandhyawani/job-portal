@@ -4,8 +4,12 @@ import { Building2, ExternalLink } from "lucide-react";
 import TrustBadge from "../TrustBadge";
 
 const normalizeUrl = (url) => {
-  if (!url) return "#";
-  return url.startsWith("http") ? url : `https://${url}`;
+  if (!url || typeof url !== "string") return "#";
+  const trimmed = url.trim();
+  if (!trimmed) return "#";
+  return trimmed.startsWith("http://") || trimmed.startsWith("https://")
+    ? trimmed
+    : `https://${trimmed}`;
 };
 
 const JobSidebar = ({ company, singleJob, workMode }) => {
@@ -40,7 +44,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
           )}
 
           <div className="space-y-2.5 pt-3 border-t border-slate-100 text-xs">
-            {company.website && (
+            {typeof company.website === "string" && company.website.trim().length > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Website</span>
                 <a

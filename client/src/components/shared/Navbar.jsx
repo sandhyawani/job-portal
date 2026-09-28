@@ -48,8 +48,10 @@ const Navbar = () => {
   };
 
   const isActive = (path) => {
-    if (path === "/" && location.pathname !== "/") return false;
-    return location.pathname.startsWith(path);
+    if (!path || typeof path !== "string") return false;
+    const current = location?.pathname || "";
+    if (path === "/" && current !== "/") return false;
+    return typeof current === "string" && current.startsWith(path);
   };
 
   const candidateLinks = [
