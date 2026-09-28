@@ -13,6 +13,12 @@
 </p>
 
 <p align="center">
+  <a href="https://job-portal-flax-omega.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APP-https%3A%2F%2Fjob--portal--flax--omega.vercel.app-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Website"/>
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React"/>
   <img src="https://img.shields.io/badge/Node.js-Express_5-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js"/>
   <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB"/>
@@ -21,6 +27,12 @@
   <img src="https://img.shields.io/badge/Cloudinary-Media_CDN-3448C5?style=flat-square&logo=cloudinary&logoColor=white" alt="Cloudinary"/>
   <img src="https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel"/>
 </p>
+
+> ### 🌟 Live Production Website
+> 🚀 **Explore the Live App:** **[https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)**  
+> 💻 **GitHub Repository:** **[https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal)**  
+> 
+> *Test candidate application flows, explore verified recruiter hiring pipelines, and practice interview prep questions live!*
 
 ---
 
@@ -316,12 +328,21 @@ npm run build   # Vite production build
 
 ---
 
-## 🌐 Live Deployment
+## 🌐 Live Deployment & Quick Links
 
-| Service | Platform | URL |
-|:--------|:---------|:----|
-| **Frontend Application** | **Vercel** | [https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app) |
-| **Source Code** | **GitHub** | [https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal) |
+<p align="center">
+  <a href="https://job-portal-flax-omega.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APPLICATION-job--portal--flax--omega.vercel.app-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Live App" height="42"/>
+  </a>
+</p>
+
+| Destination | Platform | Direct URL |
+|:------------|:---------|:-----------|
+| 🌐 **Live Web Application** | **Vercel** | **[https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)** |
+| 💻 **GitHub Repository** | **GitHub** | **[https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal)** |
+| 🔍 **Candidate Job Search** | **Production** | **[https://job-portal-flax-omega.vercel.app/jobs](https://job-portal-flax-omega.vercel.app/jobs)** |
+| 🏢 **Recruiter Headquarters** | **Production** | **[https://job-portal-flax-omega.vercel.app/admin/dashboard](https://job-portal-flax-omega.vercel.app/admin/dashboard)** |
+| 🎓 **Interview Prep Hub** | **Production** | **[https://job-portal-flax-omega.vercel.app/interview-prep](https://job-portal-flax-omega.vercel.app/interview-prep)** |
 
 ---
 
