@@ -1,21 +1,43 @@
 import React from "react";
+import { AlertCircle, RefreshCw, Home } from "lucide-react";
 
+/**
+ * Class-based React ErrorBoundary.
+ * Wraps the entire app in main.jsx.
+ * Catches any runtime render/lifecycle errors NOT caught by react-router's errorElement.
+ * Shows a clean, user-friendly fallback UI.
+ * Never exposes stack traces or bundle internals to end users.
+ */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, errorId: null };
   }
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+  static getDerivedStateFromError() {
+    return { hasError: true, errorId: Date.now().toString(36) };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.error("ErrorBoundary caught an unhandled error:", error, errorInfo);
+  componentDidCatch(error, info) {
+    // Safe logging: full details in dev, minimal in prod
+    if (typeof import.meta !== "undefined" && import.meta.env?.DEV) {
+      console.error("[ErrorBoundary] Caught error:", error);
+      console.error("[ErrorBoundary] Component stack:", info?.componentStack);
+    } else {
+      // Production: never log stack traces that reveal bundle internals
+      console.error(
+        "[ErrorBoundary] Runtime error caught | Message:",
+        error?.message ?? "unknown"
+      );
+    }
   }
 
-  handleReset = () => {
-    this.setState({ hasError: false, error: null });
+  handleRetry = () => {
+    this.setState({ hasError: false, errorId: null });
+  };
+
+  handleGoHome = () => {
+    this.setState({ hasError: false, errorId: null });
     window.location.href = "/";
   };
 
@@ -23,28 +45,35 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white rounded-2xl border border-slate-200 p-8 shadow-sm text-center">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-              !
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 max-w-md w-full shadow-lg text-center">
+            {/* Icon */}
+            <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-5 border border-rose-100">
+              <AlertCircle size={32} />
             </div>
+
             <h1 className="text-xl font-bold text-slate-900 mb-2">
               Something went wrong
             </h1>
-            <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-              We encountered an unexpected error while rendering this page. You can try refreshing or return to your workspace.
+            <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+              An unexpected error occurred. Please try again or return to the
+              home page.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+
+            <div className="flex flex-col gap-2.5">
+              {/* Try Again — resets error state without a full reload */}
               <button
-                onClick={() => window.location.reload()}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+                onClick={this.handleRetry}
+                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
               >
-                Refresh Page
+                <RefreshCw size={15} /> Try Again
               </button>
+
+              {/* Go Home */}
               <button
-                onClick={this.handleReset}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-semibold border border-slate-200 hover:bg-slate-50 text-slate-700 transition"
+                onClick={this.handleGoHome}
+                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold border border-slate-200 text-slate-700 hover:bg-slate-50 transition"
               >
-                Back to Home
+                <Home size={15} /> Go to Home
               </button>
             </div>
           </div>

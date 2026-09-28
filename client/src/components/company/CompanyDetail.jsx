@@ -16,15 +16,7 @@ import {
 import TrustBadge from "../TrustBadge";
 import Job from "../Job";
 import { Button } from "../ui/button";
-
-const normalizeUrl = (url) => {
-  if (!url || typeof url !== "string") return "#";
-  const trimmed = url.trim();
-  if (!trimmed) return "#";
-  return trimmed.startsWith("http://") || trimmed.startsWith("https://")
-    ? trimmed
-    : `https://${trimmed}`;
-};
+import { normalizeUrl, getValidImageUrl } from "@/utils/formatters";
 
 const CompanyDetail = () => {
   const { id } = useParams();
@@ -80,23 +72,23 @@ const CompanyDetail = () => {
           <div className="flex flex-col sm:flex-row items-start justify-between gap-6">
             <div className="flex items-start gap-4">
               <img
-                src={company.logo || "/logo.png"}
-                alt={company.name}
+                src={getValidImageUrl(company?.logo, "/logo.png")}
+                alt={company?.name || "Company"}
                 className="w-20 h-20 rounded-2xl border border-slate-200 object-cover bg-white p-1 shrink-0"
               />
               <div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  {company.name}
+                  {company?.name || "Company"}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2.5 mt-2">
                   <span className="flex items-center gap-1 text-xs text-slate-500 font-medium">
                     <MapPin size={13} className="text-slate-400" />
-                    {company.location || "India"}
+                    {company?.location || "India"}
                   </span>
-                  {company.trustLevel && (
+                  {company?.trustLevel && (
                     <TrustBadge trustLevel={company.trustLevel} />
                   )}
-                  {company.trustScore > 0 && (
+                  {company?.trustScore > 0 && (
                     <span className="inline-flex items-center gap-1 text-xs text-amber-600 font-bold">
                       <Star size={12} fill="currentColor" />
                       {company.trustScore} / 100 Trust Score
@@ -106,7 +98,7 @@ const CompanyDetail = () => {
               </div>
             </div>
 
-            {typeof company.website === "string" && company.website.trim().length > 0 && (
+            {normalizeUrl(company?.website) !== "#" && (
               <a
                 href={normalizeUrl(company.website)}
                 target="_blank"

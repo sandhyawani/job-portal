@@ -10,6 +10,7 @@ import { toggleSavedJobInState } from "@/redux/jobSlice";
 import { toast } from "sonner";
 import { calculateJobMatch } from "@/utils/jobMatcher";
 import TrustBadge from "./TrustBadge";
+import { formatSalary, getValidImageUrl } from "@/utils/formatters";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
@@ -133,7 +134,7 @@ const Job = ({ job }) => {
         <div className="flex items-start gap-3.5 mb-3">
           <Avatar className="h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 shrink-0">
             <AvatarImage
-              src={company?.logo || "/logo.png"}
+              src={getValidImageUrl(company?.logo, "/logo.png")}
               alt={company?.name || "Company"}
               className="object-cover"
             />
@@ -175,7 +176,7 @@ const Job = ({ job }) => {
         {/* Meta badges: Salary & Experience & Type */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3 text-xs">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 font-semibold">
-            ₹{typeof job?.salary === "number" ? `${job.salary} LPA` : job?.salary}
+            {formatSalary(job?.salary)}
           </span>
           <span className="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-medium">
             {job?.experienceLevel || "Any Experience"}

@@ -2,15 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Building2, ExternalLink } from "lucide-react";
 import TrustBadge from "../TrustBadge";
-
-const normalizeUrl = (url) => {
-  if (!url || typeof url !== "string") return "#";
-  const trimmed = url.trim();
-  if (!trimmed) return "#";
-  return trimmed.startsWith("http://") || trimmed.startsWith("https://")
-    ? trimmed
-    : `https://${trimmed}`;
-};
+import { normalizeUrl, getValidImageUrl, formatDate } from "@/utils/formatters";
 
 const JobSidebar = ({ company, singleJob, workMode }) => {
   return (
@@ -23,28 +15,28 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
 
           <div className="flex items-center gap-3 mb-4">
             <img
-              src={company.logo || "/logo.png"}
-              alt={company.name}
+              src={getValidImageUrl(company?.logo, "/logo.png")}
+              alt={company?.name || "Company"}
               className="w-12 h-12 rounded-xl border border-slate-200 object-cover"
             />
             <div>
               <h4 className="font-bold text-slate-900 text-sm">
-                {company.name}
+                {company?.name || "Company"}
               </h4>
               <span className="text-xs text-slate-500">
-                {company.location || "India"}
+                {company?.location || "India"}
               </span>
             </div>
           </div>
 
-          {company.description && (
+          {company?.description && (
             <p className="text-xs text-slate-600 leading-relaxed mb-4">
               {company.description}
             </p>
           )}
 
           <div className="space-y-2.5 pt-3 border-t border-slate-100 text-xs">
-            {typeof company.website === "string" && company.website.trim().length > 0 && (
+            {normalizeUrl(company?.website) !== "#" && (
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Website</span>
                 <a
@@ -114,11 +106,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
           <div className="flex items-center justify-between">
             <span className="text-slate-500">Posted</span>
             <span className="font-semibold text-slate-800">
-              {typeof singleJob.createdAt === "string"
-                ? singleJob.createdAt.split("T")[0]
-                : singleJob.createdAt
-                ? new Date(singleJob.createdAt).toLocaleDateString()
-                : "Recently"}
+              {formatDate(singleJob?.createdAt)}
             </span>
           </div>
         </div>

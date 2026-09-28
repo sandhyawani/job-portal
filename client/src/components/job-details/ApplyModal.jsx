@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../ui/dialog";
+import { formatSalary } from "@/utils/formatters";
 
 const ApplyModal = ({
   open,
@@ -41,7 +42,7 @@ const ApplyModal = ({
             </span>
             <h4 className="text-sm font-bold text-slate-900">{singleJob?.title}</h4>
             <p className="text-slate-600 mt-0.5">
-              {company?.name} · {singleJob?.location} · ₹{singleJob?.salary} LPA
+              {company?.name} · {singleJob?.location} · {formatSalary(singleJob?.salary)}
             </p>
           </div>
 

@@ -9,6 +9,7 @@ import {
   Star,
 } from "lucide-react";
 import TrustBadge from "../TrustBadge";
+import { formatSalary, getValidImageUrl } from "@/utils/formatters";
 
 const JobHeader = ({
   singleJob,
@@ -39,7 +40,7 @@ const JobHeader = ({
           {/* Job Title & Meta */}
           <div className="flex items-start gap-4">
             <img
-              src={company?.logo || "/logo.png"}
+              src={getValidImageUrl(company?.logo, "/logo.png")}
               alt={company?.name || "Company"}
               className="w-16 h-16 rounded-2xl border border-slate-200 bg-white object-cover shrink-0 p-1"
             />
@@ -87,7 +88,7 @@ const JobHeader = ({
                 </span>
                 <span className="text-slate-300">·</span>
                 <span className="font-semibold text-slate-800">
-                  ₹{singleJob.salary} LPA
+                  {formatSalary(singleJob.salary)}
                 </span>
               </div>
             </div>
