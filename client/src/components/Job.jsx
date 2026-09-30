@@ -132,33 +132,13 @@ const Job = ({ job }) => {
 
         {/* Company & Role Details */}
         <div className="flex items-start gap-3.5 mb-3">
-          {/* <Avatar className="h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 shrink-0">
+          <Avatar className="h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 shrink-0">
             <AvatarImage
               src={getValidImageUrl(company?.logo, "/logo.png")}
               alt={company?.name || "Company"}
               className="object-cover"
             />
-          </Avatar> */}
-
-          <Avatar className="h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 shrink-0">
-  <AvatarImage
-    src={getValidImageUrl(company?.logo, "")}
-    alt={company?.name || "Company"}
-    className="object-cover"
-  />
-
-  <AvatarFallback className="rounded-xl bg-teal-50 text-sm font-bold text-teal-600">
-    {company?.name
-      ? company.name
-          .split(" ")
-          .filter(Boolean)
-          .slice(0, 2)
-          .map((word) => word[0])
-          .join("")
-          .toUpperCase()
-      : "CO"}
-  </AvatarFallback>
-</Avatar>
+          </Avatar>
 
           <div className="flex-1 min-w-0">
             <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition line-clamp-1 leading-snug">
