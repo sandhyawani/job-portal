@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import Login from "./components/auth/Login";
+import AdminLogin from "./components/auth/AdminLogin";
 import Signup from "./components/auth/Signup";
 import Home from "./components/Home";
 import Jobs from "./components/Jobs";
@@ -37,6 +38,11 @@ const appRouter = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin/login",
+    element: <AdminLogin />,
     errorElement: <RouteErrorBoundary />,
   },
   {
