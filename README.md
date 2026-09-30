@@ -87,8 +87,8 @@ Real-time operations dashboard tracking active openings, unreviewed applicants, 
 #### 🎯 Multi-Stage Candidate Pipeline
 Review candidate resumes, change candidate stages, write internal recruiter notes, and schedule interview dates.
 
-#### 🏛️ Verified Company Profiles
-Register companies, configure branding, upload corporate logos, and publish verified public company profiles.
+#### 🏛️ Verified Company Trust Scores
+A unique algorithm that calculates a **Trust Score (0-100)** for every registered company based on their official email domains, GST/Registration numbers, and web presence. Companies receive visual Trust Badges (🟢 High, 🟡 Medium, 🔴 Low) which are displayed to candidates on job postings, actively warning students about potentially unreliable employers.
 
 #### 🔒 Strict Role-Based Access Control (RBAC)
 Complete isolation between student and recruiter endpoints. Recruiters can only access and modify their own companies, jobs, and candidate pools.

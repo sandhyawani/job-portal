@@ -60,19 +60,10 @@ app.use("/api/", generalLimiter);
 app.use("/api/v1/user/login", authLimiter);
 app.use("/api/v1/user/register", authLimiter);
 
-const defaultAllowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "http://localhost:3000",
-  "https://job-portal-flax-omega.vercel.app",
-];
-
-const envOrigins = (process.env.CORS_ORIGINS || "")
+const allowedOrigins = (process.env.CORS_ORIGINS || "")
   .split(",")
   .map((origin) => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
-
-const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
 
 const corsOptions = {
   origin: (origin, callback) => {

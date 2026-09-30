@@ -134,10 +134,13 @@ const Job = ({ job }) => {
         <div className="flex items-start gap-3.5 mb-3">
           <Avatar className="h-11 w-11 rounded-xl border border-slate-200 bg-slate-50 shrink-0">
             <AvatarImage
-              src={getValidImageUrl(company?.logo, "/logo.png")}
+              src={company?.logo}
               alt={company?.name || "Company"}
               className="object-cover"
             />
+            <AvatarFallback className="bg-teal-600 text-white font-bold uppercase text-lg">
+              {company?.name?.charAt(0) || "C"}
+            </AvatarFallback>
           </Avatar>
 
           <div className="flex-1 min-w-0">

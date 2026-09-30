@@ -58,7 +58,8 @@ const CompaniesTable = () => {
               >
                 <TableCell className="p-3.5">
                   <Avatar className="h-9 w-9 rounded-xl border object-cover">
-                    <AvatarImage src={company.logo || "/logo.png"} alt={company.name} />
+                    <AvatarImage src={company.logo} alt={company.name} />
+                    <AvatarFallback className="bg-teal-600 text-white font-bold uppercase">{company.name?.charAt(0) || "C"}</AvatarFallback>
                   </Avatar>
                 </TableCell>
 
