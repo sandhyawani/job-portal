@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import {
   LogOut,
   User2,
@@ -217,9 +217,12 @@ const Navbar = () => {
                 <button className="flex items-center gap-2 p-1 rounded-full ring-2 ring-transparent hover:ring-indigo-100 transition focus:outline-none">
                   <Avatar className="h-9 w-9 border border-slate-200">
                     <AvatarImage
-                      src={user?.profile?.profilePhoto || "/default-avatar.png"}
+                      src={user?.profile?.profilePhoto}
                       alt={user?.fullname || "User"}
                     />
+                    <AvatarFallback className="bg-indigo-600 text-white font-bold text-sm uppercase">
+                      {user?.fullname?.charAt(0) || "U"}
+                    </AvatarFallback>
                   </Avatar>
                 </button>
               </PopoverTrigger>
@@ -227,9 +230,12 @@ const Navbar = () => {
                 <div className="flex items-center gap-3 p-2 border-b border-slate-100 pb-3">
                   <Avatar className="h-10 w-10 border">
                     <AvatarImage
-                      src={user?.profile?.profilePhoto || "/default-avatar.png"}
+                      src={user?.profile?.profilePhoto}
                       alt={user?.fullname}
                     />
+                    <AvatarFallback className="bg-indigo-600 text-white font-bold uppercase">
+                      {user?.fullname?.charAt(0) || "U"}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold text-sm text-slate-900 truncate">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "./shared/Navbar";
 import MobileBottomNav from "./shared/MobileBottomNav";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
   Contact,
@@ -46,10 +46,13 @@ const Profile = () => {
             <div className="flex items-center gap-5">
               <Avatar className="h-24 w-24 rounded-2xl border-2 border-slate-200 shadow-xs">
                 <AvatarImage
-                  src={profile?.profilePhoto || "/default-avatar.png"}
+                  src={profile?.profilePhoto}
                   alt={user?.fullname || "Profile"}
                   className="object-cover"
                 />
+                <AvatarFallback className="bg-indigo-600 text-white font-bold text-4xl uppercase">
+                  {user?.fullname?.charAt(0) || "U"}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <h1 className="text-2xl font-black text-slate-900 tracking-tight">
