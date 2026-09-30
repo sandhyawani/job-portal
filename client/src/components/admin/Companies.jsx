@@ -28,7 +28,7 @@ const Companies = () => {
       <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-2">
               <Building2 size={14} /> Organization Management
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -41,7 +41,7 @@ const Companies = () => {
 
           <Button
             onClick={() => navigate("/admin/companies/create")}
-            className="rounded-xl px-4 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
+            className="rounded-xl px-4 py-2 text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
           >
             <Plus size={16} /> Register Company
           </Button>

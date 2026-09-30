@@ -138,7 +138,7 @@ const Job = ({ job }) => {
               alt={company?.name || "Company"}
               className="object-cover"
             />
-            <AvatarFallback className="bg-teal-600 text-white font-bold uppercase text-lg">
+            <AvatarFallback className="bg-primary-600 text-white font-bold uppercase text-lg">
               {company?.name?.charAt(0) || "C"}
             </AvatarFallback>
           </Avatar>

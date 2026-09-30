@@ -106,7 +106,7 @@ const CandidateDashboard = () => {
           detail: `At ${firstSaved.company?.name || "Company"}. Submit before the position fills.`,
           link: `/description/${firstSaved._id}`,
           badge: "Saved Job",
-          color: "teal",
+          color: "primary",
         });
       }
     }
@@ -126,7 +126,7 @@ const CandidateDashboard = () => {
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-3">
                 <Sparkles size={13} />
                 Your Job Search Workspace
               </div>
@@ -142,17 +142,17 @@ const CandidateDashboard = () => {
             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 min-w-[240px]">
               <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-2">
                 <span>Profile Completion</span>
-                <span className="text-teal-600">{profileScore}%</span>
+                <span className="text-primary-600">{profileScore}%</span>
               </div>
               <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                 <div
-                  className="bg-teal-600 h-full rounded-full transition-all duration-500"
+                  className="bg-primary-600 h-full rounded-full transition-all duration-500"
                   style={{ width: `${profileScore}%` }}
                 />
               </div>
               <button
                 onClick={() => setUpdateOpen(true)}
-                className="text-[11px] font-semibold text-teal-600 hover:text-teal-800 mt-2 block"
+                className="text-[11px] font-semibold text-primary-600 hover:text-primary-800 mt-2 block"
               >
                 {profileScore < 100 ? "Complete missing items →" : "Edit profile →"}
               </button>
@@ -165,7 +165,7 @@ const CandidateDashboard = () => {
               to="/applications"
               className="p-3.5 rounded-2xl bg-slate-50/70 hover:bg-slate-100/70 border border-slate-100 transition group"
             >
-              <div className="flex items-center justify-between text-slate-400 group-hover:text-teal-600 mb-1">
+              <div className="flex items-center justify-between text-slate-400 group-hover:text-primary-600 mb-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Applications
                 </span>
@@ -180,7 +180,7 @@ const CandidateDashboard = () => {
               to="/pipeline"
               className="p-3.5 rounded-2xl bg-slate-50/70 hover:bg-slate-100/70 border border-slate-100 transition group"
             >
-              <div className="flex items-center justify-between text-slate-400 group-hover:text-teal-600 mb-1">
+              <div className="flex items-center justify-between text-slate-400 group-hover:text-primary-600 mb-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Saved Jobs
                 </span>
@@ -252,7 +252,7 @@ const CandidateDashboard = () => {
                 </div>
                 <Button
                   type="submit"
-                  className="rounded-xl px-5 text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white"
+                  className="rounded-xl px-5 text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white"
                 >
                   Search Jobs
                 </Button>
@@ -267,7 +267,7 @@ const CandidateDashboard = () => {
                 </h2>
                 <Link
                   to="/applications"
-                  className="text-xs font-semibold text-teal-600 hover:text-teal-800"
+                  className="text-xs font-semibold text-primary-600 hover:text-primary-800"
                 >
                   View all →
                 </Link>
@@ -286,7 +286,7 @@ const CandidateDashboard = () => {
                   {attentionItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 transition flex items-center justify-between gap-4 bg-white"
+                      className="p-4 rounded-2xl border border-slate-200 hover:border-primary-300 transition flex items-center justify-between gap-4 bg-white"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0 mt-0.5">
@@ -332,7 +332,7 @@ const CandidateDashboard = () => {
                 </div>
                 <Link
                   to="/jobs"
-                  className="text-xs font-semibold text-teal-600 hover:text-teal-800"
+                  className="text-xs font-semibold text-primary-600 hover:text-primary-800"
                 >
                   See all jobs →
                 </Link>
@@ -354,7 +354,7 @@ const CandidateDashboard = () => {
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
                   Profile Improvement
                 </h3>
-                <span className="text-xs font-extrabold text-teal-600">
+                <span className="text-xs font-extrabold text-primary-600">
                   {profileScore}%
                 </span>
               </div>
@@ -383,15 +383,15 @@ const CandidateDashboard = () => {
 
               <Button
                 onClick={() => setUpdateOpen(true)}
-                className="w-full mt-5 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white"
+                className="w-full mt-5 rounded-xl text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white"
               >
                 Complete Profile
               </Button>
             </div>
 
             {/* Quick Practice shortcut */}
-            <div className="bg-gradient-to-br from-teal-50 to-purple-50 rounded-3xl border border-teal-100 p-6 shadow-xs">
-              <div className="w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center mb-3">
+            <div className="bg-gradient-to-br from-primary-50 to-purple-50 rounded-3xl border border-primary-100 p-6 shadow-xs">
+              <div className="w-10 h-10 rounded-2xl bg-primary-600 text-white flex items-center justify-center mb-3">
                 <GraduationCap size={20} />
               </div>
               <h3 className="text-sm font-bold text-slate-900">
@@ -403,7 +403,7 @@ const CandidateDashboard = () => {
               <Link to="/interview-prep">
                 <Button
                   variant="outline"
-                  className="w-full rounded-xl text-xs font-semibold border-teal-200 text-teal-700 hover:bg-teal-100"
+                  className="w-full rounded-xl text-xs font-semibold border-primary-200 text-primary-700 hover:bg-primary-100"
                 >
                   Start Practice →
                 </Button>

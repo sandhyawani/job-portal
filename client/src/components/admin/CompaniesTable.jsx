@@ -59,14 +59,14 @@ const CompaniesTable = () => {
                 <TableCell className="p-3.5">
                   <Avatar className="h-9 w-9 rounded-xl border object-cover">
                     <AvatarImage src={company.logo} alt={company.name} />
-                    <AvatarFallback className="bg-teal-600 text-white font-bold uppercase">{company.name?.charAt(0) || "C"}</AvatarFallback>
+                    <AvatarFallback className="bg-primary-600 text-white font-bold uppercase">{company.name?.charAt(0) || "C"}</AvatarFallback>
                   </Avatar>
                 </TableCell>
 
                 <TableCell className="p-3.5 font-bold text-slate-900">
                   <Link
                     to={`/company/${company._id}`}
-                    className="hover:text-teal-600 transition"
+                    className="hover:text-primary-600 transition"
                   >
                     {company.name}
                   </Link>
@@ -97,7 +97,7 @@ const CompaniesTable = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-8 px-2.5 text-xs font-semibold text-teal-600"
+                        className="h-8 px-2.5 text-xs font-semibold text-primary-600"
                       >
                         Edit Profile
                       </Button>

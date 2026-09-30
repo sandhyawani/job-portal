@@ -49,7 +49,7 @@ const Browse = () => {
             <Button
               type="submit"
               size="sm"
-              className="rounded-xl text-xs font-semibold bg-teal-600 text-white h-7 px-3"
+              className="rounded-xl text-xs font-semibold bg-primary-600 text-white h-7 px-3"
             >
               Search
             </Button>

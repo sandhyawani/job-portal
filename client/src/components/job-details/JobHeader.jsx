@@ -29,7 +29,7 @@ const JobHeader = ({
       {/* Back Link */}
       <button
         onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-teal-600 mb-4 transition cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-primary-600 mb-4 transition cursor-pointer"
       >
         <ArrowLeft size={14} /> Back to jobs
       </button>
@@ -76,7 +76,7 @@ const JobHeader = ({
                     workMode === "Remote"
                       ? "text-emerald-700"
                       : workMode === "Hybrid"
-                      ? "text-teal-700"
+                      ? "text-primary-700"
                       : "text-slate-700"
                   }`}
                 >
@@ -113,7 +113,7 @@ const JobHeader = ({
                 <Bookmark
                   size={16}
                   className={`mr-1.5 ${
-                    isSaved ? "fill-teal-600 text-teal-600" : ""
+                    isSaved ? "fill-primary-600 text-primary-600" : ""
                   }`}
                 />
                 {isSaved ? "Saved" : "Save Job"}
@@ -125,7 +125,7 @@ const JobHeader = ({
                 className={`rounded-xl text-xs font-bold px-6 h-11 transition shadow-xs ${
                   isApplied
                     ? "bg-emerald-600 hover:bg-emerald-700 text-white cursor-default"
-                    : "bg-teal-600 hover:bg-teal-700 text-white"
+                    : "bg-primary-600 hover:bg-primary-700 text-white"
                 }`}
               >
                 {isApplied ? (

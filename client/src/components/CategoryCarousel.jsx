@@ -32,7 +32,7 @@ const CategoryCarousel = () => {
     <div className="relative w-full py-10 bg-slate-50 border-y border-slate-200/80">
       <div className="text-center mb-6">
         <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-          Explore by <span className="text-teal-600">Specialization</span>
+          Explore by <span className="text-primary-600">Specialization</span>
         </h2>
         <p className="text-xs text-slate-500 mt-0.5">
           Select a domain to filter open opportunities
@@ -49,7 +49,7 @@ const CategoryCarousel = () => {
               <Button
                 variant="outline"
                 onClick={() => searchJobHandler(cat)}
-                className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-teal-400 hover:text-teal-600 hover:bg-teal-50/50 shadow-2xs transition"
+                className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:border-primary-400 hover:text-primary-600 hover:bg-primary-50/50 shadow-2xs transition"
               >
                 {cat}
               </Button>
@@ -57,8 +57,8 @@ const CategoryCarousel = () => {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="hidden sm:flex -left-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-teal-600 hover:bg-slate-50 shadow-xs" />
-        <CarouselNext className="hidden sm:flex -right-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-teal-600 hover:bg-slate-50 shadow-xs" />
+        <CarouselPrevious className="hidden sm:flex -left-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-primary-600 hover:bg-slate-50 shadow-xs" />
+        <CarouselNext className="hidden sm:flex -right-4 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-600 hover:text-primary-600 hover:bg-slate-50 shadow-xs" />
       </Carousel>
     </div>
   );

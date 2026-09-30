@@ -127,13 +127,13 @@ const Login = () => {
 
             {/* Button */}
             {loading ? (
-              <Button className="w-full h-11 rounded-xl bg-teal-600 text-white font-semibold" disabled>
+              <Button className="w-full h-11 rounded-xl bg-primary-600 text-white font-semibold" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
               </Button>
             ) : (
               <Button
                 type="submit"
-                className="w-full h-11 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-semibold shadow-xs transition"
+                className="w-full h-11 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-xs transition"
               >
                 Sign In
               </Button>
@@ -141,7 +141,7 @@ const Login = () => {
 
             <p className="text-xs text-center text-slate-500 mt-4">
               Don&apos;t have an account?{" "}
-              <Link to="/signup" className="text-teal-600 font-semibold hover:underline">
+              <Link to="/signup" className="text-primary-600 font-semibold hover:underline">
                 Sign up
               </Link>
             </p>

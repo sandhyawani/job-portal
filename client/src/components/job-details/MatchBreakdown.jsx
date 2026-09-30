@@ -9,7 +9,7 @@ const MatchBreakdown = ({ match }) => {
     <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs mb-6">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
+          <div className="w-8 h-8 rounded-lg bg-primary-50 text-primary-600 flex items-center justify-center font-bold">
             <Sparkles size={16} />
           </div>
           <div>
@@ -22,7 +22,7 @@ const MatchBreakdown = ({ match }) => {
           </div>
         </div>
         <div className="text-right">
-          <span className="text-xl font-extrabold text-teal-600">
+          <span className="text-xl font-extrabold text-primary-600">
             {match.score}%
           </span>
           <span className="text-xs text-slate-400 block font-medium">Match</span>
@@ -78,7 +78,7 @@ const MatchBreakdown = ({ match }) => {
           <span>Want to improve your match score?</span>
           <Link
             to="/profile"
-            className="font-semibold text-teal-600 hover:text-teal-800"
+            className="font-semibold text-primary-600 hover:text-primary-800"
           >
             Update your profile skills →
           </Link>

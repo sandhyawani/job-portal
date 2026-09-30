@@ -60,7 +60,7 @@ const ApplicationTracker = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              <CheckCircle2 className="text-teal-600" size={28} />
+              <CheckCircle2 className="text-primary-600" size={28} />
               Application Tracker
             </h1>
             <p className="text-sm text-slate-500 mt-1">
@@ -76,7 +76,7 @@ const ApplicationTracker = () => {
                 onClick={() => setFilterStatus(s)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition whitespace-nowrap cursor-pointer ${
                   filterStatus === s
-                    ? "bg-teal-600 text-white shadow-2xs"
+                    ? "bg-primary-600 text-white shadow-2xs"
                     : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"
                 }`}
               >
@@ -97,7 +97,7 @@ const ApplicationTracker = () => {
               You haven't submitted any applications matching this filter yet.
             </p>
             <Link to="/jobs">
-              <Button className="mt-4 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white">
+              <Button className="mt-4 rounded-xl text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white">
                 Find Opportunities
               </Button>
             </Link>
@@ -124,7 +124,7 @@ const ApplicationTracker = () => {
                       <div>
                         <Link
                           to={`/description/${app.job?._id}`}
-                          className="text-base font-bold text-slate-900 hover:text-teal-600 transition"
+                          className="text-base font-bold text-slate-900 hover:text-primary-600 transition"
                         >
                           {app.job?.title}
                         </Link>
@@ -151,7 +151,7 @@ const ApplicationTracker = () => {
                             ? "bg-amber-50 text-amber-800 border border-amber-200"
                             : app.status === "shortlisted" || app.status === "accepted"
                             ? "bg-purple-50 text-purple-800 border border-purple-200"
-                            : "bg-teal-50 text-teal-800 border border-teal-200"
+                            : "bg-primary-50 text-primary-800 border border-primary-200"
                         }`}
                       >
                         {isRejected ? "Rejected" : app.status}
@@ -188,7 +188,7 @@ const ApplicationTracker = () => {
                                 key={stage.key}
                                 className={`flex flex-col items-center text-center p-2 rounded-xl transition ${
                                   isCurrent
-                                    ? "bg-teal-50 border border-teal-200"
+                                    ? "bg-primary-50 border border-primary-200"
                                     : isCompleted
                                     ? "bg-slate-50"
                                     : "opacity-40"
@@ -199,7 +199,7 @@ const ApplicationTracker = () => {
                                     isCompleted
                                       ? "bg-emerald-500 text-white"
                                       : isCurrent
-                                      ? "bg-teal-600 text-white ring-4 ring-teal-100"
+                                      ? "bg-primary-600 text-white ring-4 ring-primary-100"
                                       : "bg-slate-200 text-slate-500"
                                   }`}
                                 >
@@ -208,7 +208,7 @@ const ApplicationTracker = () => {
                                 <span
                                   className={`text-[11px] font-semibold tracking-tight ${
                                     isCurrent
-                                      ? "text-teal-900"
+                                      ? "text-primary-900"
                                       : isCompleted
                                       ? "text-slate-800"
                                       : "text-slate-400"
@@ -261,7 +261,7 @@ const ApplicationTracker = () => {
                           to={`/interview-prep?role=${encodeURIComponent(
                             app.job?.title || ""
                           )}`}
-                          className="px-3 py-1.5 rounded-xl font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 flex items-center gap-1.5 transition"
+                          className="px-3 py-1.5 rounded-xl font-semibold bg-primary-50 text-primary-700 hover:bg-primary-100 flex items-center gap-1.5 transition"
                         >
                           <GraduationCap size={14} /> Practice for Interview
                         </Link>
@@ -270,7 +270,7 @@ const ApplicationTracker = () => {
                       {isRejected && (
                         <Link
                           to={`/jobs?keyword=${encodeURIComponent(app.job?.title || "")}`}
-                          className="px-3 py-1.5 rounded-xl font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 flex items-center gap-1.5 transition"
+                          className="px-3 py-1.5 rounded-xl font-semibold bg-primary-50 text-primary-700 hover:bg-primary-100 flex items-center gap-1.5 transition"
                         >
                           Find Similar Roles →
                         </Link>

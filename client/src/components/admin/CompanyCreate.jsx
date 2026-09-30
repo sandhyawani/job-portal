@@ -67,7 +67,7 @@ const CompanyCreate = () => {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="e.g. JobHunt, Microsoft"
-              className="mt-2 rounded-xl border-gray-300 focus:ring-2 focus:ring-teal-400 transition"
+              className="mt-2 rounded-xl border-gray-300 focus:ring-2 focus:ring-primary-400 transition"
             />
           </div>
 
@@ -83,7 +83,7 @@ const CompanyCreate = () => {
             <Button
               disabled={loading || !companyName.trim()}
               onClick={registerNewCompany}
-              className="rounded-xl px-6 font-semibold text-white bg-teal-600 hover:bg-teal-700 shadow-xs transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-xl px-6 font-semibold text-white bg-primary-600 hover:bg-primary-700 shadow-xs transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Creating..." : "Continue"}
             </Button>

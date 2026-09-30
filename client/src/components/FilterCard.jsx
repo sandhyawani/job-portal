@@ -64,7 +64,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
           variant="ghost"
           size="sm"
           onClick={handleReset}
-          className="text-xs text-slate-500 hover:text-teal-600 flex items-center gap-1 h-8 px-2"
+          className="text-xs text-slate-500 hover:text-primary-600 flex items-center gap-1 h-8 px-2"
         >
           <RotateCcw size={13} /> Reset
         </Button>
@@ -83,7 +83,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
               onClick={() => handleFilterChange("workMode", mode)}
               className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition ${
                 filters.workMode === mode
-                  ? "bg-teal-50 border-teal-600 text-teal-700 font-semibold"
+                  ? "bg-primary-50 border-primary-600 text-primary-700 font-semibold"
                   : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
               }`}
             >
@@ -101,7 +101,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
         <select
           value={filters.location || "All"}
           onChange={(e) => handleFilterChange("location", e.target.value)}
-          className="w-full text-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
+          className="w-full text-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-600"
         >
           {LOCATIONS.map((loc) => (
             <option key={loc} value={loc}>
@@ -128,7 +128,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
                 value={exp}
                 checked={filters.experience === exp}
                 onChange={() => handleFilterChange("experience", exp)}
-                className="text-teal-600 focus:ring-teal-500 rounded-full"
+                className="text-primary-600 focus:ring-primary-500 rounded-full"
               />
               <span>{exp}</span>
             </label>
@@ -153,7 +153,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
                 value={type}
                 checked={filters.jobType === type}
                 onChange={() => handleFilterChange("jobType", type)}
-                className="text-teal-600 focus:ring-teal-500 rounded-full"
+                className="text-primary-600 focus:ring-primary-500 rounded-full"
               />
               <span>{type}</span>
             </label>
@@ -201,7 +201,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
                 value={opt.value}
                 checked={(filters.datePosted || "all") === opt.value}
                 onChange={() => handleFilterChange("datePosted", opt.value)}
-                className="text-teal-600 focus:ring-teal-500 rounded-full"
+                className="text-primary-600 focus:ring-primary-500 rounded-full"
               />
               <span>{opt.label}</span>
             </label>
@@ -212,7 +212,7 @@ const FilterCard = ({ onApplyMobileFilter }) => {
       {onApplyMobileFilter && (
         <Button
           onClick={onApplyMobileFilter}
-          className="w-full bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold py-2.5 mt-2"
+          className="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-semibold py-2.5 mt-2"
         >
           Apply Filters
         </Button>

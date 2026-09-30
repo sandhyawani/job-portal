@@ -80,7 +80,7 @@ const Applicants = () => {
       <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
         <Link
           to="/admin/jobs"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-teal-600 mb-4 transition"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-primary-600 mb-4 transition"
         >
           <ArrowLeft size={14} /> Back to Posted Jobs
         </Link>
@@ -89,7 +89,7 @@ const Applicants = () => {
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-2">
                 <Users size={14} /> Candidate Pipeline
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -116,7 +116,7 @@ const Applicants = () => {
               onClick={() => setStatusFilter("pending")}
               className={`p-3 rounded-2xl border text-left transition ${
                 statusFilter === "pending"
-                  ? "bg-teal-50 border-teal-200 font-bold"
+                  ? "bg-primary-50 border-primary-200 font-bold"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
@@ -130,7 +130,7 @@ const Applicants = () => {
               onClick={() => setStatusFilter("review")}
               className={`p-3 rounded-2xl border text-left transition ${
                 statusFilter === "review"
-                  ? "bg-teal-50 border-teal-200 font-bold"
+                  ? "bg-primary-50 border-primary-200 font-bold"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
@@ -144,7 +144,7 @@ const Applicants = () => {
               onClick={() => setStatusFilter("shortlisted")}
               className={`p-3 rounded-2xl border text-left transition ${
                 statusFilter === "shortlisted"
-                  ? "bg-teal-50 border-teal-200 font-bold"
+                  ? "bg-primary-50 border-primary-200 font-bold"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
@@ -160,7 +160,7 @@ const Applicants = () => {
               onClick={() => setStatusFilter("interview")}
               className={`p-3 rounded-2xl border text-left transition ${
                 statusFilter === "interview"
-                  ? "bg-teal-50 border-teal-200 font-bold"
+                  ? "bg-primary-50 border-primary-200 font-bold"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
@@ -174,7 +174,7 @@ const Applicants = () => {
               onClick={() => setStatusFilter("all")}
               className={`p-3 rounded-2xl border text-left transition ${
                 statusFilter === "all"
-                  ? "bg-teal-50 border-teal-200 font-bold"
+                  ? "bg-primary-50 border-primary-200 font-bold"
                   : "bg-slate-50 border-slate-100"
               }`}
             >
@@ -222,7 +222,7 @@ const Applicants = () => {
         {/* Applicants Table */}
         {loading && !applicants ? (
           <div className="py-12 flex items-center justify-center">
-            <div className="w-7 h-7 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
+            <div className="w-7 h-7 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
           <ApplicantsTable

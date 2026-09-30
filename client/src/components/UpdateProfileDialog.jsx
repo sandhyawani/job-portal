@@ -174,7 +174,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               placeholder="Brief summary of your professional expertise and career interests..."
               value={input.bio}
               onChange={changeEventHandler}
-              className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-teal-500/20"
+              className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-primary-500/20"
             />
           </div>
 
@@ -282,7 +282,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
               type="file"
               accept=".pdf,.doc,.docx"
               onChange={fileChangeHandler}
-              className="mt-1 text-xs rounded-xl file:mr-3 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+              className="mt-1 text-xs rounded-xl file:mr-3 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
             />
           </div>
 
@@ -298,7 +298,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             <Button
               type="submit"
               disabled={loading}
-              className="rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white min-w-[120px]"
+              className="rounded-xl text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white min-w-[120px]"
             >
               {loading ? (
                 <>

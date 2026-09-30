@@ -27,7 +27,7 @@ const PipelineBoard = ({
           <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
             Saved ({savedJobs.length})
           </span>
-          <Bookmark size={14} className="text-teal-600" />
+          <Bookmark size={14} className="text-primary-600" />
         </div>
         <div className="space-y-3 max-h-[600px] overflow-y-auto">
           {savedJobs.length === 0 ? (
@@ -35,7 +35,7 @@ const PipelineBoard = ({
               <p className="text-xs text-slate-400">No saved jobs yet</p>
               <Link
                 to="/jobs"
-                className="text-xs text-teal-600 font-semibold mt-1 inline-block"
+                className="text-xs text-primary-600 font-semibold mt-1 inline-block"
               >
                 Browse opportunities →
               </Link>
@@ -47,7 +47,7 @@ const PipelineBoard = ({
               return (
                 <div
                   key={job._id}
-                  className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-2xs hover:border-teal-300 transition"
+                  className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-2xs hover:border-primary-300 transition"
                 >
                   <h4 className="text-xs font-bold text-slate-900 line-clamp-1">
                     {job.title}
@@ -69,7 +69,7 @@ const PipelineBoard = ({
                       </button>
                       <Link
                         to={`/description/${job._id}`}
-                        className="font-semibold text-teal-600 hover:underline"
+                        className="font-semibold text-primary-600 hover:underline"
                       >
                         Apply →
                       </Link>
@@ -93,7 +93,7 @@ const PipelineBoard = ({
               externalApplications.filter((a) => a.status === "applied").length}
             )
           </span>
-          <Send size={14} className="text-teal-600" />
+          <Send size={14} className="text-primary-600" />
         </div>
 
         <div className="space-y-3 max-h-[600px] overflow-y-auto">
@@ -106,7 +106,7 @@ const PipelineBoard = ({
                 className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-2xs"
               >
                 <div className="flex items-center justify-between gap-1 mb-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-teal-50 text-teal-700 border border-teal-100">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary-50 text-primary-700 border border-primary-100">
                     Portal Application
                   </span>
                   <span className="text-[10px] text-slate-400">
@@ -125,7 +125,7 @@ const PipelineBoard = ({
                   </span>
                   <Link
                     to={`/description/${app.job?._id}`}
-                    className="text-teal-600 font-semibold hover:underline"
+                    className="text-primary-600 font-semibold hover:underline"
                   >
                     View
                   </Link>
@@ -169,7 +169,7 @@ const PipelineBoard = ({
                     href={app.jobUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[10px] text-teal-600 hover:underline flex items-center gap-1 mt-2"
+                    className="text-[10px] text-primary-600 hover:underline flex items-center gap-1 mt-2"
                   >
                     Job Link <ExternalLink size={10} />
                   </a>
@@ -226,7 +226,7 @@ const PipelineBoard = ({
                   to={`/interview-prep?role=${encodeURIComponent(
                     app.job?.title || ""
                   )}`}
-                  className="inline-block mt-2 text-[11px] font-semibold text-teal-600 hover:underline"
+                  className="inline-block mt-2 text-[11px] font-semibold text-primary-600 hover:underline"
                 >
                   Prepare for Interview →
                 </Link>

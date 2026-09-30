@@ -158,7 +158,7 @@ const Jobs = () => {
                 <SlidersHorizontal size={14} />
                 Filters
                 {hasActiveFilters && (
-                  <span className="w-2 h-2 rounded-full bg-teal-600"></span>
+                  <span className="w-2 h-2 rounded-full bg-primary-600"></span>
                 )}
               </button>
 
@@ -169,7 +169,7 @@ const Jobs = () => {
                 <select
                   value={filters.sort || "newest"}
                   onChange={handleSortChange}
-                  className="text-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                  className="text-xs rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20"
                 >
                   <option value="newest">Newest First</option>
                   <option value="relevance">Relevance</option>
@@ -237,7 +237,7 @@ const Jobs = () => {
 
             <Button
               type="submit"
-              className="w-full sm:w-auto rounded-xl px-6 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold h-10 shadow-xs transition"
+              className="w-full sm:w-auto rounded-xl px-6 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold h-10 shadow-xs transition"
             >
               Search Jobs
             </Button>
@@ -249,11 +249,11 @@ const Jobs = () => {
               <span className="text-xs font-medium text-slate-500">Active:</span>
 
               {filters.keyword && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-teal-50 text-teal-700 border border-teal-200">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200">
                   Keyword: {filters.keyword}
                   <button
                     onClick={() => clearFilter("keyword", "")}
-                    className="hover:text-teal-900"
+                    className="hover:text-primary-900"
                   >
                     <X size={12} />
                   </button>
@@ -325,7 +325,7 @@ const Jobs = () => {
 
               <button
                 onClick={handleResetAll}
-                className="text-xs text-teal-600 hover:text-teal-800 font-semibold ml-1 cursor-pointer flex items-center gap-1"
+                className="text-xs text-primary-600 hover:text-primary-800 font-semibold ml-1 cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw size={12} /> Clear all
               </button>
@@ -374,7 +374,7 @@ const Jobs = () => {
             ) : allJobs.length === 0 ? (
               /* Meaningful Empty State */
               <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center flex flex-col items-center justify-center">
-                <div className="w-14 h-14 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-primary-50 flex items-center justify-center text-primary-600 mb-4">
                   <Briefcase size={28} />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900">
@@ -425,7 +425,7 @@ const Jobs = () => {
                       onClick={() => handlePageChange(pageNum)}
                       className={`w-8 h-8 rounded-xl text-xs font-semibold transition ${
                         pagination.currentPage === pageNum
-                          ? "bg-teal-600 text-white shadow-xs"
+                          ? "bg-primary-600 text-white shadow-xs"
                           : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
                       }`}
                     >
