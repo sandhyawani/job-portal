@@ -17,6 +17,7 @@ import {
   LayoutDashboard,
   Check,
   ChevronRight,
+  FileText
 } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,7 +69,17 @@ const Navbar = () => {
     { name: "Companies", path: "/admin/companies", icon: Building2 },
   ];
 
-  const navLinks = user?.role === "recruiter" ? recruiterLinks : candidateLinks;
+  const adminLinks = [
+    { name: "Admin Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
+    { name: "Users Management", path: "/admin/users", icon: User2 },
+    { name: "Recruiters", path: "/admin/recruiters", icon: Briefcase },
+    { name: "Companies", path: "/admin/companies", icon: Building2 },
+    { name: "Jobs", path: "/admin/jobs", icon: Layers },
+    { name: "Applications", path: "/admin/applications", icon: FileText },
+    { name: "Interview Qs", path: "/admin/interview-questions", icon: CheckCircle2 },
+  ];
+
+  const navLinks = user?.role === "admin" ? adminLinks : user?.role === "recruiter" ? recruiterLinks : candidateLinks;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs transition-all">

@@ -151,6 +151,13 @@ export const login = async (req, res) => {
       });
     }
 
+    if (user.isActive === false) {
+      return res.status(403).json({
+        message: "Your account has been deactivated. Please contact an administrator.",
+        success: false,
+      });
+    }
+
     if (role !== user.role) {
       return res.status(400).json({
         message: "Account doesn't exist with current role.",

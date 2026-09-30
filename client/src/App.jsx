@@ -20,6 +20,13 @@ import Applicants from "./components/admin/Applicants";
 import RecruiterDashboard from "./components/admin/RecruiterDashboard";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import RouteErrorBoundary from "./components/RouteErrorBoundary";
+import RoleBasedDashboard from "./components/superadmin/RoleBasedDashboard";
+import AdminInterviewQuestions from "./components/superadmin/AdminInterviewQuestions";
+import AdminUsers from "./components/superadmin/AdminUsers";
+import AdminRecruiters from "./components/superadmin/AdminRecruiters";
+import RoleBasedCompanies from "./components/superadmin/RoleBasedCompanies";
+import RoleBasedJobs from "./components/superadmin/RoleBasedJobs";
+import AdminApplications from "./components/superadmin/AdminApplications";
 
 const appRouter = createBrowserRouter([
   {
@@ -117,8 +124,35 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/dashboard",
     element: (
-      <ProtectedRoute>
-        <RecruiterDashboard />
+      <ProtectedRoute allowedRoles={["recruiter", "admin"]}>
+        <RoleBasedDashboard />
+      </ProtectedRoute>
+    ),
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin/interview-questions",
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminInterviewQuestions />
+      </ProtectedRoute>
+    ),
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin/users",
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminUsers />
+      </ProtectedRoute>
+    ),
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin/recruiters",
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminRecruiters />
       </ProtectedRoute>
     ),
     errorElement: <RouteErrorBoundary />,
@@ -126,8 +160,8 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/companies",
     element: (
-      <ProtectedRoute>
-        <Companies />
+      <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+        <RoleBasedCompanies />
       </ProtectedRoute>
     ),
     errorElement: <RouteErrorBoundary />,
@@ -153,8 +187,17 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/jobs",
     element: (
-      <ProtectedRoute>
-        <AdminJobs />
+      <ProtectedRoute allowedRoles={["admin", "recruiter"]}>
+        <RoleBasedJobs />
+      </ProtectedRoute>
+    ),
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin/applications",
+    element: (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <AdminApplications />
       </ProtectedRoute>
     ),
     errorElement: <RouteErrorBoundary />,

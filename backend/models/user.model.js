@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 'student',
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     profile: {
         bio: { type: String, default: "" },
         skills: [{ type: String }],
