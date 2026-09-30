@@ -86,7 +86,7 @@ const CompanyDetail = () => {
                     {company?.location || "India"}
                   </span>
                   {company?.trustLevel && (
-                    <TrustBadge trustLevel={company.trustLevel} />
+                    <TrustBadge trustLevel={company.trustLevel} showDetails={true} />
                   )}
                   {company?.trustScore > 0 && (
                     <span className="inline-flex items-center gap-1 text-xs text-amber-600 font-bold">

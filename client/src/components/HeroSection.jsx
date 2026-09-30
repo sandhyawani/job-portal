@@ -49,16 +49,16 @@ const HeroSection = () => {
         {/* Workspace Pill */}
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-teal-700 text-xs font-semibold mb-6">
           <Sparkles size={13} className="text-teal-600" />
-          <span>Your complete job-search workspace</span>
+          <span>The Only Platform with Verified Company Trust Scores</span>
         </div>
 
         {/* Hero Title */}
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-          Find work that <span className="text-teal-600">fits you</span>.
+          Find work at <span className="text-teal-600">verified</span> companies.
         </h1>
 
         <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-normal">
-          Search jobs by role, skills, company, and location. Understand match alignment and manage your entire application pipeline.
+          Stop applying to fake listings. We verify every company's official domain, registration, and web presence to calculate a Trust Score before you apply.
         </p>
 
         {/* Search Bar */}

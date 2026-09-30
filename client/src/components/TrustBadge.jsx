@@ -8,23 +8,24 @@ const trustStyles = {
 };
 
 const trustLabel = {
-  HIGH: "High Trust",
-  MEDIUM: "Medium Trust",
-  LOW: "Low Trust",
+  HIGH: "Verified Employer",
+  MEDIUM: "Partially Verified",
+  LOW: "Unverified",
 };
 
-const trustWarning = {
-  MEDIUM: "Company details are partially verified. Apply with caution.",
-  LOW: "Company information may be unreliable.",
+const trustMessage = {
+  HIGH: "We have verified this company's legal details. You can trust this is a real employer.",
+  MEDIUM: "This company is missing some official details. Apply with caution.",
+  LOW: "Warning: We could not verify this company's legal existence. Be careful.",
 };
 
-const TrustBadge = ({ trustLevel }) => {
+const TrustBadge = ({ trustLevel, showDetails = false }) => {
   if (!trustLevel || !trustStyles[trustLevel]) return null;
 
   const isHigh = trustLevel === "HIGH";
 
   return (
-    <div className="mt-1 space-y-1 max-w-xs">
+    <div className="mt-1 space-y-1 max-w-xs" title={trustMessage[trustLevel]}>
       <Badge
         className={`flex items-center gap-1 w-fit font-semibold ${trustStyles[trustLevel]}`}
       >
@@ -36,9 +37,9 @@ const TrustBadge = ({ trustLevel }) => {
         {trustLabel[trustLevel]}
       </Badge>
 
-      {!isHigh && (
-        <p className="text-xs text-gray-500 leading-snug">
-          ⚠ {trustWarning[trustLevel]}
+      {(!isHigh || showDetails) && (
+        <p className={`text-[10px] leading-snug ${isHigh ? "text-green-600 font-medium" : "text-gray-500"}`}>
+          {isHigh ? "✓ " : "⚠ "}{trustMessage[trustLevel]}
         </p>
       )}
     </div>

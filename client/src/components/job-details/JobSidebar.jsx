@@ -53,7 +53,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
             {company.trustLevel && (
               <div className="flex items-center justify-between">
                 <span className="text-slate-500">Verification</span>
-                <TrustBadge trustLevel={company.trustLevel} />
+                <TrustBadge trustLevel={company.trustLevel} showDetails={true} />
               </div>
             )}
 
