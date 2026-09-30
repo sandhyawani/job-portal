@@ -104,7 +104,7 @@ const PostJob = () => {
         navigate("/admin/jobs");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(error?.friendlyMessage || error?.response?.data?.message || error?.message || "Failed to post job");
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,7 @@ import { setAllJobs, setPagination, setJobLoading } from "@/redux/jobSlice";
 import { jobApi } from "@/api/jobApi";
 import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const useGetAllJobs = (customParams = null) => {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const useGetAllJobs = (customParams = null) => {
       }
     } catch (error) {
       console.error("Error fetching jobs:", error);
+      toast.error(error.friendlyMessage || error.response?.data?.message || error.message || "Failed to load jobs");
     } finally {
       dispatch(setJobLoading(false));
     }

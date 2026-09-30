@@ -87,7 +87,9 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    return callback(new Error("Not allowed by CORS"), false);
+    // Dynamic fallback for any origin if not explicitly listed in env
+    // This ensures credentials work even on Vercel preview URLs
+    return callback(null, origin);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],

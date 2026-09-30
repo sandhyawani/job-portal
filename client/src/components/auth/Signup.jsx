@@ -60,7 +60,7 @@ const Signup = () => {
       }
     } catch (error) {
       console.error("Signup error:", error);
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(error.friendlyMessage || error.response?.data?.message || error.message || "Signup failed");
     } finally {
       dispatch(setLoading(false));
     }
