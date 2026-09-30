@@ -9,17 +9,17 @@ const Footer = () => {
         {/* Brand */}
         <div>
           <Link to="/" className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-base">
+            <div className="w-8 h-8 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-base">
               J
             </div>
             <span className="text-lg font-bold text-white tracking-tight">
-              Job<span className="text-indigo-400">Portal</span>
+              Job<span className="text-teal-400">Portal</span>
             </span>
           </Link>
           <p className="text-slate-400 leading-relaxed text-xs">
             Your complete job-search workspace. Discover opportunities, analyze match alignment, and manage your full application lifecycle.
           </p>
-          <div className="flex items-center gap-1.5 mt-3 text-indigo-400 font-semibold text-[11px]">
+          <div className="flex items-center gap-1.5 mt-3 text-teal-400 font-semibold text-[11px]">
             <ShieldCheck size={14} /> Verified Company Profiles
           </div>
         </div>

@@ -14,7 +14,7 @@ const LatestJobs = () => {
     <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
         <div>
-          <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-teal-600 uppercase tracking-wider mb-1">
             <Sparkles size={13} />
             <span>Latest Openings</span>
           </div>
@@ -28,7 +28,7 @@ const LatestJobs = () => {
 
         <Link
           to="/jobs"
-          className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition self-start sm:self-auto"
+          className="inline-flex items-center gap-1 text-xs font-bold text-teal-600 hover:text-teal-800 transition self-start sm:self-auto"
         >
           View all {allJobs.length} jobs <ArrowRight size={14} />
         </Link>

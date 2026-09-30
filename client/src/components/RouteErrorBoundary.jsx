@@ -58,7 +58,7 @@ const RouteErrorBoundary = () => {
           {!is404 && (
             <Button
               onClick={() => window.location.reload()}
-              className="w-full rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white gap-2"
+              className="w-full rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white gap-2"
             >
               <RefreshCw size={14} /> Try Again
             </Button>

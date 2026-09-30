@@ -20,7 +20,7 @@ const ExternalTrackerTab = ({
         </div>
         <Button
           onClick={() => onOpenAddModal()}
-          className="rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white gap-1"
+          className="rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white gap-1"
         >
           <Plus size={15} /> Add Application
         </Button>
@@ -37,7 +37,7 @@ const ExternalTrackerTab = ({
           </p>
           <Button
             onClick={() => onOpenAddModal()}
-            className="mt-4 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white"
+            className="mt-4 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white"
           >
             Add Your First Application
           </Button>
@@ -77,7 +77,7 @@ const ExternalTrackerTab = ({
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : app.status === "rejected"
                           ? "bg-rose-50 text-rose-700 border border-rose-200"
-                          : "bg-blue-50 text-blue-700 border border-blue-200"
+                          : "bg-teal-50 text-teal-700 border border-teal-200"
                       }`}
                     >
                       {app.status}
@@ -90,7 +90,7 @@ const ExternalTrackerTab = ({
                           href={app.jobUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-slate-400 hover:text-indigo-600"
+                          className="text-slate-400 hover:text-teal-600"
                           title="View URL"
                         >
                           <ExternalLink size={14} />

@@ -63,7 +63,7 @@ class ErrorBoundary extends React.Component {
               {/* Try Again — resets error state without a full reload */}
               <button
                 onClick={this.handleRetry}
-                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white transition"
               >
                 <RefreshCw size={15} /> Try Again
               </button>

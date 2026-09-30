@@ -55,16 +55,16 @@ const MobileBottomNav = () => {
               to={tab.path}
               className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[11px] font-medium transition ${
                 isActive
-                  ? "text-indigo-600 font-semibold"
+                  ? "text-teal-600 font-semibold"
                   : "text-slate-500 hover:text-slate-800"
               }`}
             >
               <div
                 className={`p-1 rounded-full transition ${
-                  isActive ? "bg-indigo-50" : ""
+                  isActive ? "bg-teal-50" : ""
                 }`}
               >
-                <Icon size={19} className={isActive ? "text-indigo-600" : "text-slate-400"} />
+                <Icon size={19} className={isActive ? "text-teal-600" : "text-slate-400"} />
               </div>
               <span className="mt-0.5 tracking-tight">{tab.label}</span>
             </Link>

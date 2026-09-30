@@ -47,14 +47,14 @@ const HeroSection = () => {
     <section className="relative bg-white border-b border-slate-200/80 pt-28 pb-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto text-center">
         {/* Workspace Pill */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-6">
-          <Sparkles size={13} className="text-indigo-600" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-100 text-teal-700 text-xs font-semibold mb-6">
+          <Sparkles size={13} className="text-teal-600" />
           <span>Your complete job-search workspace</span>
         </div>
 
         {/* Hero Title */}
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-          Find work that <span className="text-indigo-600">fits you</span>.
+          Find work that <span className="text-teal-600">fits you</span>.
         </h1>
 
         <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-normal">
@@ -64,7 +64,7 @@ const HeroSection = () => {
         {/* Search Bar */}
         <form
           onSubmit={handleSearch}
-          className="mt-8 flex flex-col sm:flex-row items-center gap-2 p-2 bg-white rounded-2xl sm:rounded-full border border-slate-300 shadow-md hover:border-slate-400 focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-600 transition"
+          className="mt-8 flex flex-col sm:flex-row items-center gap-2 p-2 bg-white rounded-2xl sm:rounded-full border border-slate-300 shadow-md hover:border-slate-400 focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-600 transition"
         >
           {/* Job Title / Skill */}
           <div className="flex items-center gap-2.5 flex-1 w-full px-4 py-2">
@@ -95,7 +95,7 @@ const HeroSection = () => {
           {/* Search Button */}
           <Button
             type="submit"
-            className="w-full sm:w-auto rounded-xl sm:rounded-full px-7 py-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-xs transition"
+            className="w-full sm:w-auto rounded-xl sm:rounded-full px-7 py-5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-xs transition"
           >
             Search Jobs
           </Button>

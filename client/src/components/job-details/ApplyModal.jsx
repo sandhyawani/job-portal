@@ -85,7 +85,7 @@ const ApplyModal = ({
                   href={user.profile.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-teal-600 hover:underline flex items-center gap-1"
                 >
                   Preview <ExternalLink size={12} />
                 </a>
@@ -93,7 +93,7 @@ const ApplyModal = ({
             ) : (
               <div className="flex items-center justify-between text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
                 <span className="text-[11px]">No resume uploaded yet.</span>
-                <Link to="/profile" className="font-bold underline text-[11px] text-indigo-600">
+                <Link to="/profile" className="font-bold underline text-[11px] text-teal-600">
                   Upload Resume →
                 </Link>
               </div>
@@ -110,7 +110,7 @@ const ApplyModal = ({
               value={coverNote}
               onChange={(e) => setCoverNote(e.target.value)}
               placeholder="Mention availability, relevant achievements, or why you're a great fit..."
-              className="w-full text-xs p-3 rounded-xl border border-slate-200 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
+              className="w-full text-xs p-3 rounded-xl border border-slate-200 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/20"
             />
           </div>
         </div>
@@ -126,7 +126,7 @@ const ApplyModal = ({
           <Button
             onClick={onConfirm}
             disabled={applying}
-            className="rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-6 shadow-xs"
+            className="rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white px-6 shadow-xs"
           >
             {applying ? "Submitting..." : "Confirm & Submit Application"}
           </Button>

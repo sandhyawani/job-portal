@@ -176,13 +176,13 @@ const Signup = () => {
 
           {/* Submit Button */}
           {loading ? (
-            <Button className="w-full my-6 flex items-center justify-center rounded-xl bg-indigo-600 text-white font-semibold" disabled>
+            <Button className="w-full my-6 flex items-center justify-center rounded-xl bg-teal-600 text-white font-semibold" disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
             </Button>
           ) : (
             <Button
               type="submit"
-              className="w-full my-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl shadow-xs transition"
+              className="w-full my-6 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2.5 rounded-xl shadow-xs transition"
             >
               Create Account
             </Button>
@@ -190,7 +190,7 @@ const Signup = () => {
 
           <p className="text-xs text-center text-slate-500 mt-4">
             Already have an account?{" "}
-            <Link to="/login" className="text-indigo-600 font-semibold hover:underline">
+            <Link to="/login" className="text-teal-600 font-semibold hover:underline">
               Sign in
             </Link>
           </p>

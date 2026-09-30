@@ -84,7 +84,7 @@ const Job = ({ job }) => {
   return (
     <div
       onClick={() => navigate(`/description/${job?._id}`)}
-      className="group relative flex flex-col justify-between bg-white rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200 p-5 cursor-pointer h-full"
+      className="group relative flex flex-col justify-between bg-white rounded-2xl border border-slate-200 hover:border-teal-300 hover:shadow-md transition-all duration-200 p-5 cursor-pointer h-full"
     >
       <div>
         {/* Top bar: Posted Date + Match Badge + Save Button */}
@@ -119,13 +119,13 @@ const Job = ({ job }) => {
             aria-label={isSaved ? "Unsave job" : "Save job"}
             className={`p-2 rounded-xl transition ${
               isSaved
-                ? "bg-indigo-50 text-indigo-600 hover:bg-indigo-100"
-                : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100"
+                ? "bg-teal-50 text-teal-600 hover:bg-teal-100"
+                : "text-slate-400 hover:text-teal-600 hover:bg-slate-100"
             }`}
           >
             <Bookmark
               size={17}
-              className={isSaved ? "fill-indigo-600 text-indigo-600" : ""}
+              className={isSaved ? "fill-teal-600 text-teal-600" : ""}
             />
           </button>
         </div>
@@ -141,7 +141,7 @@ const Job = ({ job }) => {
           </Avatar>
 
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition line-clamp-1 leading-snug">
+            <h3 className="text-base font-bold text-slate-900 group-hover:text-teal-600 transition line-clamp-1 leading-snug">
               {job?.title}
             </h3>
             <div className="flex items-center gap-2 mt-0.5">
@@ -165,7 +165,7 @@ const Job = ({ job }) => {
               workMode === "Remote"
                 ? "text-emerald-700"
                 : workMode === "Hybrid"
-                ? "text-indigo-700"
+                ? "text-teal-700"
                 : "text-slate-600"
             }`}
           >
@@ -212,7 +212,7 @@ const Job = ({ job }) => {
             navigate(`/description/${job?._id}`);
           }}
           variant="outline"
-          className="flex-1 rounded-xl text-xs font-semibold border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600 h-9"
+          className="flex-1 rounded-xl text-xs font-semibold border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-teal-600 h-9"
         >
           View Job
         </Button>
@@ -221,7 +221,7 @@ const Job = ({ job }) => {
           className={`flex-1 rounded-xl text-xs font-semibold h-9 transition ${
             isSaved
               ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
-              : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs"
+              : "bg-teal-600 hover:bg-teal-700 text-white shadow-xs"
           }`}
         >
           {isSaved ? "Saved" : "Save Job"}

@@ -204,7 +204,7 @@ const Pipeline = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              <Layers className="text-indigo-600" size={28} />
+              <Layers className="text-teal-600" size={28} />
               Personal Job Pipeline
             </h1>
             <p className="text-sm text-slate-500 mt-1">
@@ -214,7 +214,7 @@ const Pipeline = () => {
 
           <Button
             onClick={() => openAddModal()}
-            className="rounded-xl px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-xs gap-1.5 self-start sm:self-auto"
+            className="rounded-xl px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs shadow-xs gap-1.5 self-start sm:self-auto"
           >
             <Plus size={16} /> Track External Application
           </Button>
@@ -235,7 +235,7 @@ const Pipeline = () => {
             onClick={() => handleTabChange("pipeline")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
               activeTab === "pipeline"
-                ? "bg-indigo-600 text-white shadow-xs"
+                ? "bg-teal-600 text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -245,7 +245,7 @@ const Pipeline = () => {
             onClick={() => handleTabChange("saved")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
               activeTab === "saved"
-                ? "bg-indigo-600 text-white shadow-xs"
+                ? "bg-teal-600 text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -255,7 +255,7 @@ const Pipeline = () => {
             onClick={() => handleTabChange("external")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
               activeTab === "external"
-                ? "bg-indigo-600 text-white shadow-xs"
+                ? "bg-teal-600 text-white shadow-xs"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >

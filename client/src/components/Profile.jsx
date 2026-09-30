@@ -50,7 +50,7 @@ const Profile = () => {
                   alt={user?.fullname || "Profile"}
                   className="object-cover"
                 />
-                <AvatarFallback className="bg-indigo-600 text-white font-bold text-4xl uppercase">
+                <AvatarFallback className="bg-teal-600 text-white font-bold text-4xl uppercase">
                   {user?.fullname?.charAt(0) || "U"}
                 </AvatarFallback>
               </Avatar>
@@ -78,7 +78,7 @@ const Profile = () => {
             <Button
               onClick={() => setOpen(true)}
               variant="outline"
-              className="rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:text-indigo-600 gap-1.5 self-start sm:self-auto h-10 px-4"
+              className="rounded-xl border-slate-200 text-xs font-semibold text-slate-700 hover:text-teal-600 gap-1.5 self-start sm:self-auto h-10 px-4"
             >
               <Pen size={14} /> Edit Profile
             </Button>
@@ -88,15 +88,15 @@ const Profile = () => {
           <div className="mt-8 pt-6 border-t border-slate-100">
             <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-2">
               <div className="flex items-center gap-1.5">
-                <Sparkles size={14} className="text-indigo-600" />
+                <Sparkles size={14} className="text-teal-600" />
                 <span>Profile Completion</span>
               </div>
-              <span className="text-indigo-600 font-extrabold">{scoreData?.score}%</span>
+              <span className="text-teal-600 font-extrabold">{scoreData?.score}%</span>
             </div>
 
             <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden mb-4">
               <div
-                className="bg-indigo-600 h-full rounded-full transition-all duration-500"
+                className="bg-teal-600 h-full rounded-full transition-all duration-500"
                 style={{ width: `${scoreData?.score}%` }}
               />
             </div>
@@ -124,7 +124,7 @@ const Profile = () => {
           {/* Contact Details */}
           <div className="mt-8 pt-6 border-t border-slate-100 grid sm:grid-cols-2 gap-4 text-xs text-slate-700">
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <Mail size={16} className="text-indigo-600" />
+              <Mail size={16} className="text-teal-600" />
               <div>
                 <span className="text-[10px] text-slate-400 block font-medium">Email</span>
                 <span className="font-semibold text-slate-800">{user?.email || "N/A"}</span>
@@ -132,7 +132,7 @@ const Profile = () => {
             </div>
 
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
-              <Contact size={16} className="text-indigo-600" />
+              <Contact size={16} className="text-teal-600" />
               <div>
                 <span className="text-[10px] text-slate-400 block font-medium">Phone</span>
                 <span className="font-semibold text-slate-800">
@@ -175,7 +175,7 @@ const Profile = () => {
                     href={profile.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-indigo-600 hover:underline flex items-center gap-1 font-semibold"
+                    className="text-teal-600 hover:underline flex items-center gap-1 font-semibold"
                   >
                     <Github size={13} /> GitHub
                   </a>
@@ -185,7 +185,7 @@ const Profile = () => {
                     href={profile.portfolio}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-indigo-600 hover:underline flex items-center gap-1 font-semibold"
+                    className="text-teal-600 hover:underline flex items-center gap-1 font-semibold"
                   >
                     <Globe size={13} /> Portfolio
                   </a>
@@ -207,7 +207,7 @@ const Profile = () => {
                 profile.skills.map((skill, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold"
+                    className="px-3 py-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-700 text-xs font-semibold"
                   >
                     {skill}
                   </span>
@@ -226,7 +226,7 @@ const Profile = () => {
             {isResume ? (
               <div className="flex items-center justify-between p-3.5 rounded-2xl border border-slate-200 bg-slate-50/50">
                 <div className="flex items-center gap-2.5">
-                  <FileText size={20} className="text-indigo-600 shrink-0" />
+                  <FileText size={20} className="text-teal-600 shrink-0" />
                   <div>
                     <span className="text-xs font-bold text-slate-800 block truncate max-w-sm">
                       {profile?.resumeOriginalName || "Resume Document"}
@@ -240,7 +240,7 @@ const Profile = () => {
                   href={profile.resume}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 shadow-2xs"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-teal-600 shadow-2xs"
                 >
                   View Resume <ExternalLink size={12} />
                 </a>

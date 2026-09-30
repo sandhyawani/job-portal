@@ -75,12 +75,12 @@ const Navbar = () => {
       <div className="flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 h-16">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:bg-indigo-700 transition">
+          <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:bg-teal-700 transition">
             J
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition">
-              Job<span className="text-indigo-600">Portal</span>
+            <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-teal-600 transition">
+              Job<span className="text-teal-600">Portal</span>
             </span>
           </div>
         </Link>
@@ -91,7 +91,7 @@ const Navbar = () => {
             to="/"
             className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
               location.pathname === "/"
-                ? "bg-slate-100 text-indigo-600 font-semibold"
+                ? "bg-slate-100 text-teal-600 font-semibold"
                 : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
             }`}
           >
@@ -106,11 +106,11 @@ const Navbar = () => {
                 to={link.path}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition ${
                   active
-                    ? "bg-indigo-50 text-indigo-600 font-semibold"
+                    ? "bg-teal-50 text-teal-600 font-semibold"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
-                <Icon size={16} className={active ? "text-indigo-600" : "text-slate-400"} />
+                <Icon size={16} className={active ? "text-teal-600" : "text-slate-400"} />
                 {link.name}
               </Link>
             );
@@ -139,7 +139,7 @@ const Navbar = () => {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-slate-900 text-sm">Notifications</h3>
                     {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-700">
                         {unreadCount} new
                       </span>
                     )}
@@ -147,7 +147,7 @@ const Navbar = () => {
                   {unreadCount > 0 && (
                     <button
                       onClick={() => markAsRead("all")}
-                      className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 cursor-pointer"
+                      className="text-xs text-teal-600 hover:text-teal-800 font-medium flex items-center gap-1 cursor-pointer"
                     >
                       <Check size={12} /> Mark all read
                     </button>
@@ -164,13 +164,13 @@ const Navbar = () => {
                           if (notif.link) navigate(notif.link);
                         }}
                         className={`p-3.5 hover:bg-slate-50 transition cursor-pointer flex gap-3 ${
-                          !notif.isRead ? "bg-indigo-50/40" : ""
+                          !notif.isRead ? "bg-teal-50/40" : ""
                         }`}
                       >
                         <div className="mt-0.5">
                           <div
                             className={`w-2 h-2 rounded-full mt-1.5 ${
-                              notif.isRead ? "bg-transparent" : "bg-indigo-600"
+                              notif.isRead ? "bg-transparent" : "bg-teal-600"
                             }`}
                           />
                         </div>
@@ -206,7 +206,7 @@ const Navbar = () => {
                 </Button>
               </Link>
               <Link to="/signup">
-                <Button className="rounded-xl px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm shadow-xs transition">
+                <Button className="rounded-xl px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm shadow-xs transition">
                   Get Started
                 </Button>
               </Link>
@@ -214,13 +214,13 @@ const Navbar = () => {
           ) : (
             <Popover>
               <PopoverTrigger asChild>
-                <button className="flex items-center gap-2 p-1 rounded-full ring-2 ring-transparent hover:ring-indigo-100 transition focus:outline-none">
+                <button className="flex items-center gap-2 p-1 rounded-full ring-2 ring-transparent hover:ring-teal-100 transition focus:outline-none">
                   <Avatar className="h-9 w-9 border border-slate-200">
                     <AvatarImage
                       src={user?.profile?.profilePhoto}
                       alt={user?.fullname || "User"}
                     />
-                    <AvatarFallback className="bg-indigo-600 text-white font-bold text-sm uppercase">
+                    <AvatarFallback className="bg-teal-600 text-white font-bold text-sm uppercase">
                       {user?.fullname?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
@@ -233,7 +233,7 @@ const Navbar = () => {
                       src={user?.profile?.profilePhoto}
                       alt={user?.fullname}
                     />
-                    <AvatarFallback className="bg-indigo-600 text-white font-bold uppercase">
+                    <AvatarFallback className="bg-teal-600 text-white font-bold uppercase">
                       {user?.fullname?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
@@ -253,7 +253,7 @@ const Navbar = () => {
                     <>
                       <Link
                         to="/profile"
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-600 transition"
                       >
                         <span className="flex items-center gap-2">
                           <User2 size={16} /> Profile
@@ -262,7 +262,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/pipeline"
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-600 transition"
                       >
                         <span className="flex items-center gap-2">
                           <Layers size={16} /> Job Pipeline
@@ -274,7 +274,7 @@ const Navbar = () => {
                     <>
                       <Link
                         to="/admin/dashboard"
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-600 transition"
                       >
                         <span className="flex items-center gap-2">
                           <LayoutDashboard size={16} /> Dashboard
@@ -283,7 +283,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/admin/jobs"
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-teal-600 transition"
                       >
                         <span className="flex items-center gap-2">
                           <Briefcase size={16} /> Posted Jobs
@@ -334,7 +334,7 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium ${
                   isActive(link.path)
-                    ? "bg-indigo-50 text-indigo-600 font-semibold"
+                    ? "bg-teal-50 text-teal-600 font-semibold"
                     : "text-slate-700 hover:bg-slate-50"
                 }`}
               >
@@ -366,7 +366,7 @@ const Navbar = () => {
               <Link
                 to="/signup"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-2.5 rounded-xl bg-indigo-600 font-semibold text-sm text-white"
+                className="w-full text-center py-2.5 rounded-xl bg-teal-600 font-semibold text-sm text-white"
               >
                 Sign Up
               </Link>

@@ -52,7 +52,7 @@ const JobContent = ({ singleJob, similarJobs = [] }) => {
             {singleJob.requirements?.map((req, i) => (
               <Badge
                 key={i}
-                className="bg-indigo-50 text-indigo-700 border border-indigo-100 text-xs font-medium py-1 px-3 rounded-lg"
+                className="bg-teal-50 text-teal-700 border border-teal-100 text-xs font-medium py-1 px-3 rounded-lg"
               >
                 {req}
               </Badge>
@@ -81,9 +81,9 @@ const JobContent = ({ singleJob, similarJobs = [] }) => {
       </div>
 
       {/* Preparation Banner */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-3xl border border-indigo-100 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-teal-50 to-purple-50 rounded-3xl border border-teal-100 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-1">
             Interview Preparation
           </span>
           <h3 className="text-base font-bold text-slate-900">
@@ -100,7 +100,7 @@ const JobContent = ({ singleJob, similarJobs = [] }) => {
             (singleJob.requirements || []).join(",")
           )}`}
         >
-          <Button className="rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shrink-0">
+          <Button className="rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white shrink-0">
             <GraduationCap size={16} className="mr-1.5" /> Practice Questions
           </Button>
         </Link>

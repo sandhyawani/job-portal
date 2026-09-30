@@ -82,7 +82,7 @@ const AdminJobsTable = () => {
                   <TableCell className="p-3.5">
                     <Link
                       to={`/admin/jobs/${job._id}/applicants`}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-50 text-teal-700 hover:bg-teal-100 transition"
                     >
                       <Users size={12} />
                       {applicantCount} {applicantCount === 1 ? "applicant" : "applicants"}
@@ -99,7 +99,7 @@ const AdminJobsTable = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 px-2.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+                          className="h-8 px-2.5 text-xs font-semibold text-teal-600 hover:text-teal-800"
                         >
                           Candidates
                         </Button>
@@ -115,13 +115,13 @@ const AdminJobsTable = () => {
                         <PopoverContent align="end" className="w-36 p-1 rounded-xl bg-white border border-slate-200 shadow-lg text-xs">
                           <button
                             onClick={() => navigate(`/admin/jobs/${job._id}/edit`)}
-                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-teal-50 hover:text-teal-600 text-left"
                           >
                             <Edit2 size={13} /> Edit Job
                           </button>
                           <button
                             onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 text-left"
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 hover:bg-teal-50 hover:text-teal-600 text-left"
                           >
                             <Eye size={13} /> View Applicants
                           </button>

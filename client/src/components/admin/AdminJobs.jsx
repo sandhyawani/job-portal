@@ -27,7 +27,7 @@ const AdminJobs = () => {
       <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-2">
               <Briefcase size={14} /> Recruiter Operations
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -40,7 +40,7 @@ const AdminJobs = () => {
 
           <Button
             onClick={() => navigate("/admin/jobs/create")}
-            className="rounded-xl px-4 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
+            className="rounded-xl px-4 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs self-start sm:self-auto gap-1.5"
           >
             <Plus size={16} /> Post New Job
           </Button>

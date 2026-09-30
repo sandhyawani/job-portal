@@ -48,7 +48,7 @@ const CompanyDetail = () => {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <Navbar />
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
           <p className="text-sm font-medium text-slate-500">Loading company profile...</p>
         </div>
       </div>
@@ -62,7 +62,7 @@ const CompanyDetail = () => {
       <main className="max-w-6xl mx-auto pt-24 px-4 sm:px-6">
         <Link
           to="/jobs"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 mb-4 transition"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-teal-600 mb-4 transition"
         >
           <ArrowLeft size={14} /> Back to jobs
         </Link>
@@ -103,7 +103,7 @@ const CompanyDetail = () => {
                 href={normalizeUrl(company.website)}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 text-slate-700 hover:text-indigo-600 hover:bg-slate-50 shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 text-slate-700 hover:text-teal-600 hover:bg-slate-50 shadow-2xs"
               >
                 <Globe size={14} /> Official Website <ExternalLink size={12} />
               </a>
@@ -145,7 +145,7 @@ const CompanyDetail = () => {
                 Check back soon or explore other opportunities on the job board.
               </p>
               <Link to="/jobs">
-                <Button className="mt-4 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button className="mt-4 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white">
                   Browse All Jobs
                 </Button>
               </Link>

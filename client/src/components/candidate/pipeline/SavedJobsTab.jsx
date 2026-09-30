@@ -34,7 +34,7 @@ const SavedJobsTab = ({
             onClick={() => setSavedFilter("all")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
               savedFilter === "all"
-                ? "bg-indigo-600 text-white shadow-2xs"
+                ? "bg-teal-600 text-white shadow-2xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -44,7 +44,7 @@ const SavedJobsTab = ({
             onClick={() => setSavedFilter("to_apply")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
               savedFilter === "to_apply"
-                ? "bg-indigo-600 text-white shadow-2xs"
+                ? "bg-teal-600 text-white shadow-2xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -54,7 +54,7 @@ const SavedJobsTab = ({
             onClick={() => setSavedFilter("applied")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer ${
               savedFilter === "applied"
-                ? "bg-indigo-600 text-white shadow-2xs"
+                ? "bg-teal-600 text-white shadow-2xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
@@ -71,7 +71,7 @@ const SavedJobsTab = ({
             When browsing jobs, click the bookmark icon to save opportunities here for later.
           </p>
           <Link to="/jobs">
-            <Button className="mt-4 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white">
+            <Button className="mt-4 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-700 text-white">
               Explore Jobs
             </Button>
           </Link>

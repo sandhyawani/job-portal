@@ -9,13 +9,13 @@ const LatestJobCards = ({ job }) => {
   return (
     <div
       onClick={() => navigate(`/description/${job._id}`)}
-      className="p-5 rounded-2xl bg-white border border-slate-200 cursor-pointer hover:border-indigo-300 hover:shadow-xs transition group flex flex-col justify-between"
+      className="p-5 rounded-2xl bg-white border border-slate-200 cursor-pointer hover:border-teal-300 hover:shadow-xs transition group flex flex-col justify-between"
     >
       <div>
         {/* Company information */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <div>
-            <h2 className="font-semibold text-xs text-slate-500 group-hover:text-indigo-600 transition">
+            <h2 className="font-semibold text-xs text-slate-500 group-hover:text-teal-600 transition">
               {job?.company?.name || "Company"}
             </h2>
             <h3 className="font-bold text-base text-slate-900 mt-0.5 line-clamp-1">
@@ -35,7 +35,7 @@ const LatestJobCards = ({ job }) => {
         <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-medium">
           {job?.location || "Remote"}
         </span>
-        <span className="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-medium">
+        <span className="px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 font-medium">
           {job?.jobType || "Full-time"}
         </span>
         {job?.salary && (

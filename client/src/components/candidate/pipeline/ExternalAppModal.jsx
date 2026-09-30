@@ -126,7 +126,7 @@ const ExternalAppModal = ({
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={2}
-              className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2 outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2 outline-none focus:ring-2 focus:ring-teal-500/20"
             />
           </div>
 
@@ -141,7 +141,7 @@ const ExternalAppModal = ({
             </Button>
             <Button
               type="submit"
-              className="text-xs font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="text-xs font-semibold rounded-xl bg-teal-600 hover:bg-teal-700 text-white"
             >
               {editingApp ? "Save Changes" : "Add to Pipeline"}
             </Button>

@@ -76,7 +76,7 @@ const RecruiterDashboard = () => {
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3">
                 <LayoutDashboard size={13} /> Hiring Workspace
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -97,7 +97,7 @@ const RecruiterDashboard = () => {
                 </Button>
               </Link>
               <Link to="/admin/jobs/create">
-                <Button className="rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs">
+                <Button className="rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs">
                   <Plus size={15} className="mr-1.5" /> Post New Job
                 </Button>
               </Link>
@@ -205,7 +205,7 @@ const RecruiterDashboard = () => {
                     <h3 className="font-bold text-sm text-slate-900 line-clamp-1">
                       {app.applicant?.fullname || "Candidate"}
                     </h3>
-                    <p className="text-xs font-semibold text-indigo-600 mt-0.5 line-clamp-1">
+                    <p className="text-xs font-semibold text-teal-600 mt-0.5 line-clamp-1">
                       For: {app.jobTitle}
                     </p>
                     <p className="text-[11px] text-slate-500 mt-1 truncate">
@@ -215,7 +215,7 @@ const RecruiterDashboard = () => {
 
                   <Link
                     to={`/admin/jobs/${app.jobId}/applicants`}
-                    className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600 hover:text-indigo-800 transition"
+                    className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-600 hover:text-teal-800 transition"
                   >
                     <span>Evaluate Candidate</span>
                     <ArrowRight size={13} />
@@ -228,17 +228,17 @@ const RecruiterDashboard = () => {
 
         {/* Upcoming Interviews Schedule */}
         {upcomingInterviews.length > 0 && (
-          <div className="bg-indigo-50/60 border border-indigo-200/90 rounded-3xl p-6 sm:p-7 shadow-xs mb-8">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-indigo-200/60">
+          <div className="bg-teal-50/60 border border-teal-200/90 rounded-3xl p-6 sm:p-7 shadow-xs mb-8">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-teal-200/60">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold">
                   <Calendar size={16} />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-indigo-950">
+                  <h2 className="text-base font-bold text-teal-950">
                     Scheduled Candidate Interviews ({upcomingInterviews.length})
                   </h2>
-                  <p className="text-xs text-indigo-800">
+                  <p className="text-xs text-teal-800">
                     Active interview rounds across your open positions
                   </p>
                 </div>
@@ -249,10 +249,10 @@ const RecruiterDashboard = () => {
               {upcomingInterviews.slice(0, 3).map((app, idx) => (
                 <div
                   key={idx}
-                  className="bg-white rounded-2xl p-4 border border-indigo-100 shadow-2xs flex flex-col justify-between"
+                  className="bg-white rounded-2xl p-4 border border-teal-100 shadow-2xs flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-1.5 text-xs text-indigo-700 font-bold">
+                    <div className="flex items-center justify-between mb-1.5 text-xs text-teal-700 font-bold">
                       <span className="flex items-center gap-1">
                         <Calendar size={12} />
                         {app.interviewDate
@@ -278,7 +278,7 @@ const RecruiterDashboard = () => {
 
                   <Link
                     to={`/admin/jobs/${app.jobId}/applicants`}
-                    className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600 hover:text-indigo-800 transition"
+                    className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-600 hover:text-teal-800 transition"
                   >
                     <span>Open Candidate Record</span>
                     <ArrowRight size={13} />
@@ -302,7 +302,7 @@ const RecruiterDashboard = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs font-semibold text-indigo-600 hover:text-indigo-800"
+                className="text-xs font-semibold text-teal-600 hover:text-teal-800"
               >
                 View all jobs →
               </Button>
@@ -317,7 +317,7 @@ const RecruiterDashboard = () => {
                 Create a company and publish your first job opening.
               </p>
               <Link to="/admin/jobs/create">
-                <Button className="mt-3 text-xs rounded-xl bg-indigo-600 text-white">
+                <Button className="mt-3 text-xs rounded-xl bg-teal-600 text-white">
                   Post a Job
                 </Button>
               </Link>
@@ -358,7 +358,7 @@ const RecruiterDashboard = () => {
                       <Link to={`/admin/jobs/${job._id}/applicants`}>
                         <Button
                           size="sm"
-                          className="rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-100 shadow-2xs"
+                          className="rounded-xl text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-100 shadow-2xs"
                         >
                           Manage Pipeline →
                         </Button>
@@ -384,7 +384,7 @@ const RecruiterDashboard = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs font-semibold text-indigo-600"
+                className="text-xs font-semibold text-teal-600"
               >
                 Manage Companies →
               </Button>
@@ -395,7 +395,7 @@ const RecruiterDashboard = () => {
             {companies.map((comp) => (
               <div
                 key={comp._id}
-                className="p-4 rounded-2xl border border-slate-200 hover:border-indigo-300 transition flex items-center justify-between"
+                className="p-4 rounded-2xl border border-slate-200 hover:border-teal-300 transition flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
                   <img
@@ -415,7 +415,7 @@ const RecruiterDashboard = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-xs font-semibold text-indigo-600"
+                    className="text-xs font-semibold text-teal-600"
                   >
                     Edit
                   </Button>

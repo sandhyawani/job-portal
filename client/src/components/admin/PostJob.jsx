@@ -117,7 +117,7 @@ const PostJob = () => {
       <main className="pt-24 pb-12 max-w-3xl mx-auto px-4 sm:px-6">
         <Link
           to="/admin/jobs"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 mb-4 transition"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-teal-600 mb-4 transition"
         >
           <ArrowLeft size={14} /> Back to Posted Jobs
         </Link>
@@ -155,7 +155,7 @@ const PostJob = () => {
                 <Label className="text-xs font-semibold text-slate-700">Hiring Company *</Label>
                 <Link
                   to="/admin/companies/create"
-                  className="text-xs font-semibold text-indigo-600 hover:underline"
+                  className="text-xs font-semibold text-teal-600 hover:underline"
                 >
                   + Create Company
                 </Link>
@@ -198,7 +198,7 @@ const PostJob = () => {
                 placeholder="Describe the role, day-to-day impact, and what success looks like..."
                 value={input.description}
                 onChange={changeEventHandler}
-                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-teal-500/20"
               />
             </div>
 
@@ -213,7 +213,7 @@ const PostJob = () => {
                 placeholder="Architect scalable REST APIs&#10;Collaborate with product designers&#10;Conduct code reviews"
                 value={input.responsibilities}
                 onChange={changeEventHandler}
-                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full mt-1 text-xs rounded-xl border border-slate-200 p-2.5 outline-none focus:ring-2 focus:ring-teal-500/20"
               />
             </div>
 
@@ -346,7 +346,7 @@ const PostJob = () => {
             <Button
               type="submit"
               disabled={loading || companies.length === 0}
-              className="rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-8"
+              className="rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white px-8"
             >
               {loading ? (
                 <>

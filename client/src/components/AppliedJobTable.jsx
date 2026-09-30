@@ -21,7 +21,7 @@ const AppliedJobTable = () => {
     if (s === "interview") return "bg-amber-50 text-amber-800 border-amber-200";
     if (s === "shortlisted" || s === "accepted")
       return "bg-purple-50 text-purple-800 border-purple-200";
-    if (s === "review") return "bg-blue-50 text-blue-700 border-blue-200";
+    if (s === "review") return "bg-teal-50 text-teal-700 border-teal-200";
     return "bg-slate-100 text-slate-700 border-slate-200";
   };
 
@@ -49,7 +49,7 @@ const AppliedJobTable = () => {
                 <TableCell className="p-3.5 font-bold text-slate-900">
                   <Link
                     to={`/description/${appliedJob.job?._id}`}
-                    className="hover:text-indigo-600 transition"
+                    className="hover:text-teal-600 transition"
                   >
                     {appliedJob.job?.title ?? "N/A"}
                   </Link>

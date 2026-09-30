@@ -13,7 +13,7 @@ const PipelineStats = ({
       <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs">
         <div className="flex items-center justify-between text-slate-500 mb-2">
           <span className="text-xs font-semibold uppercase tracking-wider">Saved Jobs</span>
-          <Bookmark size={16} className="text-indigo-600" />
+          <Bookmark size={16} className="text-teal-600" />
         </div>
         <div className="text-2xl font-black text-slate-900">{savedCount}</div>
         <span className="text-[11px] text-slate-400 mt-1 block">Ready to apply</span>
@@ -22,7 +22,7 @@ const PipelineStats = ({
       <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs">
         <div className="flex items-center justify-between text-slate-500 mb-2">
           <span className="text-xs font-semibold uppercase tracking-wider">Applied</span>
-          <Send size={16} className="text-blue-600" />
+          <Send size={16} className="text-teal-600" />
         </div>
         <div className="text-2xl font-black text-slate-900">
           {portalAppliedCount + externalAppliedCount}

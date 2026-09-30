@@ -43,7 +43,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
                   href={normalizeUrl(company.website)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-indigo-600 font-medium hover:underline flex items-center gap-1"
+                  className="text-teal-600 font-medium hover:underline flex items-center gap-1"
                 >
                   Visit site <ExternalLink size={12} />
                 </a>
@@ -70,7 +70,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
           <div className="mt-5 pt-4 border-t border-slate-100">
             <Link
               to={`/company/${company._id}`}
-              className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center justify-center gap-1 w-full py-2 rounded-xl bg-indigo-50/70 hover:bg-indigo-50 transition"
+              className="text-xs font-semibold text-teal-600 hover:text-teal-800 flex items-center justify-center gap-1 w-full py-2 rounded-xl bg-teal-50/70 hover:bg-teal-50 transition"
             >
               <Building2 size={13} /> View full company profile
             </Link>
@@ -119,7 +119,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
         </h4>
         <ul className="space-y-3 text-slate-600 text-xs">
           <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+            <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
               1
             </span>
             <span>
@@ -127,7 +127,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
             </span>
           </li>
           <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+            <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
               2
             </span>
             <span>
@@ -135,7 +135,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
             </span>
           </li>
           <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+            <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
               3
             </span>
             <span>

@@ -49,12 +49,12 @@ const ApplySuccessModal = ({
           </div>
           <div className="flex justify-between">
             <span className="text-slate-400">Status:</span>
-            <span className="font-bold text-indigo-600 uppercase text-[11px]">Applied (Under Review)</span>
+            <span className="font-bold text-teal-600 uppercase text-[11px]">Applied (Under Review)</span>
           </div>
         </div>
 
-        <div className="bg-indigo-50/60 border border-indigo-100 rounded-2xl p-3.5 mb-6 text-left text-xs text-slate-600 leading-relaxed">
-          <span className="font-bold text-indigo-900 block mb-1">Next steps:</span>
+        <div className="bg-teal-50/60 border border-teal-100 rounded-2xl p-3.5 mb-6 text-left text-xs text-slate-600 leading-relaxed">
+          <span className="font-bold text-teal-900 block mb-1">Next steps:</span>
           <p className="text-[11px] text-slate-600">
             You will be notified as soon as the recruiter reviews your application or schedules an interview round.
           </p>
@@ -63,7 +63,7 @@ const ApplySuccessModal = ({
         <div className="flex flex-col sm:flex-row gap-2.5">
           <Button
             onClick={onTrack}
-            className="flex-1 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs"
+            className="flex-1 rounded-xl text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white shadow-xs"
           >
             Track Application
           </Button>

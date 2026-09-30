@@ -193,7 +193,7 @@ const InterviewPrep = () => {
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold mb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3">
                 <GraduationCap size={14} /> Career Preparation Area
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -204,7 +204,7 @@ const InterviewPrep = () => {
               </p>
               {roleParam && (
                 <div className="mt-3 inline-block px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">
-                  Tailored for: <span className="text-indigo-600">{roleParam}</span>
+                  Tailored for: <span className="text-teal-600">{roleParam}</span>
                   {skillsParam && (
                     <span className="text-slate-500 font-normal"> · Skills: {skillsParam}</span>
                   )}
@@ -217,7 +217,7 @@ const InterviewPrep = () => {
               <span className="text-xs font-bold text-slate-500 block uppercase tracking-wider">
                 Practiced
               </span>
-              <span className="text-2xl font-black text-indigo-600">
+              <span className="text-2xl font-black text-teal-600">
                 {completedCount} / {QUESTIONS_DATA.length}
               </span>
             </div>
@@ -244,7 +244,7 @@ const InterviewPrep = () => {
                 onClick={() => setSelectedTopic(topic)}
                 className={`px-3 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap cursor-pointer ${
                   selectedTopic === topic
-                    ? "bg-indigo-600 text-white shadow-2xs"
+                    ? "bg-teal-600 text-white shadow-2xs"
                     : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
                 }`}
               >
