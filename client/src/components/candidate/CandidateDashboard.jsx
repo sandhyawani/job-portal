@@ -59,14 +59,14 @@ const CandidateDashboard = () => {
   const savedCount = savedJobs.length;
   const interviewCount = allAppliedJobs.filter((a) => a.status === "interview").length;
 
-  // Recommended jobs based on candidate profile match (top 4 for clean 2x2 grid)
+  // Recommended jobs based on candidate profile match (top 2 job suggestions)
   const recommendedJobs = [...allJobs]
     .map((job) => ({
       ...job,
       match: calculateJobMatch(job, user),
     }))
     .sort((a, b) => b.match.score - a.match.score)
-    .slice(0, 4);
+    .slice(0, 2);
 
   // Applications needing attention
   const attentionItems = [];
