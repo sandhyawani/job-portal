@@ -43,8 +43,8 @@ const ExternalTrackerTab = ({
           </Button>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
-          <table className="w-full text-left text-xs">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-x-auto shadow-2xs custom-scrollbar">
+          <table className="w-full text-left text-xs min-w-[580px]">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
               <tr>
                 <th className="p-3.5">Company</th>

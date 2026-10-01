@@ -26,8 +26,8 @@ const AppliedJobTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
-      <Table className="w-full text-left text-xs">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white custom-scrollbar">
+      <Table className="w-full text-left text-xs min-w-[580px]">
         <TableHeader className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
           <TableRow>
             <TableHead className="p-3.5">Date Applied</TableHead>
