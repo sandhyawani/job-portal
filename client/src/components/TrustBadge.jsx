@@ -1,22 +1,22 @@
-import { Badge } from "./ui/badge";
+import React from "react";
 import { ShieldAlert, ShieldCheck } from "lucide-react";
 
 const trustStyles = {
-  HIGH: "bg-green-100 text-green-700 border border-green-300",
-  MEDIUM: "bg-yellow-100 text-yellow-700 border border-yellow-300",
-  LOW: "bg-red-100 text-red-700 border border-red-300",
+  HIGH: "bg-emerald-50 text-emerald-700 border border-emerald-200",
+  MEDIUM: "bg-amber-50 text-amber-700 border border-amber-200",
+  LOW: "bg-rose-50 text-rose-700 border border-rose-200",
 };
 
 const trustLabel = {
-  HIGH: "Verified Employer",
+  HIGH: "Verified",
   MEDIUM: "Partially Verified",
   LOW: "Unverified",
 };
 
 const trustMessage = {
-  HIGH: "We have verified this company's legal details. You can trust this is a real employer.",
-  MEDIUM: "This company is missing some official details. Apply with caution.",
-  LOW: "Warning: We could not verify this company's legal existence. Be careful.",
+  HIGH: "Verified company details. You can trust this is a real employer.",
+  MEDIUM: "Company is missing some official details. Apply with caution.",
+  LOW: "Unverified company. Exercise caution when applying.",
 };
 
 const TrustBadge = ({ trustLevel, showDetails = false }) => {
@@ -25,20 +25,20 @@ const TrustBadge = ({ trustLevel, showDetails = false }) => {
   const isHigh = trustLevel === "HIGH";
 
   return (
-    <div className="mt-1 space-y-1 max-w-xs" title={trustMessage[trustLevel]}>
-      <Badge
-        className={`flex items-center gap-1 w-fit font-semibold ${trustStyles[trustLevel]}`}
+    <div className="inline-flex flex-col shrink-0" title={trustMessage[trustLevel]}>
+      <span
+        className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md ${trustStyles[trustLevel]}`}
       >
         {isHigh ? (
-          <ShieldCheck size={14} />
+          <ShieldCheck size={11} className="text-emerald-600 shrink-0" />
         ) : (
-          <ShieldAlert size={14} />
+          <ShieldAlert size={11} className="text-amber-600 shrink-0" />
         )}
-        {trustLabel[trustLevel]}
-      </Badge>
+        <span>{trustLabel[trustLevel]}</span>
+      </span>
 
-      {(!isHigh || showDetails) && (
-        <p className={`text-[10px] leading-snug ${isHigh ? "text-green-600 font-medium" : "text-gray-500"}`}>
+      {showDetails && (
+        <p className={`text-[10px] leading-snug mt-1 max-w-xs ${isHigh ? "text-emerald-600 font-medium" : "text-slate-500"}`}>
           {isHigh ? "✓ " : "⚠ "}{trustMessage[trustLevel]}
         </p>
       )}
