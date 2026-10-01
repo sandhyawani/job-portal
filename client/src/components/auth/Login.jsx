@@ -62,84 +62,86 @@ const Login = () => {
     <div>
       <Navbar />
       {/* Add top padding to avoid overlap with fixed navbar */}
-      <div className="pt-24 flex items-center justify-center min-h-[80vh] px-4">
+      <div className="pt-20 pb-8 flex items-center justify-center min-h-[75vh] px-4">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-lg border border-gray-200 rounded-xl shadow-lg p-8 bg-white"
+          className="w-full max-w-md border border-slate-200 rounded-3xl shadow-lg p-6 sm:p-8 bg-white"
         >
-          <h1 className="font-bold text-3xl mb-10 text-center">Login</h1>
+          <h1 className="font-bold text-2xl sm:text-3xl mb-6 text-center text-slate-900 tracking-tight">Login</h1>
 
-          <div className="space-y-5">
+          <div className="space-y-4">
             {/* Email */}
-            <div>
-              <Label>Email</Label>
+            <div className="flex flex-col">
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Email</Label>
               <Input
                 type="email"
                 value={input.email}
                 name="email"
                 onChange={changeEventHandler}
                 placeholder="name@example.com"
-                className="h-11"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
+                required
               />
             </div>
 
             {/* Password */}
-            <div>
-              <Label>Password</Label>
+            <div className="flex flex-col">
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Password</Label>
               <Input
                 type="password"
                 value={input.password}
                 name="password"
                 onChange={changeEventHandler}
                 placeholder="••••••"
-                className="h-11"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
+                required
               />
             </div>
 
             {/* Role */}
-            <div>
-              <Label>Select Role</Label>
-              <RadioGroup className="flex items-center gap-8 mt-2">
-                <div className="flex items-center space-x-2">
-                  <Input
+            <div className="flex flex-col pt-1">
+              <Label className="text-xs font-semibold text-slate-700 mb-2">Select Role</Label>
+              <RadioGroup className="flex items-center gap-6">
+                <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+                  <input
                     type="radio"
                     name="role"
                     value="student"
                     checked={input.role === 'student'}
                     onChange={changeEventHandler}
-                    className="cursor-pointer"
+                    className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
-                  <Label>Student</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Input
+                  <span>Student</span>
+                </label>
+                <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+                  <input
                     type="radio"
                     name="role"
                     value="recruiter"
                     checked={input.role === 'recruiter'}
                     onChange={changeEventHandler}
-                    className="cursor-pointer"
+                    className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
-                  <Label>Recruiter</Label>
-                </div>
+                  <span>Recruiter</span>
+                </label>
               </RadioGroup>
             </div>
 
             {/* Button */}
             {loading ? (
-              <Button className="w-full h-11 rounded-xl bg-primary-600 text-white font-semibold" disabled>
+              <Button className="w-full h-10 rounded-xl bg-primary-600 text-white font-semibold mt-2" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
               </Button>
             ) : (
               <Button
                 type="submit"
-                className="w-full h-11 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-xs transition"
+                className="w-full h-10 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-xs transition mt-2"
               >
                 Sign In
               </Button>
             )}
 
-            <p className="text-xs text-center text-slate-500 mt-4">
+            <p className="text-xs text-center text-slate-500 mt-3">
               Don&apos;t have an account?{" "}
               <Link to="/signup" className="text-primary-600 font-semibold hover:underline">
                 Sign up

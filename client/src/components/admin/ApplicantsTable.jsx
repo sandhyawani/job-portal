@@ -108,17 +108,17 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
 
   return (
     <div>
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xs">
-        <Table className="w-full text-left text-xs">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xs custom-scrollbar">
+        <Table className="w-full text-left text-xs min-w-[720px]">
           <TableHeader className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
             <TableRow>
-              <TableHead className="p-3.5">Candidate</TableHead>
-              <TableHead className="p-3.5">Contact</TableHead>
-              <TableHead className="p-3.5">Skills</TableHead>
-              <TableHead className="p-3.5">Resume</TableHead>
-              <TableHead className="p-3.5">Date Applied</TableHead>
-              <TableHead className="p-3.5">Status</TableHead>
-              <TableHead className="p-3.5 text-right">Actions</TableHead>
+              <TableHead className="p-3.5 w-60">Candidate</TableHead>
+              <TableHead className="p-3.5 w-48">Contact</TableHead>
+              <TableHead className="p-3.5 w-40">Skills</TableHead>
+              <TableHead className="p-3.5 w-28">Resume</TableHead>
+              <TableHead className="p-3.5 w-28">Date Applied</TableHead>
+              <TableHead className="p-3.5 w-28">Status</TableHead>
+              <TableHead className="p-3.5 text-right w-20">Actions</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -130,21 +130,21 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
                 return (
                   <TableRow key={item._id} className="hover:bg-slate-50/60 transition">
                     {/* Candidate Name & Bio */}
-                    <TableCell className="p-3.5">
-                      <div className="flex items-center gap-2.5">
+                    <TableCell className="p-3.5 max-w-[240px]">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <img
                           src={profile.profilePhoto || "/default-avatar.png"}
                           alt={applicant?.fullname}
-                          className="w-8 h-8 rounded-full border border-slate-200 object-cover"
+                          className="w-8 h-8 rounded-full border border-slate-200 object-cover shrink-0"
                         />
-                        <div>
+                        <div className="min-w-0 flex-1">
                           <button
                             onClick={() => setSelectedCandidate(item)}
-                            className="font-bold text-slate-900 hover:text-primary-600 text-left block"
+                            className="font-bold text-slate-900 hover:text-primary-600 text-left block truncate w-full"
                           >
                             {applicant?.fullname || "Unknown"}
                           </button>
-                          <span className="text-[11px] text-slate-400 block line-clamp-1">
+                          <span className="text-[11px] text-slate-400 block truncate" title={profile.bio}>
                             {profile.bio || "No bio"}
                           </span>
                         </div>

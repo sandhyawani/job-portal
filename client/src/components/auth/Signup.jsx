@@ -73,122 +73,126 @@ const Signup = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto mt-10">
+      <div className="flex items-center justify-center max-w-7xl mx-auto pt-20 pb-8 px-4">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-md border border-gray-200 rounded-md p-6 my-10 shadow-sm bg-white"
+          className="w-full max-w-md border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-lg bg-white"
         >
-          <h1 className="font-bold text-2xl mb-6 text-center">Sign Up</h1>
+          <h1 className="font-bold text-2xl sm:text-3xl mb-6 text-center text-slate-900 tracking-tight">Create Account</h1>
 
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-3.5">
             {/* Full Name */}
             <div className="flex flex-col">
-              <Label>Full Name</Label>
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Full Name</Label>
               <Input
                 type="text"
                 name="fullname"
                 value={input.fullname}
                 onChange={changeEventHandler}
                 placeholder="John Doe"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
                 required
               />
             </div>
 
             {/* Email */}
             <div className="flex flex-col">
-              <Label>Email</Label>
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Email</Label>
               <Input
                 type="email"
                 name="email"
                 value={input.email}
                 onChange={changeEventHandler}
                 placeholder="john.doe@example.com"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
                 required
               />
             </div>
 
             {/* Phone Number */}
             <div className="flex flex-col">
-              <Label>Phone Number</Label>
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Phone Number</Label>
               <Input
                 type="text"
                 name="phoneNumber"
                 value={input.phoneNumber}
                 onChange={changeEventHandler}
                 placeholder="8080808080"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
                 required
               />
             </div>
 
             {/* Password */}
             <div className="flex flex-col">
-              <Label>Password</Label>
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Password</Label>
               <Input
                 type="password"
                 name="password"
                 value={input.password}
                 onChange={changeEventHandler}
                 placeholder="Enter password"
+                className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
                 required
               />
             </div>
 
             {/* Role */}
-            <div className="flex flex-col gap-3">
-              <Label>Role</Label>
-              <RadioGroup className="flex items-center gap-6 mt-2">
-                <div className="flex items-center gap-2">
-                  <Input
+            <div className="flex flex-col pt-1">
+              <Label className="text-xs font-semibold text-slate-700 mb-2">Select Role</Label>
+              <RadioGroup className="flex items-center gap-6">
+                <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+                  <input
                     type="radio"
                     name="role"
                     value="student"
                     checked={input.role === "student"}
                     onChange={changeEventHandler}
-                    className="cursor-pointer"
+                    className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
-                  <Label>Student</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Input
+                  <span>Student</span>
+                </label>
+                <label className="flex items-center gap-2 text-xs font-medium text-slate-700 cursor-pointer">
+                  <input
                     type="radio"
                     name="role"
                     value="recruiter"
                     checked={input.role === "recruiter"}
                     onChange={changeEventHandler}
-                    className="cursor-pointer"
+                    className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
-                  <Label>Recruiter</Label>
-                </div>
+                  <span>Recruiter</span>
+                </label>
               </RadioGroup>
             </div>
 
             {/* File Upload */}
-            <div className="flex flex-col">
-              <Label>Profile Photo</Label>
+            <div className="flex flex-col pt-1">
+              <Label className="text-xs font-semibold text-slate-700 mb-1.5">Profile Photo (Optional)</Label>
               <Input
                 type="file"
                 accept="image/*,application/pdf"
                 onChange={changeFileHandler}
-                className="cursor-pointer"
+                className="cursor-pointer h-10 rounded-xl border-slate-200 text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700"
               />
             </div>
           </div>
 
           {/* Submit Button */}
           {loading ? (
-            <Button className="w-full my-6 flex items-center justify-center rounded-xl bg-primary-600 text-white font-semibold" disabled>
+            <Button className="w-full mt-5 h-10 flex items-center justify-center rounded-xl bg-primary-600 text-white font-semibold" disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
             </Button>
           ) : (
             <Button
               type="submit"
-              className="w-full my-6 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 rounded-xl shadow-xs transition"
+              className="w-full mt-5 h-10 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold shadow-xs transition"
             >
               Create Account
             </Button>
           )}
 
-          <p className="text-xs text-center text-slate-500 mt-4">
+          <p className="text-xs text-center text-slate-500 mt-3">
             Already have an account?{" "}
             <Link to="/login" className="text-primary-600 font-semibold hover:underline">
               Sign in
