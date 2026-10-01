@@ -297,17 +297,20 @@ const AdminInterviewQuestions = () => {
 
             {/* Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 overflow-y-auto">
-                    <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-                            <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs" onClick={() => setIsModalOpen(false)}></div>
-                        </div>
-                        <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl w-full border border-slate-200">
-                            <form onSubmit={handleSave}>
-                                <div className="bg-white px-6 pt-6 pb-5">
-                                    <h3 className="text-xl font-bold text-slate-900 mb-5">
-                                        {editingQuestion ? 'Edit Interview Question' : 'Add New Interview Question'}
-                                    </h3>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                    {/* Backdrop */}
+                    <div 
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+                        onClick={() => setIsModalOpen(false)}
+                    />
+                    
+                    {/* Modal Dialog Content */}
+                    <div className="relative z-10 bg-white rounded-2xl text-left shadow-2xl w-full max-w-3xl border border-slate-200 max-h-[90vh] overflow-y-auto my-auto">
+                        <form onSubmit={handleSave}>
+                            <div className="bg-white px-6 pt-6 pb-5">
+                                <h3 className="text-xl font-bold text-slate-900 mb-5">
+                                    {editingQuestion ? 'Edit Interview Question' : 'Add New Interview Question'}
+                                </h3>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="col-span-2">
                                             <label className="block text-sm font-semibold text-slate-700 mb-1">Question *</label>
@@ -451,7 +454,6 @@ const AdminInterviewQuestions = () => {
                             </form>
                         </div>
                     </div>
-                </div>
             )}
         </div>
     );

@@ -256,45 +256,47 @@ const AdminRecruiters = () => {
 
             {/* Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 overflow-y-auto">
-                    <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-                            <div className="absolute inset-0 bg-gray-500 opacity-75" onClick={() => setIsModalOpen(false)}></div>
-                        </div>
-                        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
-                            <form onSubmit={handleSave}>
-                                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                                        Edit Recruiter
-                                    </h3>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                                            <input type="text" name="fullname" required value={formData.fullname} onChange={handleInputChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                                            <input type="text" name="phoneNumber" required value={formData.phoneNumber} onChange={handleInputChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
-                                        </div>
-                                        <div className="flex items-center mt-2">
-                                            <input type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange} className="h-4 w-4 text-primary-600 border-gray-300 rounded" />
-                                            <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">Account Active (can login)</label>
-                                        </div>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                    {/* Backdrop */}
+                    <div 
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+                        onClick={() => setIsModalOpen(false)}
+                    />
+                    
+                    {/* Modal Dialog Content */}
+                    <div className="relative z-10 bg-white rounded-2xl text-left shadow-2xl w-full max-w-lg border border-slate-200 max-h-[90vh] overflow-y-auto my-auto">
+                        <form onSubmit={handleSave}>
+                            <div className="bg-white px-6 pt-6 pb-5">
+                                <h3 className="text-xl font-bold text-slate-900 mb-4">
+                                    Edit Recruiter
+                                </h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-slate-700 mb-1">Full Name</label>
+                                        <input type="text" name="fullname" required value={formData.fullname} onChange={handleInputChange} className="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
                                     </div>
-                                    <div className="mt-4 bg-gray-50 p-3 rounded-md text-sm text-gray-500">
-                                        Note: Password and Email cannot be changed here. Role is permanently set to Recruiter.
+                                    <div>
+                                        <label className="block text-sm font-semibold text-slate-700 mb-1">Phone Number</label>
+                                        <input type="text" name="phoneNumber" required value={formData.phoneNumber} onChange={handleInputChange} className="w-full border border-slate-200 rounded-xl p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                                    </div>
+                                    <div className="flex items-center mt-2">
+                                        <input type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange} className="h-4 w-4 text-primary-600 border-slate-300 rounded focus:ring-primary-500" />
+                                        <label htmlFor="isActive" className="ml-2 block text-sm font-medium text-slate-700">Account Active (can login)</label>
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Save Changes
-                                    </button>
-                                    <button type="button" onClick={() => setIsModalOpen(false)} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Cancel
-                                    </button>
+                                <div className="mt-4 bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-500">
+                                    Note: Password and Email cannot be changed here. Role is permanently set to Recruiter.
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div className="bg-slate-50 px-6 py-4 sm:flex sm:flex-row-reverse gap-3 border-t border-slate-200 rounded-b-2xl">
+                                <button type="submit" className="w-full sm:w-auto inline-flex justify-center items-center rounded-xl px-5 py-2.5 bg-primary-600 text-sm font-semibold text-white hover:bg-primary-700 transition shadow-xs cursor-pointer">
+                                    Save Changes
+                                </button>
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="w-full sm:w-auto mt-2 sm:mt-0 inline-flex justify-center rounded-xl border border-slate-300 px-4 py-2.5 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
