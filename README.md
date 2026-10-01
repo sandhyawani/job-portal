@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  <a href="https://job-portal-flax-omega.vercel.app" target="_blank"><img src="https://img.shields.io/badge/🔴_LIVE-job--portal--flax--omega.vercel.app-6366f1?style=for-the-badge&labelColor=0f172a" alt="Live Demo"/></a>
+  <a href="https://job-portal-flax-omega.vercel.app" target="_blank"><img src="https://img.shields.io/badge/🔴_LIVE-/job-portal-lovat-sigma.vercel.app/?style=for-the-badge&labelColor=0f172a" alt="Live Demo"/></a>
   <img src="https://img.shields.io/badge/version-2.0.0-818cf8?style=for-the-badge&labelColor=0f172a" alt="Version"/>
   <img src="https://img.shields.io/badge/license-MIT-a5b4fc?style=for-the-badge&labelColor=0f172a" alt="License"/>
 </p>
