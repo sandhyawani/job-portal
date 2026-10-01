@@ -28,7 +28,7 @@ const AdminLogin = () => {
     try {
       dispatch(setLoading(true))
       // Hardcode role to admin so it's completely hidden from the UI
-      const res = await authApi.post('/user/login', { ...input, role: 'admin' })
+      const res = await authApi.login({ ...input, role: 'admin' })
       if (res.data.success) {
         dispatch(setUser(res.data.user))
         navigate('/admin/dashboard')
@@ -36,7 +36,7 @@ const AdminLogin = () => {
       }
     } catch (error) {
       console.log(error)
-      toast.error(error.response?.data?.message || 'Login failed')
+      toast.error(error.friendlyMessage || error.response?.data?.message || error.message || 'Login failed')
     } finally {
       dispatch(setLoading(false))
     }
