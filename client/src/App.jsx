@@ -126,7 +126,12 @@ const appRouter = createBrowserRouter([
     element: <CompanyDetail />,
     errorElement: <RouteErrorBoundary />,
   },
-  // Recruiter routes
+  // Recruiter & Admin routes
+  {
+    path: "/admin",
+    element: <Navigate to="/admin/dashboard" replace />,
+    errorElement: <RouteErrorBoundary />,
+  },
   {
     path: "/admin/dashboard",
     element: (
