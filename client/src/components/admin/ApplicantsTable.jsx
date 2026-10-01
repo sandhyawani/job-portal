@@ -34,6 +34,7 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 const PIPELINE_STATUSES = [
   { value: "review", label: "Move to Review" },
@@ -132,11 +133,15 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
                     {/* Candidate Name & Bio */}
                     <TableCell className="p-3.5 max-w-[240px]">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <img
-                          src={profile.profilePhoto || "/default-avatar.png"}
-                          alt={applicant?.fullname}
-                          className="w-8 h-8 rounded-full border border-slate-200 object-cover shrink-0"
-                        />
+                        <Avatar className="w-8 h-8 rounded-full border border-slate-200 shrink-0">
+                          <AvatarImage
+                            src={profile.profilePhoto}
+                            alt={applicant?.fullname || "Candidate"}
+                          />
+                          <AvatarFallback className="bg-primary-600 text-white font-bold text-xs uppercase">
+                            {applicant?.fullname?.charAt(0) || "U"}
+                          </AvatarFallback>
+                        </Avatar>
                         <div className="min-w-0 flex-1">
                           <button
                             onClick={() => setSelectedCandidate(item)}
@@ -281,14 +286,15 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
             <div>
               <DialogHeader className="border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={
-                      selectedCandidate.applicant?.profile?.profilePhoto ||
-                      "/default-avatar.png"
-                    }
-                    alt={selectedCandidate.applicant?.fullname}
-                    className="w-12 h-12 rounded-full border object-cover"
-                  />
+                  <Avatar className="w-12 h-12 rounded-full border border-slate-200 shrink-0">
+                    <AvatarImage
+                      src={selectedCandidate.applicant?.profile?.profilePhoto}
+                      alt={selectedCandidate.applicant?.fullname || "Candidate"}
+                    />
+                    <AvatarFallback className="bg-primary-600 text-white font-bold text-base uppercase">
+                      {selectedCandidate.applicant?.fullname?.charAt(0) || "U"}
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
                     <DialogTitle className="text-base font-bold text-slate-900">
                       {selectedCandidate.applicant?.fullname}
