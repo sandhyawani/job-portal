@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Building2, ExternalLink, HelpCircle } from "lucide-react";
+import { Building2, ExternalLink, HelpCircle, Send, Users, Activity, Check } from "lucide-react";
 import TrustBadge from "../TrustBadge";
 import { normalizeUrl, getValidImageUrl, formatDate } from "@/utils/formatters";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../ui/dialog";
+import { Button } from "../ui/button";
 
 const JobSidebar = ({ company, singleJob, workMode }) => {
+  const [showProcessModal, setShowProcessModal] = useState(false);
+
   return (
     <div className="space-y-6">
       {company && (
@@ -83,7 +88,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
         </div>
       )}
 
-      {/* Quick Job Summary with Application Info Popover */}
+      {/* Quick Job Summary with clean Modal trigger */}
       <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
         <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
           Job Overview
@@ -116,53 +121,87 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
           </div>
         </div>
 
-        {/* Informative Popover instead of taking up full sidebar height */}
+        {/* Clean Process Modal Trigger */}
         <div className="mt-4 pt-3 border-t border-slate-100">
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="w-full text-xs font-semibold text-primary-600 hover:text-primary-800 flex items-center justify-center gap-1.5 py-1.5 rounded-xl hover:bg-primary-50/60 transition cursor-pointer">
-                <HelpCircle size={14} /> What happens when you apply?
-              </button>
-            </PopoverTrigger>
-            <PopoverContent
-              align="end"
-              className="w-80 sm:w-88 bg-white rounded-2xl border border-slate-200 p-4 shadow-lg text-xs space-y-3 z-50"
-            >
-              <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
-                <h4 className="font-bold text-slate-900 text-sm">
-                  What happens when you apply?
-                </h4>
-              </div>
-              <ul className="space-y-2.5 text-slate-600 text-xs">
-                <li className="flex items-start gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-                    1
-                  </span>
-                  <span>
-                    Your profile, contact details, and resume are delivered directly to the recruiter.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-                    2
-                  </span>
-                  <span>
-                    The hiring team reviews your credentials and updates your application status.
-                  </span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-                    3
-                  </span>
-                  <span>
-                    Track stage progress, interview times, and recruiter feedback in your Application Tracker.
-                  </span>
-                </li>
-              </ul>
-            </PopoverContent>
-          </Popover>
+          <button
+            type="button"
+            onClick={() => setShowProcessModal(true)}
+            className="w-full text-xs font-semibold text-primary-600 hover:text-primary-800 flex items-center justify-center gap-1.5 py-1.5 rounded-xl hover:bg-primary-50/70 transition cursor-pointer"
+          >
+            <HelpCircle size={14} /> What happens when you apply?
+          </button>
         </div>
       </div>
+
+      {/* Proper Centered Modal Popup for Application Steps */}
+      <Dialog open={showProcessModal} onOpenChange={setShowProcessModal}>
+        <DialogContent className="sm:max-w-md bg-white rounded-3xl p-6 sm:p-7 shadow-xl">
+          <DialogHeader>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold w-fit mb-2">
+              <HelpCircle size={13} /> Application Guide
+            </div>
+            <DialogTitle className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+              What happens when you apply?
+            </DialogTitle>
+            <DialogDescription className="text-xs text-slate-500">
+              Transparent 3-step hiring process from application to interview.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3.5 my-3 text-xs">
+            <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="w-7 h-7 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                1
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-0.5">
+                  Direct Profile Delivery
+                </h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Your contact information, skills, and resume are delivered directly to the recruiter's portal.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="w-7 h-7 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                2
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-0.5">
+                  Recruiter Screening & Review
+                </h4>
+                <p className="text-slate-600 leading-relaxed">
+                  The hiring team reviews your credentials and updates your application status (Under Review, Shortlisted, or Interview).
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="w-7 h-7 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                3
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xs mb-0.5">
+                  Live Stage Tracking & Prep
+                </h4>
+                <p className="text-slate-600 leading-relaxed">
+                  Track stage progress, scheduled interview calls, and recruiter feedback in your Application Tracker.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-2 flex justify-end">
+            <Button
+              onClick={() => setShowProcessModal(false)}
+              className="rounded-xl px-5 text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white"
+            >
+              Got it
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
