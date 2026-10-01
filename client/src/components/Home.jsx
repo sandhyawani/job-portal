@@ -60,8 +60,8 @@ const Home = () => {
         <HeroSection />
 
         {/* Categories Section */}
-        <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto border-b border-slate-200/80">
-          <div className="mb-6">
+        <section className="py-8 sm:py-10 px-4 sm:px-6 max-w-7xl mx-auto border-b border-slate-200/80">
+          <div className="mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
               Explore by Category
             </h2>
@@ -70,14 +70,14 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {POPULAR_CATEGORIES.map((cat, i) => (
               <div
                 key={i}
                 onClick={() => handleCategoryClick(cat.name)}
-                className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-primary-400 hover:shadow-xs transition cursor-pointer group"
+                className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-primary-400 hover:shadow-xs transition cursor-pointer group"
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-1.5">
                   <h3 className="text-sm font-bold text-slate-900 group-hover:text-primary-600 transition">
                     {cat.name}
                   </h3>
@@ -96,9 +96,9 @@ const Home = () => {
         <LatestJobs />
 
         {/* How It Works (Candidate Workflow: Search → Discover → Match → Save → Apply → Track → Prepare) */}
-        <section className="py-16 px-4 sm:px-6 bg-white border-y border-slate-200/80">
+        <section className="py-10 sm:py-12 px-4 sm:px-6 bg-white border-y border-slate-200/80">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center max-w-xl mx-auto mb-12">
+            <div className="text-center max-w-xl mx-auto mb-8">
               <span className="text-xs font-bold uppercase tracking-wider text-primary-600 block mb-1">
                 Product Experience
               </span>
@@ -110,13 +110,13 @@ const Home = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold mb-4">
-                    <Target size={20} />
+                  <div className="w-9 h-9 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold mb-3">
+                    <Target size={18} />
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-1.5">
+                  <h3 className="text-sm font-bold text-slate-900 mb-1">
                     1. Match Analysis
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -125,12 +125,12 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold mb-4">
-                    <Bookmark size={20} />
+                  <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold mb-3">
+                    <Bookmark size={18} />
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-1.5">
+                  <h3 className="text-sm font-bold text-slate-900 mb-1">
                     2. Persistent Pipeline
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -139,12 +139,12 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold mb-4">
-                    <Layers size={20} />
+                  <div className="w-9 h-9 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold mb-3">
+                    <Layers size={18} />
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-1.5">
+                  <h3 className="text-sm font-bold text-slate-900 mb-1">
                     3. Live Tracker
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -153,12 +153,12 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-4">
-                    <GraduationCap size={20} />
+                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-3">
+                    <GraduationCap size={18} />
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-1.5">
+                  <h3 className="text-sm font-bold text-slate-900 mb-1">
                     4. Interview Prep
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -171,17 +171,17 @@ const Home = () => {
         </section>
 
         {/* Recruiter CTA Card */}
-        <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto w-full">
-          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-800/90 p-8 sm:p-12 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <section className="py-8 sm:py-10 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-800/90 p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
             <div className="max-w-xl text-center lg:text-left">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/10 text-primary-400 border border-primary-500/20 mb-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/10 text-primary-400 border border-primary-500/20 mb-2.5">
                 <Briefcase size={13} />
                 For Recruiters & Hiring Teams
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 Hire Qualified Talent Faster
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 mt-1.5 leading-relaxed">
                 Create verified company profiles, post job openings, screen applicants by verified skill match, and streamline your hiring pipeline.
               </p>
             </div>

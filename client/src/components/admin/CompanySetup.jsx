@@ -84,9 +84,9 @@ const CompanySetup = () => {
       {/* Navbar */}
       <Navbar />
 
-      <div className="max-w-3xl mx-auto px-6 pt-28 pb-12">
+      <div className="max-w-3xl mx-auto px-6 pt-20 pb-8">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-3 mb-5">
           <Button
             onClick={() => navigate("/admin/companies")}
             variant="outline"

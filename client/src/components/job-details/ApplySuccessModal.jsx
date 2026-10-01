@@ -20,19 +20,19 @@ const ApplySuccessModal = ({
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-white rounded-3xl p-6 sm:p-8 text-center">
-        <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={32} />
+      <DialogContent className="sm:max-w-md bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-center max-h-[90vh] overflow-y-auto">
+        <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+          <CheckCircle2 size={28} />
         </div>
 
-        <DialogTitle className="text-xl font-black text-slate-900">
+        <DialogTitle className="text-lg sm:text-xl font-bold text-slate-900">
           Application Submitted!
         </DialogTitle>
-        <DialogDescription className="text-xs text-slate-500 mt-1">
+        <DialogDescription className="text-xs text-slate-500 mt-0.5">
           Your application has been delivered directly to the hiring team.
         </DialogDescription>
 
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 my-5 text-left text-xs space-y-2">
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 my-3 text-left text-xs space-y-1.5">
           <div className="flex justify-between">
             <span className="text-slate-400">Position:</span>
             <span className="font-bold text-slate-900">{singleJob?.title}</span>
@@ -53,8 +53,8 @@ const ApplySuccessModal = ({
           </div>
         </div>
 
-        <div className="bg-primary-50/60 border border-primary-100 rounded-2xl p-3.5 mb-6 text-left text-xs text-slate-600 leading-relaxed">
-          <span className="font-bold text-primary-900 block mb-1">Next steps:</span>
+        <div className="bg-primary-50/60 border border-primary-100 rounded-xl p-3 mb-4 text-left text-xs text-slate-600 leading-relaxed">
+          <span className="font-bold text-primary-900 block mb-0.5">Next steps:</span>
           <p className="text-[11px] text-slate-600">
             You will be notified as soon as the recruiter reviews your application or schedules an interview round.
           </p>

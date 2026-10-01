@@ -36,12 +36,12 @@ const Profile = () => {
   const scoreData = calculateProfileScore(user);
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-4xl mx-auto pt-24 px-4 sm:px-6">
+      <main className="max-w-4xl mx-auto pt-20 px-4 sm:px-6">
         {/* Profile Card Header */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-6">
+        <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs mb-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
             <div className="flex items-center gap-5">
               <Avatar className="h-24 w-24 rounded-2xl border-2 border-slate-200 shadow-xs">

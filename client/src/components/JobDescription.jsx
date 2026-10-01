@@ -208,10 +208,10 @@ const JobDescription = () => {
   const match = isCandidate ? calculateJobMatch(singleJob, user) : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto pt-24 px-4 sm:px-6">
+      <main className="max-w-6xl mx-auto pt-20 px-4 sm:px-6">
         <JobHeader
           singleJob={singleJob}
           company={company}

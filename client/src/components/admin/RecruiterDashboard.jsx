@@ -68,12 +68,12 @@ const RecruiterDashboard = () => {
   });
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+      <main className="max-w-7xl mx-auto pt-20 px-4 sm:px-6">
         {/* Recruiter Workspace Header */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
+        <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs mb-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-3">
@@ -170,7 +170,7 @@ const RecruiterDashboard = () => {
 
         {/* Candidates Needing Attention Section */}
         {unreviewedApplicants.length > 0 && (
-          <div className="bg-amber-50/60 border border-amber-200/90 rounded-3xl p-6 sm:p-7 shadow-xs mb-8">
+          <div className="bg-amber-50/60 border border-amber-200/90 rounded-3xl p-5 sm:p-6 shadow-xs mb-5">
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-amber-200/60">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
@@ -228,7 +228,7 @@ const RecruiterDashboard = () => {
 
         {/* Upcoming Interviews Schedule */}
         {upcomingInterviews.length > 0 && (
-          <div className="bg-primary-50/60 border border-primary-200/90 rounded-3xl p-6 sm:p-7 shadow-xs mb-8">
+          <div className="bg-primary-50/60 border border-primary-200/90 rounded-3xl p-5 sm:p-6 shadow-xs mb-5">
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-primary-200/60">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold">
@@ -290,7 +290,7 @@ const RecruiterDashboard = () => {
         )}
 
         {/* Posted Jobs */}
-        <div id="applicants" className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
+        <div id="applicants" className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs mb-5">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
             <div>
               <h2 className="text-lg font-bold text-slate-900">Your Posted Jobs</h2>

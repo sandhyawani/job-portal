@@ -47,13 +47,13 @@ const CompanyCreate = () => {
       {/* Navbar */}
       <Navbar />
 
-      <div className="max-w-3xl mx-auto px-6 pt-28 pb-16">
+      <div className="max-w-3xl mx-auto px-6 pt-20 pb-8">
         {/* Page heading */}
-        <div className="mb-10 text-center">
+        <div className="mb-6 text-center">
           <h1 className="font-extrabold text-3xl md:text-4xl tracking-tight text-gray-900">
             Create Company
           </h1>
-          <p className="text-gray-500 mt-3 max-w-lg mx-auto">
+          <p className="text-gray-500 mt-1.5 max-w-lg mx-auto">
             Add a company to start posting and managing jobs.
           </p>
         </div>

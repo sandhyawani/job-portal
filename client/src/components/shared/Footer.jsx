@@ -11,10 +11,10 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-800/80 pt-14 pb-20 md:pb-12">
+    <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-800/80 pt-10 pb-16 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand & Mission */}
           <div className="space-y-4">
             <Link to="/" className="inline-flex items-center gap-2.5">
@@ -170,7 +170,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
+        <div className="mt-8 pt-5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
             <span>© {new Date().getFullYear()} JobPortal Workspace. All rights reserved.</span>
             <span className="hidden sm:inline text-slate-600">·</span>

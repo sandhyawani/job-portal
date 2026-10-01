@@ -44,10 +44,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-white border-b border-slate-200/80 pt-28 pb-16 px-4 sm:px-6">
+    <section className="relative bg-white border-b border-slate-200/80 pt-20 pb-10 sm:pt-22 sm:pb-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto text-center">
         {/* Workspace Pill */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-xs font-semibold mb-6">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-xs font-semibold mb-4">
           <Sparkles size={13} className="text-primary-600" />
           <span>The Only Platform with Verified Company Trust Scores</span>
         </div>
@@ -57,14 +57,14 @@ const HeroSection = () => {
           Find work at <span className="text-primary-600">verified</span> companies.
         </h1>
 
-        <p className="mt-3 text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-normal">
+        <p className="mt-2.5 text-base sm:text-lg text-slate-600 max-w-xl mx-auto font-normal">
           Stop applying to fake listings. We verify every company's official domain, registration, and web presence to calculate a Trust Score before you apply.
         </p>
 
         {/* Search Bar */}
         <form
           onSubmit={handleSearch}
-          className="mt-8 flex flex-col sm:flex-row items-center gap-2 p-2 bg-white rounded-2xl sm:rounded-full border border-slate-300 shadow-md hover:border-slate-400 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-600 transition"
+          className="mt-6 flex flex-col sm:flex-row items-center gap-2 p-2 bg-white rounded-2xl sm:rounded-full border border-slate-300 shadow-md hover:border-slate-400 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-600 transition"
         >
           {/* Job Title / Skill */}
           <div className="flex items-center gap-2.5 flex-1 w-full px-4 py-2">
@@ -102,7 +102,7 @@ const HeroSection = () => {
         </form>
 
         {/* Popular searches chips */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
           <span className="text-slate-500 font-medium">Popular:</span>
           {POPULAR_SEARCHES.map((item) => (
             <button

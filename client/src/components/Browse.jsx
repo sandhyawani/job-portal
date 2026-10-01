@@ -20,11 +20,11 @@ const Browse = () => {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-8">
       <Navbar />
 
-      <main className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <main className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Browse Open Positions

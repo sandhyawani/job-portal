@@ -103,12 +103,12 @@ const CandidateDashboard = () => {
   }
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+      <main className="max-w-7xl mx-auto pt-20 px-4 sm:px-6">
         {/* Welcome Banner */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
+        <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs mb-5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-3">
@@ -206,11 +206,11 @@ const CandidateDashboard = () => {
         </div>
 
         {/* Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Main Left Section (2 cols) */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-5">
             {/* Applications Needing Attention */}
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+            <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-bold text-slate-900">
                   Applications Needing Attention

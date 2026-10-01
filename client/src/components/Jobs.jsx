@@ -133,12 +133,12 @@ const Jobs = () => {
     (filters.datePosted && filters.datePosted !== "all");
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20 md:pb-12">
+    <div className="bg-slate-50 min-h-screen pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
+      <main className="max-w-7xl mx-auto pt-20 px-4 sm:px-6">
         {/* Top Header & Search Bar */}
-        <div className="mb-6">
+        <div className="mb-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">

@@ -11,8 +11,8 @@ const LatestJobs = () => {
   const displayJobs = allJobs.slice(0, 6);
 
   return (
-    <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+    <section className="py-8 sm:py-10 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-5">
         <div>
           <div className="flex items-center gap-1.5 text-xs font-bold text-primary-600 uppercase tracking-wider mb-1">
             <Sparkles size={13} />

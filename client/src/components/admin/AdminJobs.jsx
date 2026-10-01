@@ -21,11 +21,11 @@ const AdminJobs = () => {
   }, [input, dispatch]);
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-8">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto pt-24 px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <main className="max-w-7xl mx-auto pt-20 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-bold mb-2">
               <Briefcase size={14} /> Recruiter Operations

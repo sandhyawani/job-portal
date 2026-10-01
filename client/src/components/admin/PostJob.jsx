@@ -111,10 +111,10 @@ const PostJob = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20 md:pb-16">
+    <div className="min-h-screen bg-slate-50 pb-20 md:pb-8">
       <Navbar />
 
-      <main className="pt-24 pb-12 max-w-3xl mx-auto px-4 sm:px-6">
+      <main className="pt-20 pb-8 max-w-3xl mx-auto px-4 sm:px-6">
         <Link
           to="/admin/jobs"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-primary-600 mb-4 transition"
