@@ -29,7 +29,7 @@
 </p>
 
 > ### 🌟 Live Production Website
-> 🚀 **Explore the Live App:** **[https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)**  
+> 🚀 **Explore the Live App:** **[https://job-portal-flax-omega.vercel.app](https:///job-portal-lovat-sigma.vercel.app/)**  
 > 💻 **GitHub Repository:** **[https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal)**  
 > 
 > *Test candidate application flows, explore verified recruiter hiring pipelines, and practice interview prep questions live!*
