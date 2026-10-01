@@ -170,31 +170,32 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Recruiter CTA Banner */}
-        <section className="py-14 px-4 sm:px-6 bg-slate-900 text-white">
-          <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div>
-              <span className="text-xs font-bold text-primary-400 uppercase tracking-wider block mb-1">
-                For Recruiters & Hiring Managers
+        {/* Recruiter CTA Card */}
+        <section className="py-12 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+          <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-800/90 p-8 sm:p-12 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 relative overflow-hidden">
+            <div className="max-w-xl text-center lg:text-left">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary-500/10 text-primary-400 border border-primary-500/20 mb-3">
+                <Briefcase size={13} />
+                For Recruiters & Hiring Teams
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 Hire Qualified Talent Faster
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-lg">
-                Create verified company profiles, post job openings, filter applicants by skills, and manage your hiring pipeline.
+              <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+                Create verified company profiles, post job openings, screen applicants by verified skill match, and streamline your hiring pipeline.
               </p>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
               <Link to="/signup">
-                <Button className="rounded-xl px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold shadow-md">
-                  Recruiter Sign Up
+                <Button className="rounded-xl px-6 py-2.5 bg-primary-600 hover:bg-primary-500 text-white text-xs font-bold shadow-md transition-all">
+                  Post a Job / Sign Up
                 </Button>
               </Link>
               <Link to="/login">
                 <Button
                   variant="outline"
-                  className="rounded-xl px-4 py-2.5 border-slate-700 text-slate-200 hover:bg-slate-800 text-xs font-semibold"
+                  className="rounded-xl px-5 py-2.5 border-slate-700 text-slate-200 hover:bg-slate-800/80 hover:text-white text-xs font-semibold transition"
                 >
                   Recruiter Login
                 </Button>
