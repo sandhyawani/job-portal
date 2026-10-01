@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import MobileBottomNav from "../shared/MobileBottomNav";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import useGetSavedJobs from "@/hooks/useGetSavedJobs";
 import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 import { calculateProfileScore } from "@/utils/jobMatcher";
 import { calculateJobMatch } from "@/utils/jobMatcher";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import {
   Sparkles,
   Send,
@@ -17,20 +16,13 @@ import {
   Calendar,
   CheckCircle2,
   AlertTriangle,
-  ArrowRight,
-  Search,
-  MapPin,
-  Briefcase,
   UserCheck,
-  Edit,
   GraduationCap,
 } from "lucide-react";
 import Job from "../Job";
 import UpdateProfileDialog from "../UpdateProfileDialog";
 
 const CandidateDashboard = () => {
-  const navigate = useNavigate();
-
   const { user } = useSelector((store) => store.auth);
   const { allJobs = [], savedJobs = [] } = useSelector((store) => store.job);
   const { allAppliedJobs = [] } = useSelector((store) => store.job);
@@ -40,8 +32,6 @@ const CandidateDashboard = () => {
   useGetAppliedJobs();
 
   const [updateOpen, setUpdateOpen] = useState(false);
-  const [searchRole, setSearchRole] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -111,11 +101,6 @@ const CandidateDashboard = () => {
       }
     }
   }
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    navigate(`/jobs?keyword=${encodeURIComponent(searchRole)}&location=${encodeURIComponent(searchLocation)}`);
-  };
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20 md:pb-16">
@@ -224,41 +209,6 @@ const CandidateDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Left Section (2 cols) */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Quick Search */}
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
-              <h2 className="text-base font-bold text-slate-900 mb-3">
-                Continue Your Search
-              </h2>
-              <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-2">
-                <div className="flex items-center gap-2 flex-1 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/50">
-                  <Search size={16} className="text-slate-400 shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Role or skill (e.g. Python Developer)"
-                    value={searchRole}
-                    onChange={(e) => setSearchRole(e.target.value)}
-                    className="w-full text-xs text-slate-900 bg-transparent outline-none"
-                  />
-                </div>
-                <div className="flex items-center gap-2 sm:w-48 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/50">
-                  <MapPin size={16} className="text-slate-400 shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="City or Remote"
-                    value={searchLocation}
-                    onChange={(e) => setSearchLocation(e.target.value)}
-                    className="w-full text-xs text-slate-900 bg-transparent outline-none"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="rounded-xl px-5 text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white"
-                >
-                  Search Jobs
-                </Button>
-              </form>
-            </div>
-
             {/* Applications Needing Attention */}
             <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
               <div className="flex items-center justify-between mb-4">
