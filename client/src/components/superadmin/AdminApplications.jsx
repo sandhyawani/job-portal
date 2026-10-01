@@ -4,10 +4,12 @@ import { ADMIN_API_END_POINT } from '@/utils/constant';
 import Navbar from '../shared/Navbar';
 import { Search, Edit, Trash2, FileText, CheckCircle, Clock, XCircle, Info, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
+import ResumeModal from '../shared/ResumeModal';
 
 const AdminApplications = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [viewingResume, setViewingResume] = useState(null);
     
     // Filters and pagination
     const [search, setSearch] = useState('');
@@ -177,9 +179,17 @@ const AdminApplications = () => {
                                                     <span className="text-sm font-medium text-gray-900">{app.applicant?.fullname || 'Unknown'}</span>
                                                     <span className="text-xs text-gray-500">{app.applicant?.email || 'No email'}</span>
                                                     {app.applicant?.profile?.resume && (
-                                                        <a href={app.applicant.profile.resume} target="_blank" rel="noopener noreferrer" className="text-xs text-primary-600 hover:underline mt-1 flex items-center">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setViewingResume({
+                                                                url: app.applicant.profile.resume,
+                                                                name: app.applicant.fullname,
+                                                                originalName: app.applicant.profile.resumeOriginalName || `${app.applicant.fullname || 'Candidate'}_Resume.pdf`
+                                                            })}
+                                                            className="text-xs text-primary-600 hover:underline mt-1 flex items-center cursor-pointer"
+                                                        >
                                                             <FileText size={12} className="mr-1" /> View Resume
-                                                        </a>
+                                                        </button>
                                                     )}
                                                 </div>
                                             </td>
@@ -310,6 +320,14 @@ const AdminApplications = () => {
                     </div>
                 </div>
             )}
+
+            <ResumeModal
+                open={Boolean(viewingResume)}
+                onClose={() => setViewingResume(null)}
+                resumeUrl={viewingResume?.url}
+                candidateName={viewingResume?.name}
+                originalName={viewingResume?.originalName}
+            />
         </div>
     );
 };

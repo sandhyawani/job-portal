@@ -35,6 +35,7 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import ResumeModal from "../shared/ResumeModal";
 
 const PIPELINE_STATUSES = [
   { value: "review", label: "Move to Review" },
@@ -47,6 +48,7 @@ const PIPELINE_STATUSES = [
 
 const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [viewingResume, setViewingResume] = useState(null);
   const [statusModalApp, setStatusModalApp] = useState(null);
   const [targetStatus, setTargetStatus] = useState("");
   const [interviewDate, setInterviewDate] = useState("");
@@ -194,15 +196,22 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
                     {/* Resume */}
                     <TableCell className="p-3.5">
                       {profile.resume ? (
-                        <a
-                          href={profile.resume}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800 font-semibold"
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setViewingResume({
+                              url: profile.resume,
+                              name: applicant?.fullname,
+                              originalName:
+                                profile.resumeOriginalName ||
+                                `${applicant?.fullname || "Candidate"}_Resume.pdf`,
+                            })
+                          }
+                          className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800 font-semibold cursor-pointer"
                         >
                           <FileText size={13} />
                           <span>View Resume</span>
-                        </a>
+                        </button>
                       ) : (
                         <span className="text-slate-400 text-[11px]">No resume</span>
                       )}
@@ -351,14 +360,21 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
 
                 {selectedCandidate.applicant?.profile?.resume && (
                   <div className="pt-2">
-                    <a
-                      href={selectedCandidate.applicant.profile.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary-600 text-white font-bold text-xs shadow-xs hover:bg-primary-700"
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setViewingResume({
+                          url: selectedCandidate.applicant.profile.resume,
+                          name: selectedCandidate.applicant.fullname,
+                          originalName:
+                            selectedCandidate.applicant.profile.resumeOriginalName ||
+                            `${selectedCandidate.applicant.fullname || "Candidate"}_Resume.pdf`,
+                        })
+                      }
+                      className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary-600 text-white font-bold text-xs shadow-xs hover:bg-primary-700 cursor-pointer transition"
                     >
                       <FileText size={15} /> View Full Resume (PDF)
-                    </a>
+                    </button>
                   </div>
                 )}
               </div>
@@ -366,6 +382,15 @@ const ApplicantsTable = ({ applications = [], onStatusUpdate }) => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Resume Preview Modal */}
+      <ResumeModal
+        open={Boolean(viewingResume)}
+        onClose={() => setViewingResume(null)}
+        resumeUrl={viewingResume?.url}
+        candidateName={viewingResume?.name}
+        originalName={viewingResume?.originalName}
+      />
 
       {/* Status Transition Dialog */}
       <Dialog

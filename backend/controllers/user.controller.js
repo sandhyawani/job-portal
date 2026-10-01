@@ -301,9 +301,21 @@ export const updateProfile = async (req, res) => {
         req.file.mimetype.includes("word") ||
         req.file.mimetype.includes("document");
 
-      const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-        resource_type: isPdfOrDoc ? "raw" : "auto",
-      });
+      const cleanFileName = (req.file.originalname || "resume.pdf")
+        .replace(/[^a-zA-Z0-9.-]/g, "_");
+
+      const uploadOptions = isPdfOrDoc
+        ? {
+            resource_type: "raw",
+            folder: "resumes",
+            public_id: `${Date.now()}_${cleanFileName}`,
+          }
+        : {
+            folder: "profile_photos",
+            resource_type: "auto",
+          };
+
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content, uploadOptions);
 
       if (isPdfOrDoc) {
         user.profile.resume = cloudResponse.secure_url;

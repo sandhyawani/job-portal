@@ -22,6 +22,7 @@ import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
 import UpdateProfileDialog from "./UpdateProfileDialog";
+import ResumeModal from "./shared/ResumeModal";
 import { useSelector } from "react-redux";
 import useGetAppliedJobs from "../hooks/useGetAppliedJobs";
 import { calculateProfileScore } from "@/utils/jobMatcher";
@@ -29,6 +30,7 @@ import { calculateProfileScore } from "@/utils/jobMatcher";
 const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
+  const [viewingResume, setViewingResume] = useState(false);
   const { user } = useSelector((store) => store.auth);
 
   const isResume = Boolean(user?.profile?.resume);
@@ -236,14 +238,13 @@ const Profile = () => {
                     </span>
                   </div>
                 </div>
-                <a
-                  href={profile.resume}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-primary-600 shadow-2xs"
+                <button
+                  type="button"
+                  onClick={() => setViewingResume(true)}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:text-primary-600 shadow-2xs cursor-pointer transition"
                 >
                   View Resume <ExternalLink size={12} />
-                </a>
+                </button>
               </div>
             ) : (
               <div className="p-4 rounded-2xl border border-dashed border-slate-200 text-center">
@@ -273,6 +274,13 @@ const Profile = () => {
       </main>
 
       <UpdateProfileDialog open={open} setOpen={setOpen} />
+      <ResumeModal
+        open={viewingResume}
+        onClose={() => setViewingResume(false)}
+        resumeUrl={profile.resume}
+        candidateName={user?.fullname}
+        originalName={profile.resumeOriginalName || `${user?.fullname || "Candidate"}_Resume.pdf`}
+      />
       <MobileBottomNav />
     </div>
   );
