@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import jobApi from "@/api/jobApi";
 import applicationApi from "@/api/applicationApi";
@@ -16,6 +16,7 @@ import JobContent from "./job-details/JobContent";
 import JobSidebar from "./job-details/JobSidebar";
 import ApplyModal from "./job-details/ApplyModal";
 import ApplySuccessModal from "./job-details/ApplySuccessModal";
+import Job from "./Job";
 
 const JobDescription = () => {
   const { singleJob, savedJobs = [] } = useSelector((store) => store.job);
@@ -82,6 +83,40 @@ const JobDescription = () => {
 
     fetchSingleJob();
   }, [jobId, dispatch]);
+
+  // Strict frontend deduplication & current-job exclusion safeguard
+  const uniqueSimilarJobs = useMemo(() => {
+    if (!similarJobs || !Array.isArray(similarJobs)) return [];
+
+    const currentId = String(singleJob?._id || jobId || "");
+    const seenIds = new Set([currentId]);
+    const seenTitleCompany = new Set();
+
+    if (singleJob) {
+      const currentComp = (singleJob.company?.name || "").toLowerCase().replace(/\s*\d+$/, "").trim();
+      const currentTitle = (singleJob.title || "").toLowerCase().trim();
+      seenTitleCompany.add(`${currentTitle}::${currentComp}`);
+    }
+
+    const result = [];
+    for (const j of similarJobs) {
+      if (!j || !j._id) continue;
+      const jId = String(j._id);
+      if (seenIds.has(jId)) continue;
+
+      const compClean = (j.company?.name || "").toLowerCase().replace(/\s*\d+$/, "").trim();
+      const titleClean = (j.title || "").toLowerCase().trim();
+      const key = `${titleClean}::${compClean}`;
+
+      if (seenTitleCompany.has(key)) continue;
+
+      seenIds.add(jId);
+      seenTitleCompany.add(key);
+      result.push(j);
+    }
+
+    return result;
+  }, [similarJobs, singleJob, jobId]);
 
   const handleApplyClick = () => {
     if (!user) {
@@ -193,10 +228,35 @@ const JobDescription = () => {
 
         <MatchBreakdown match={match} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <JobContent singleJob={singleJob} similarJobs={similarJobs} />
+        {/* Main 2:1 Content and Sidebar Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          <JobContent singleJob={singleJob} />
           <JobSidebar company={company} singleJob={singleJob} workMode={workMode} />
         </div>
+
+        {/* Similar Opportunities Section - Clean Full-Width 3-Column Grid */}
+        <section className="pt-8 border-t border-slate-200/80 mb-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+              Similar Opportunities
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Explore related job openings matching role requirements, experience, and domain.
+            </p>
+          </div>
+
+          {uniqueSimilarJobs.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {uniqueSimilarJobs.map((simJob) => (
+                <Job key={simJob._id} job={simJob} />
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500 text-sm">
+              No similar opportunities available right now.
+            </div>
+          )}
+        </section>
 
         <ApplyModal
           open={showApplyModal}

@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { GraduationCap } from "lucide-react";
-import Job from "../Job";
 
-const JobContent = ({ singleJob, similarJobs = [] }) => {
+const JobContent = ({ singleJob }) => {
   return (
     <div className="lg:col-span-2 space-y-6">
       {/* Role Overview */}
@@ -105,20 +104,6 @@ const JobContent = ({ singleJob, similarJobs = [] }) => {
           </Button>
         </Link>
       </div>
-
-      {/* Similar Jobs */}
-      {similarJobs.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-lg font-bold text-slate-900 mb-4">
-            Similar Opportunities
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {similarJobs.map((simJob) => (
-              <Job key={simJob._id} job={simJob} />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -350,11 +350,10 @@ export const getJobById = async (req, res) => {
       .map((w) => w.trim())
       .filter((w) => w.length >= 3 && !STOP_WORDS.has(w));
 
-    const orClauses = [
-      { jobType: job.jobType },
-      { workMode: job.workMode },
-    ];
-    if (job.company) {
+    const orClauses = [];
+    if (job.jobType) orClauses.push({ jobType: job.jobType });
+    if (job.workMode) orClauses.push({ workMode: job.workMode });
+    if (job.company?._id || job.company) {
       orClauses.push({ company: job.company._id || job.company });
     }
     if (job.requirements && job.requirements.length > 0) {
@@ -367,13 +366,13 @@ export const getJobById = async (req, res) => {
     const candidateJobs = await Job.find({
       _id: { $ne: job._id },
       status: { $ne: "closed" },
-      $or: orClauses,
+      ...(orClauses.length > 0 ? { $or: orClauses } : {}),
     })
       .populate({
         path: "company",
         select: "name logo location trustScore trustLevel",
       })
-      .limit(20);
+      .limit(30);
 
     const targetReqs = (job.requirements || []).map((r) => r.toLowerCase().trim());
     const scoredCandidates = candidateJobs.map((c) => {
@@ -395,7 +394,57 @@ export const getJobById = async (req, res) => {
     });
 
     scoredCandidates.sort((a, b) => b.score - a.score || new Date(b.job.createdAt) - new Date(a.job.createdAt));
-    const similarJobs = scoredCandidates.slice(0, 4).map((item) => item.job);
+
+    // Deduplicate: Exclude current job ID, avoid duplicate IDs, and avoid identical title+company listings
+    const seenIds = new Set([String(job._id)]);
+    const currentCompName = (job.company?.name || "").toLowerCase().replace(/\s*\d+$/, "").trim();
+    const currentTitle = (job.title || "").toLowerCase().trim();
+    const seenTitleCompany = new Set([`${currentTitle}::${currentCompName}`]);
+    const uniqueSimilarJobs = [];
+
+    for (const item of scoredCandidates) {
+      const cJob = item.job;
+      const cId = String(cJob._id);
+      const companyClean = (cJob.company?.name || "").toLowerCase().replace(/\s*\d+$/, "").trim();
+      const titleClean = (cJob.title || "").toLowerCase().trim();
+      const titleCompanyKey = `${titleClean}::${companyClean}`;
+
+      if (seenIds.has(cId)) continue;
+      if (seenTitleCompany.has(titleCompanyKey)) continue;
+
+      seenIds.add(cId);
+      seenTitleCompany.add(titleCompanyKey);
+      uniqueSimilarJobs.push(cJob);
+      if (uniqueSimilarJobs.length >= 6) break;
+    }
+
+    // Backfill with other active open jobs if fewer than 3 similar jobs found
+    if (uniqueSimilarJobs.length < 3) {
+      const fallbackJobs = await Job.find({
+        _id: { $nin: Array.from(seenIds) },
+        status: { $ne: "closed" },
+      })
+        .populate("company", "name logo location trustScore trustLevel")
+        .sort({ createdAt: -1 })
+        .limit(10);
+
+      for (const fb of fallbackJobs) {
+        const fbId = String(fb._id);
+        const companyClean = (fb.company?.name || "").toLowerCase().replace(/\s*\d+$/, "").trim();
+        const titleClean = (fb.title || "").toLowerCase().trim();
+        const titleCompanyKey = `${titleClean}::${companyClean}`;
+
+        if (seenIds.has(fbId)) continue;
+        if (seenTitleCompany.has(titleCompanyKey)) continue;
+
+        seenIds.add(fbId);
+        seenTitleCompany.add(titleCompanyKey);
+        uniqueSimilarJobs.push(fb);
+        if (uniqueSimilarJobs.length >= 6) break;
+      }
+    }
+
+    const similarJobs = uniqueSimilarJobs.slice(0, 6);
 
     return res.status(200).json({
       success: true,
