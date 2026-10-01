@@ -228,14 +228,14 @@ const JobDescription = () => {
 
         <MatchBreakdown match={match} />
 
-        {/* Main 2:1 Content and Sidebar Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        {/* Main 2:1 Content and Sidebar Grid with natural content heights */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <JobContent singleJob={singleJob} />
           <JobSidebar company={company} singleJob={singleJob} workMode={workMode} />
         </div>
 
-        {/* Similar Opportunities Section - Clean Full-Width 3-Column Grid */}
-        <section className="pt-8 border-t border-slate-200/80 mb-6">
+        {/* Similar Opportunities Section - Natural 32px spacing after content */}
+        <section className="mt-8 pt-8 border-t border-slate-200/80 mb-6">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">
               Similar Opportunities
