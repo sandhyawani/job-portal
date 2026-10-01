@@ -111,7 +111,7 @@ const AdminApplications = () => {
         switch (s) {
             case 'pending': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"><Clock size={12} className="mr-1" /> Pending</span>;
             case 'review': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"><Info size={12} className="mr-1" /> Review</span>;
-            case 'shortlisted': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">Shortlisted</span>;
+            case 'shortlisted': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">Shortlisted</span>;
             case 'interview': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800"><Calendar size={12} className="mr-1" /> Interview</span>;
             case 'offer': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Offer</span>;
             case 'hired': return <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"><CheckCircle size={12} className="mr-1" /> Hired</span>;
@@ -177,7 +177,7 @@ const AdminApplications = () => {
                                                     <span className="text-sm font-medium text-gray-900">{app.applicant?.fullname || 'Unknown'}</span>
                                                     <span className="text-xs text-gray-500">{app.applicant?.email || 'No email'}</span>
                                                     {app.applicant?.profile?.resume && (
-                                                        <a href={app.applicant.profile.resume} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-600 hover:underline mt-1 flex items-center">
+                                                        <a href={app.applicant.profile.resume} target="_blank" rel="noopener noreferrer" className="text-xs text-primary-600 hover:underline mt-1 flex items-center">
                                                             <FileText size={12} className="mr-1" /> View Resume
                                                         </a>
                                                     )}
@@ -196,7 +196,7 @@ const AdminApplications = () => {
                                                 {getStatusBadge(app.status)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button onClick={() => handleOpenModal(app)} className="text-indigo-600 hover:text-indigo-900 mr-4 p-1">
+                                                <button onClick={() => handleOpenModal(app)} className="text-primary-600 hover:text-primary-900 mr-4 p-1">
                                                     <Edit size={18} />
                                                 </button>
                                                 <button onClick={() => handleDelete(app._id)} className="text-red-600 hover:text-red-900 p-1">
@@ -296,7 +296,7 @@ const AdminApplications = () => {
                                     
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200">
-                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 sm:ml-3 sm:w-auto sm:text-sm">
                                         Update Status
                                     </button>
                                     <button type="button" onClick={() => setIsModalOpen(false)} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">

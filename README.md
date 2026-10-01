@@ -7,14 +7,14 @@
 </h3>
 
 <p align="center">
-  <a href="https://job-portal-flax-omega.vercel.app" target="_blank"><img src="https://img.shields.io/badge/🔴_LIVE-job--portal--flax--omega.vercel.app-6366f1?style=for-the-badge&labelColor=0f172a" alt="Live Demo"/></a>
+  <a href="https://job-portal-lovat-sigma.vercel.app" target="_blank"><img src="https://img.shields.io/badge/🔴_LIVE-job--portal--lovat--sigma.vercel.app-6366f1?style=for-the-badge&labelColor=0f172a" alt="Live Demo"/></a>
   <img src="https://img.shields.io/badge/version-2.0.0-818cf8?style=for-the-badge&labelColor=0f172a" alt="Version"/>
   <img src="https://img.shields.io/badge/license-MIT-a5b4fc?style=for-the-badge&labelColor=0f172a" alt="License"/>
 </p>
 
 <p align="center">
-  <a href="https://job-portal-flax-omega.vercel.app" target="_blank">
-    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APP-https%3A%2F%2Fjob--portal--flax--omega.vercel.app-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Website"/>
+  <a href="https://job-portal-lovat-sigma.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APP-https%3A%2F%2Fjob--portal--lovat--sigma.vercel.app-2563eb?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Website"/>
   </a>
 </p>
 
@@ -29,7 +29,7 @@
 </p>
 
 > ### 🌟 Live Production Website
-> 🚀 **Explore the Live App:** **[https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)**  
+> 🚀 **Explore the Live App:** **[https://job-portal-lovat-sigma.vercel.app](https://job-portal-lovat-sigma.vercel.app)**  
 > 💻 **GitHub Repository:** **[https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal)**  
 > 
 > *Test candidate application flows, explore verified recruiter hiring pipelines, and practice interview prep questions live!*
@@ -288,7 +288,7 @@ SECRET_KEY=your_jwt_secret_key_minimum_32_characters
 CLOUD_NAME=your_cloudinary_cloud_name
 API_KEY=your_cloudinary_api_key
 API_SECRET=your_cloudinary_api_secret
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://job-portal-flax-omega.vercel.app
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://job-portal-lovat-sigma.vercel.app
 ```
 
 Start the backend server:
@@ -331,18 +331,18 @@ npm run build   # Vite production build
 ## 🌐 Live Deployment & Quick Links
 
 <p align="center">
-  <a href="https://job-portal-flax-omega.vercel.app" target="_blank">
-    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APPLICATION-job--portal--flax--omega.vercel.app-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Live App" height="42"/>
+  <a href="https://job-portal-lovat-sigma.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APPLICATION-job--portal--lovat--sigma.vercel.app-6366f1?style=for-the-badge&logo=vercel&logoColor=white" alt="Live App" height="42"/>
   </a>
 </p>
 
 | Destination | Platform | Direct URL |
 |:------------|:---------|:-----------|
-| 🌐 **Live Web Application** | **Vercel** | **[https://job-portal-flax-omega.vercel.app](https://job-portal-flax-omega.vercel.app)** |
+| 🌐 **Live Web Application** | **Vercel** | **[https://job-portal-lovat-sigma.vercel.app](https://job-portal-lovat-sigma.vercel.app)** |
 | 💻 **GitHub Repository** | **GitHub** | **[https://github.com/sandhyawani/job-portal](https://github.com/sandhyawani/job-portal)** |
-| 🔍 **Candidate Job Search** | **Production** | **[https://job-portal-flax-omega.vercel.app/jobs](https://job-portal-flax-omega.vercel.app/jobs)** |
-| 🏢 **Recruiter Headquarters** | **Production** | **[https://job-portal-flax-omega.vercel.app/admin/dashboard](https://job-portal-flax-omega.vercel.app/admin/dashboard)** |
-| 🎓 **Interview Prep Hub** | **Production** | **[https://job-portal-flax-omega.vercel.app/interview-prep](https://job-portal-flax-omega.vercel.app/interview-prep)** |
+| 🔍 **Candidate Job Search** | **Production** | **[https://job-portal-lovat-sigma.vercel.app/jobs](https://job-portal-lovat-sigma.vercel.app/jobs)** |
+| 🏢 **Recruiter Headquarters** | **Production** | **[https://job-portal-lovat-sigma.vercel.app/admin/dashboard](https://job-portal-lovat-sigma.vercel.app/admin/dashboard)** |
+| 🎓 **Interview Prep Hub** | **Production** | **[https://job-portal-lovat-sigma.vercel.app/interview-prep](https://job-portal-lovat-sigma.vercel.app/interview-prep)** |
 
 ---
 

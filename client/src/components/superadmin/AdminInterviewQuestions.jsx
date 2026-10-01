@@ -228,7 +228,7 @@ const AdminInterviewQuestions = () => {
                                             </button>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button onClick={() => handleOpenModal(q)} className="text-indigo-600 hover:text-indigo-900 mr-4">
+                                            <button onClick={() => handleOpenModal(q)} className="text-primary-600 hover:text-primary-900 mr-4">
                                                 <Edit size={18} />
                                             </button>
                                             <button onClick={() => handleDelete(q._id)} className="text-red-600 hover:text-red-900">
@@ -310,13 +310,13 @@ const AdminInterviewQuestions = () => {
                                             <input type="text" name="interviewTip" value={formData.interviewTip} onChange={handleInputChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" />
                                         </div>
                                         <div className="col-span-2 flex items-center mt-2">
-                                            <input type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange} className="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                                            <input type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange} className="h-4 w-4 text-primary-600 border-gray-300 rounded" />
                                             <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">Active (Visible to candidates)</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <button type="submit" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 sm:ml-3 sm:w-auto sm:text-sm">
                                         Save
                                     </button>
                                     <button type="button" onClick={() => setIsModalOpen(false)} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">

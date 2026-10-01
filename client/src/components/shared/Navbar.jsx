@@ -91,7 +91,7 @@ const Navbar = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-primary-600 transition">
-              Job<span className="text-primary-600">Portal</span>
+              <span className="text-primary-600">J</span>ob<span className="text-primary-600">Portal</span>
             </span>
           </div>
         </Link>
