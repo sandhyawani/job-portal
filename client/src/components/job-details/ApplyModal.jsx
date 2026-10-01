@@ -113,6 +113,18 @@ const ApplyModal = ({
               className="w-full text-xs p-3 rounded-xl border border-slate-200 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/20"
             />
           </div>
+
+          {/* Informative Process Steps */}
+          <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3 text-xs text-slate-600">
+            <span className="font-bold text-slate-800 text-[11px] uppercase tracking-wider block mb-1">
+              What happens after submission?
+            </span>
+            <ul className="space-y-1 text-[11px] text-slate-600 list-disc list-inside">
+              <li>Profile & resume are delivered directly to the recruiter.</li>
+              <li>Hiring team reviews credentials and updates stage status.</li>
+              <li>Track progress and interview calls in your Application Tracker.</li>
+            </ul>
+          </div>
         </div>
 
         <div className="flex items-center justify-end gap-3 mt-4 pt-3 border-t border-slate-100">

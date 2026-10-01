@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Building2, ExternalLink } from "lucide-react";
+import { Building2, ExternalLink, HelpCircle } from "lucide-react";
 import TrustBadge from "../TrustBadge";
 import { normalizeUrl, getValidImageUrl, formatDate } from "@/utils/formatters";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../ui/popover";
 
 const JobSidebar = ({ company, singleJob, workMode }) => {
   return (
@@ -78,7 +83,7 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
         </div>
       )}
 
-      {/* Quick Job Summary */}
+      {/* Quick Job Summary with Application Info Popover */}
       <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
         <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
           Job Overview
@@ -110,39 +115,53 @@ const JobSidebar = ({ company, singleJob, workMode }) => {
             </span>
           </div>
         </div>
-      </div>
 
-      {/* What happens when you apply guide */}
-      <div className="bg-slate-50 rounded-3xl border border-slate-200/80 p-6 text-xs">
-        <h4 className="font-bold text-slate-900 mb-3 text-sm">
-          What happens when you apply?
-        </h4>
-        <ul className="space-y-3 text-slate-600 text-xs">
-          <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-              1
-            </span>
-            <span>
-              Your profile, contact details, and resume are delivered directly to the recruiter.
-            </span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-              2
-            </span>
-            <span>
-              The hiring team reviews your credentials and updates your application status.
-            </span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
-              3
-            </span>
-            <span>
-              Track stage progress, interview times, and recruiter feedback in your Application Tracker.
-            </span>
-          </li>
-        </ul>
+        {/* Informative Popover instead of taking up full sidebar height */}
+        <div className="mt-4 pt-3 border-t border-slate-100">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="w-full text-xs font-semibold text-primary-600 hover:text-primary-800 flex items-center justify-center gap-1.5 py-1.5 rounded-xl hover:bg-primary-50/60 transition cursor-pointer">
+                <HelpCircle size={14} /> What happens when you apply?
+              </button>
+            </PopoverTrigger>
+            <PopoverContent
+              align="end"
+              className="w-80 sm:w-88 bg-white rounded-2xl border border-slate-200 p-4 shadow-lg text-xs space-y-3 z-50"
+            >
+              <div className="flex items-center gap-2 border-b border-slate-100 pb-2">
+                <h4 className="font-bold text-slate-900 text-sm">
+                  What happens when you apply?
+                </h4>
+              </div>
+              <ul className="space-y-2.5 text-slate-600 text-xs">
+                <li className="flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+                    1
+                  </span>
+                  <span>
+                    Your profile, contact details, and resume are delivered directly to the recruiter.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+                    2
+                  </span>
+                  <span>
+                    The hiring team reviews your credentials and updates your application status.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold shrink-0 text-[11px]">
+                    3
+                  </span>
+                  <span>
+                    Track stage progress, interview times, and recruiter feedback in your Application Tracker.
+                  </span>
+                </li>
+              </ul>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </div>
   );
