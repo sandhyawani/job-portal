@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import { formatSalary } from "@/utils/formatters";
 
 const TIMELINE_STAGES = [
   { key: "pending", label: "Applied" },
@@ -135,7 +136,7 @@ const ApplicationTracker = () => {
                           <span>·</span>
                           <span>{app.job?.location}</span>
                           <span>·</span>
-                          <span>₹{app.job?.salary} LPA</span>
+                          <span>{formatSalary(app.job?.salary)}</span>
                         </div>
                       </div>
                     </div>
