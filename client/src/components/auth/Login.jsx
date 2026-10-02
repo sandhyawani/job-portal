@@ -1,70 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
-import { RadioGroup } from '../ui/radio-group'
-import { Button } from '../ui/button'
-import { Link, useNavigate } from 'react-router-dom'
-import authApi from '@/api/authApi'
-import { toast } from 'sonner'
-import { Loader2, Eye, EyeOff } from 'lucide-react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setLoading, setUser } from '@/redux/authSlice'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+
+import Navbar from "../shared/Navbar";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { RadioGroup } from "../ui/radio-group";
+import { Button } from "../ui/button";
+import authApi from "@/api/authApi";
+import { setLoading, setUser } from "@/redux/authSlice";
 
 const Login = () => {
-  const [input, setInput] = useState({
-    email: '',
-    password: '',
-    role: '',
-  })
-  const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const { loading, user } = useSelector((store) => store.auth)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const { loading, user } = useSelector((store) => store.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value })
-  }
+  const handleInputChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
-  const submitHandler = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      dispatch(setLoading(true))
-      const res = await authApi.login(input)
+      dispatch(setLoading(true));
+      const res = await authApi.login(formData);
       if (res.data.success) {
-        dispatch(setUser(res.data.user))
-        if (res.data.user?.role === 'recruiter') {
-          navigate('/admin/dashboard')
+        dispatch(setUser(res.data.user));
+        if (res.data.user?.role === "recruiter") {
+          navigate("/admin/dashboard");
         } else {
-          navigate('/dashboard')
+          navigate("/dashboard");
         }
-        toast.success(res.data.message)
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error(error.friendlyMessage || error.response?.data?.message || error.message || 'Something went wrong')
+      toast.error(error.friendlyMessage || error.response?.data?.message || error.message || "Something went wrong");
     } finally {
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     }
-  }
+  };
 
   useEffect(() => {
     if (user) {
-      if (user.role === 'recruiter') {
-        navigate('/admin/dashboard')
+      if (user.role === "recruiter") {
+        navigate("/admin/dashboard");
       } else {
-        navigate('/')
+        navigate("/");
       }
     }
-  }, [user, navigate])
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen bg-slate-50/50 flex flex-col">
       <Navbar />
       <div className="flex-1 flex items-center justify-center pt-16 pb-8 px-4">
         <form
-          onSubmit={submitHandler}
+          onSubmit={handleSubmit}
           className="w-full max-w-md border border-slate-200 rounded-2xl sm:rounded-3xl shadow-md p-6 sm:p-7 bg-white my-auto"
         >
           <div className="text-center mb-5">
@@ -73,29 +73,27 @@ const Login = () => {
           </div>
 
           <div className="space-y-3.5">
-            {/* Email */}
             <div className="flex flex-col">
               <Label className="text-xs font-semibold text-slate-700 mb-1">Email</Label>
               <Input
                 type="email"
-                value={input.email}
+                value={formData.email}
                 name="email"
-                onChange={changeEventHandler}
+                onChange={handleInputChange}
                 placeholder="name@example.com"
                 className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm px-3"
                 required
               />
             </div>
 
-            {/* Password */}
             <div className="flex flex-col">
               <Label className="text-xs font-semibold text-slate-700 mb-1">Password</Label>
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
-                  value={input.password}
+                  value={formData.password}
                   name="password"
-                  onChange={changeEventHandler}
+                  onChange={handleInputChange}
                   placeholder="••••••"
                   className="h-10 rounded-xl border-slate-200 text-xs sm:text-sm pl-3 pr-9"
                   required
@@ -112,7 +110,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Role */}
             <div className="flex flex-col pt-0.5">
               <Label className="text-xs font-semibold text-slate-700 mb-1.5">Select Role</Label>
               <RadioGroup className="flex items-center gap-6">
@@ -121,8 +118,8 @@ const Login = () => {
                     type="radio"
                     name="role"
                     value="student"
-                    checked={input.role === 'student'}
-                    onChange={changeEventHandler}
+                    checked={formData.role === "student"}
+                    onChange={handleInputChange}
                     className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
                   <span>Student</span>
@@ -132,8 +129,8 @@ const Login = () => {
                     type="radio"
                     name="role"
                     value="recruiter"
-                    checked={input.role === 'recruiter'}
-                    onChange={changeEventHandler}
+                    checked={formData.role === "recruiter"}
+                    onChange={handleInputChange}
                     className="w-4 h-4 cursor-pointer text-primary-600 accent-primary-600"
                   />
                   <span>Recruiter</span>
@@ -141,7 +138,6 @@ const Login = () => {
               </RadioGroup>
             </div>
 
-            {/* Button */}
             {loading ? (
               <Button className="w-full h-10 rounded-xl bg-primary-600 text-white font-semibold mt-2" disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
@@ -165,7 +161,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

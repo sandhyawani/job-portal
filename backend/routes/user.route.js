@@ -11,7 +11,7 @@ import {
   markNotificationRead,
 } from "../controllers/user.controller.js";
 import { isAuthenticated, requireRole } from "../middlewares/isAuthenticated.js";
-import { singleUpload } from "../middlewares/mutler.js";
+import { singleUpload } from "../middlewares/multer.js";
 
 const router = express.Router();
 

@@ -7,7 +7,7 @@ import {
   getCompanyById,
   updateCompany,
 } from "../controllers/company.controller.js";
-import { imageUpload } from "../middlewares/mutler.js";
+import { imageUpload } from "../middlewares/multer.js";
 
 const router = express.Router();
 
